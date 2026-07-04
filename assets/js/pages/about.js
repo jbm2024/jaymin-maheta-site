@@ -11,6 +11,7 @@ import {
   initPageTransitions,
   initStatCounters,
   initAccordions,
+  renderLinkedInFeatured,
   fetchJSON,
   setText,
   isReducedMotion,
@@ -239,7 +240,7 @@ async function init() {
   initMobileNav();
   initPageTransitions();
 
-  const [, aboutData] = await Promise.all([renderNavFooter(), fetchJSON("assets/data/about.json")]);
+  const [site, aboutData] = await Promise.all([renderNavFooter(), fetchJSON("assets/data/about.json")]);
 
   renderBio(aboutData.bio);
   renderStats(aboutData.stats);
@@ -247,6 +248,7 @@ async function init() {
   renderSkills(aboutData.skills);
   renderExperience(aboutData.experience);
   renderAwards(aboutData.awards);
+  renderLinkedInFeatured(site?.linkedinFeatured);
 
   revealOnScroll();
   initStaggerReveals();

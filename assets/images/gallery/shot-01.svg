@@ -8,6 +8,6 @@
   <rect width="1600" height="1000" fill="url(#g)"/>
   <circle cx="220" cy="820" r="260" fill="rgba(255,255,255,0.06)"/>
   <circle cx="1420" cy="140" r="180" fill="rgba(255,255,255,0.07)"/>
-  <text x="800" y="470" font-family="'JetBrains Mono', monospace" font-size="40" font-weight="600" fill="rgba(255,255,255,0.92)" text-anchor="middle">Design System Tokens</text>
+  <text x="800" y="470" font-family="'JetBrains Mono', monospace" font-size="38" font-weight="600" fill="rgba(255,255,255,0.92)" text-anchor="middle">Speaking at a Tech Meetup</text>
   <text x="800" y="525" font-family="'JetBrains Mono', monospace" font-size="20" fill="rgba(255,255,255,0.55)" text-anchor="middle">Placeholder — swap in assets/images/gallery/</text>
 </svg>

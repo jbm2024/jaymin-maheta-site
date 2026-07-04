@@ -105,7 +105,7 @@
     </div>
   </header>
 
-  <main id="main-content" class="relative z-10 mx-auto max-w-4xl px-6 pb-32 pt-40">
+  <main id="main-content" class="relative z-10 mx-auto max-w-6xl px-6 pb-32 pt-40">
     <section id="contact-intro">
       <h1 class="font-heading text-4xl font-bold md:text-5xl">Let's Talk</h1>
       <p class="mt-6 max-w-2xl text-base text-[var(--color-text-muted)] md:text-lg">
@@ -164,19 +164,33 @@
       </section>
     </div>
 
-    <!-- LinkedIn Featured -->
-    <section id="linkedin-featured" class="mt-24">
-      <h2 data-linkedin-heading class="font-heading text-2xl font-bold md:text-3xl">Featured on LinkedIn</h2>
-      <p data-linkedin-subtitle class="mt-2 text-sm text-[var(--color-text-muted)]"></p>
-      <div data-reveal-stagger data-linkedin-posts class="mt-8 grid grid-cols-1 gap-6 md:grid-cols-2">
-        <div class="h-[540px] animate-pulse motion-reduce:animate-none rounded-2xl bg-[var(--color-surface-glass)]"></div>
-        <div class="h-[540px] animate-pulse motion-reduce:animate-none rounded-2xl bg-[var(--color-surface-glass)]"></div>
+    <!-- Featured on LinkedIn (shared across all pages, data from site.json) -->
+    <section id="linkedin-featured" data-linkedin-featured class="relative mt-24 overflow-hidden rounded-3xl border border-[var(--color-border-glass)] bg-[var(--color-surface-glass)] p-8 backdrop-blur-md md:p-10">
+      <div aria-hidden="true" class="absolute inset-x-0 top-0 h-1 bg-gradient-to-r from-[var(--color-accent-start)] to-[var(--color-accent-end)]"></div>
+      <div class="flex flex-wrap items-end justify-between gap-6">
+        <div>
+          <p class="flex items-center gap-2 font-mono text-xs uppercase tracking-widest text-[var(--color-accent-end)]">
+            <svg class="h-4 w-4" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><rect width="24" height="24" rx="5" fill="currentColor" opacity="0.15"/><path d="M6.94 8.5a1.94 1.94 0 1 0 0-3.88 1.94 1.94 0 0 0 0 3.88ZM5.5 10.5h2.88V19H5.5v-8.5ZM10.5 10.5h2.76v1.16h.04c.38-.72 1.32-1.48 2.72-1.48 2.9 0 3.44 1.9 3.44 4.38V19h-2.88v-3.9c0-.93-.02-2.13-1.3-2.13-1.3 0-1.5 1.02-1.5 2.06V19h-2.88v-8.5Z"/></svg>
+            <span data-linkedin-eyebrow>On LinkedIn</span>
+          </p>
+          <h2 data-linkedin-heading class="mt-2 font-heading text-2xl font-bold md:text-3xl">Featured Posts</h2>
+          <p data-linkedin-subtitle class="mt-2 max-w-xl text-sm text-[var(--color-text-muted)]"></p>
+        </div>
+        <a data-linkedin-follow data-magnetic href="https://www.linkedin.com/in/jaymin-maheta/" target="_blank" rel="noopener noreferrer" class="inline-flex shrink-0 items-center gap-2 rounded-full bg-gradient-to-r from-[var(--color-accent-start)] to-[var(--color-accent-end)] px-6 py-3 font-heading text-sm font-semibold text-white transition-shadow duration-300 hover:shadow-[0_12px_40px_-10px_rgba(var(--color-accent-rgb),0.6)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-accent-end)]">
+          <span data-linkedin-follow-label>Follow on LinkedIn</span>
+          <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M17 8l4 4m0 0-4 4m4-4H3" /></svg>
+        </a>
+      </div>
+
+      <div data-linkedin-posts class="mt-8 grid grid-cols-1 gap-6 md:grid-cols-2">
+        <div class="h-[540px] animate-pulse motion-reduce:animate-none rounded-2xl bg-[var(--color-surface)]"></div>
+        <div class="h-[540px] animate-pulse motion-reduce:animate-none rounded-2xl bg-[var(--color-surface)]"></div>
       </div>
     </section>
   </main>
 
   <footer class="relative z-10 border-t border-[var(--color-border-glass)] px-6 py-10">
-    <div data-site-footer data-nav-footer-loaded class="mx-auto flex max-w-5xl flex-col items-center gap-4 sm:flex-row sm:justify-between"></div>
+    <div data-site-footer data-nav-footer-loaded class="mx-auto flex max-w-6xl flex-col items-center gap-4 sm:flex-row sm:justify-between"></div>
   </footer>
 
   <script type="module" src="assets/js/pages/contact.js"></script>

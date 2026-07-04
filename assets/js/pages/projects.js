@@ -12,6 +12,7 @@ import {
   initPageTransitions,
   initStatCounters,
   initAccordions,
+  renderLinkedInFeatured,
   fetchJSON,
   isReducedMotion,
 } from "../main.js";
@@ -207,10 +208,11 @@ async function init() {
   initMobileNav();
   initPageTransitions();
 
-  const [, projectsData] = await Promise.all([renderNavFooter(), fetchJSON("assets/data/projects.json")]);
+  const [site, projectsData] = await Promise.all([renderNavFooter(), fetchJSON("assets/data/projects.json")]);
 
   renderProjects(projectsData.projects);
   renderFilters(projectsData.filters);
+  renderLinkedInFeatured(site?.linkedinFeatured);
 
   revealOnScroll();
   initStaggerReveals();

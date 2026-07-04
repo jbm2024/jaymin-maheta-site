@@ -10,6 +10,7 @@ import {
   initMagneticButtons,
   initScrollProgress,
   initPageTransitions,
+  renderLinkedInFeatured,
   fetchJSON,
   setText,
   isReducedMotion,
@@ -102,11 +103,12 @@ async function init() {
   initMobileNav();
   initPageTransitions();
 
-  const [, galleryData] = await Promise.all([renderNavFooter(), fetchJSON("assets/data/gallery.json")]);
+  const [site, galleryData] = await Promise.all([renderNavFooter(), fetchJSON("assets/data/gallery.json")]);
 
   setText(document.querySelector("[data-gallery-heading]"), galleryData.intro.heading);
   setText(document.querySelector("[data-gallery-subtitle]"), galleryData.intro.subtitle);
   renderGallery(galleryData.images);
+  renderLinkedInFeatured(site?.linkedinFeatured);
 
   revealOnScroll();
   initStaggerReveals();

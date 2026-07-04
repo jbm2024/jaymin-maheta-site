@@ -18,7 +18,7 @@ Then open `http://localhost:8000/index.html`.
 
 ## Structure
 
-```
+```text
 index.html / about.html / projects.html / gallery.html / contact.html   5 pages, hardcoded
                        SEO meta, Tailwind utility markup
 assets/
@@ -49,13 +49,25 @@ The 8 shipped images are generated gradient placeholders (`assets/images/gallery
 labeled with what they're standing in for — swap in real screenshots/photos at the same path,
 or add new files and point new JSON entries at them.
 
-### Featured LinkedIn posts (`contact.html` / `contact.json`'s `linkedinFeatured`)
+### Featured LinkedIn posts (every page / `site.json`'s `linkedinFeatured`)
 
-Renders LinkedIn's official public-post embed (`https://www.linkedin.com/embed/feed/update/<urn>`)
-for each entry in `linkedinFeatured.posts` with `active: true`. To swap a post: open it on
-LinkedIn, copy the URL, and pull the `urn:li:activity:...` id out of it (or use the "Embed this
-post" share option LinkedIn provides on public posts, which contains the same URN) — the post
-must be public for the embed to render for visitors who aren't logged in.
+A "Featured on LinkedIn" band appears near the bottom of all 5 pages (`renderLinkedInFeatured()`
+in `main.js`, called from every page script). It's a single shared component: content, the
+follow link, and the two posts all come from `site.json`'s `linkedinFeatured` block, so editing
+one JSON updates every page. Renders LinkedIn's official public-post embed
+(`https://www.linkedin.com/embed/feed/update/<urn>`) for each entry in `linkedinFeatured.posts`
+with `active: true`. To swap a post: open it on LinkedIn, copy the URL, and pull the
+`urn:li:activity:...` id out of it (or use the "Embed this post" share option LinkedIn provides
+on public posts, which contains the same URN) — the post must be public for the embed to render
+for visitors who aren't logged in.
+
+**Loading behavior**: each post's iframe has no `src` until the section is about to scroll into
+view (`IntersectionObserver`, 300px lead) — so a visitor who never scrolls that far never
+triggers the LinkedIn request at all. Once triggered, posts load one at a time (staggered
+~350ms apart) rather than simultaneously. Each post shows a spinner + a looping typewriter
+message until that specific iframe's `load` event fires, then fades the real content in —
+so visitors only ever see finished content, never a half-loaded flash. Under
+`prefers-reduced-motion`, the typewriter is skipped in favor of a single static message.
 
 ## Before this goes live
 

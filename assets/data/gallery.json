@@ -1,7 +1,7 @@
 {
   "intro": {
     "heading": "Gallery",
-    "subtitle": "A closer look at the process behind the projects — design system explorations, component work, and shots from the day-to-day. Click any image to view it larger."
+    "subtitle": "Beyond the codebase — seminars, workshops, and sessions where I get to teach, mentor, and give back to the developer community. Click any photo to view it larger."
   },
   "images": [
     {
@@ -9,8 +9,8 @@
       "src": "assets/images/gallery/shot-01.svg",
       "width": 1600,
       "height": 1000,
-      "alt": "Design system token exploration",
-      "caption": "Design System Tokens",
+      "alt": "Jaymin Maheta speaking at a front-end developer meetup",
+      "caption": "Speaking at a Tech Meetup",
       "active": true
     },
     {
@@ -18,8 +18,8 @@
       "src": "assets/images/gallery/shot-02.svg",
       "width": 1600,
       "height": 1000,
-      "alt": "Shared component library preview",
-      "caption": "Component Library",
+      "alt": "Leading a hands-on UI/UX workshop for design students",
+      "caption": "UI/UX Workshop for Students",
       "active": true
     },
     {
@@ -27,8 +27,8 @@
       "src": "assets/images/gallery/shot-03.svg",
       "width": 1600,
       "height": 1000,
-      "alt": "Fintech dashboard deep-dive",
-      "caption": "Dashboard Deep-Dive",
+      "alt": "Delivering a guest lecture on front-end development at a college seminar",
+      "caption": "Guest Lecture — College Seminar",
       "active": true
     },
     {
@@ -36,8 +36,8 @@
       "src": "assets/images/gallery/shot-04.svg",
       "width": 1600,
       "height": 1000,
-      "alt": "Mobile breakpoint responsive testing",
-      "caption": "Mobile Breakpoint",
+      "alt": "One-on-one mentoring session with a junior developer",
+      "caption": "Mentoring Session",
       "active": true
     },
     {
@@ -45,8 +45,8 @@
       "src": "assets/images/gallery/shot-05.svg",
       "width": 1600,
       "height": 1000,
-      "alt": "Accessibility audit walkthrough",
-      "caption": "Accessibility Audit",
+      "alt": "Judging student projects at a campus hackathon",
+      "caption": "Hackathon Judging Panel",
       "active": true
     },
     {
@@ -54,8 +54,8 @@
       "src": "assets/images/gallery/shot-06.svg",
       "width": 1600,
       "height": 1000,
-      "alt": "Motion and interaction prototype",
-      "caption": "Motion Prototype",
+      "alt": "Presenting a talk on scalable design systems at a tech conference",
+      "caption": "Design Systems Talk",
       "active": true
     },
     {
@@ -63,8 +63,8 @@
       "src": "assets/images/gallery/shot-07.svg",
       "width": 1600,
       "height": 1000,
-      "alt": "Design review session with the team",
-      "caption": "Design Review",
+      "alt": "Networking at a local developer community meetup",
+      "caption": "Community Meetup",
       "active": false
     },
     {
@@ -72,8 +72,8 @@
       "src": "assets/images/gallery/shot-08.svg",
       "width": 1600,
       "height": 1000,
-      "alt": "Living style guide reference",
-      "caption": "Style Guide",
+      "alt": "Reviewing portfolios with aspiring UI developers",
+      "caption": "Portfolio Review Workshop",
       "active": false
     }
   ]

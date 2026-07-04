@@ -316,6 +316,191 @@ export function initAccordions(selector = "[data-accordion]") {
   });
 }
 
+const REVEAL_ITEM_CLASSES = "opacity-0 translate-y-6 motion-reduce:opacity-100 motion-reduce:translate-y-0";
+
+const LINKEDIN_LOADER_PHRASES = [
+  "Pulling in fresh thoughts…",
+  "Good ideas take a moment…",
+  "Connecting to LinkedIn…",
+  "Almost there — worth the wait…",
+];
+
+/** Runs fn when the browser is idle, so non-critical work never competes with initial paint. */
+function runWhenIdle(fn) {
+  if ("requestIdleCallback" in window) {
+    window.requestIdleCallback(fn, { timeout: 1500 });
+  } else {
+    setTimeout(fn, 1);
+  }
+}
+
+/**
+ * Types phrases out one character at a time, pauses, deletes, and moves to
+ * the next — loops until .stop() is called (when the real content arrives).
+ * Under reduced motion, skips the animation and just shows the first phrase.
+ */
+function startTypewriter(el, phrases) {
+  if (!el) return { stop() {} };
+  if (isReducedMotion()) {
+    el.textContent = phrases[0];
+    return { stop() {} };
+  }
+
+  let phraseIndex = 0;
+  let charIndex = 0;
+  let deleting = false;
+  let timeoutId;
+  let stopped = false;
+
+  function tick() {
+    if (stopped) return;
+    const phrase = phrases[phraseIndex];
+
+    if (!deleting) {
+      charIndex += 1;
+      el.textContent = phrase.slice(0, charIndex);
+      timeoutId = setTimeout(tick, charIndex === phrase.length ? 1400 : 45);
+      if (charIndex === phrase.length) deleting = true;
+      return;
+    }
+
+    charIndex -= 1;
+    el.textContent = phrase.slice(0, charIndex);
+    if (charIndex === 0) {
+      deleting = false;
+      phraseIndex = (phraseIndex + 1) % phrases.length;
+      timeoutId = setTimeout(tick, 300);
+      return;
+    }
+    timeoutId = setTimeout(tick, 25);
+  }
+
+  tick();
+  return {
+    stop() {
+      stopped = true;
+      clearTimeout(timeoutId);
+    },
+  };
+}
+
+/**
+ * Defers loading of the LinkedIn embeds until the section is actually about
+ * to scroll into view (IntersectionObserver, generous rootMargin so it's
+ * ready before the user arrives), then loads each post's iframe in a
+ * staggered sequence rather than all at once — cheaper on the network and
+ * main thread than firing every embed simultaneously on page load. Each
+ * slot keeps its typewriter loader + spinner visible until that iframe's
+ * own "load" event fires, so real content is always what gets shown, never
+ * a half-loaded flash.
+ */
+function initLinkedInLoading(section) {
+  const slots = Array.from(section.querySelectorAll("[data-linkedin-slot]"));
+  if (!slots.length) return;
+
+  const typewriters = slots.map((slot) => startTypewriter(slot.querySelector("[data-linkedin-loader-text]"), LINKEDIN_LOADER_PHRASES));
+
+  slots.forEach((slot, i) => {
+    const iframe = slot.querySelector("[data-linkedin-src]");
+    if (!iframe) return;
+    iframe.addEventListener(
+      "load",
+      () => {
+        typewriters[i].stop();
+        const loader = slot.querySelector("[data-linkedin-loader]");
+        iframe.style.opacity = "1";
+        if (loader) {
+          loader.style.opacity = "0";
+          setTimeout(() => loader.remove(), 500);
+        }
+      },
+      { once: true }
+    );
+  });
+
+  const startLoading = () => {
+    slots.forEach((slot, i) => {
+      const iframe = slot.querySelector("[data-linkedin-src]");
+      if (!iframe) return;
+      setTimeout(() => {
+        iframe.src = iframe.dataset.linkedinSrc;
+      }, i * 350);
+    });
+  };
+
+  if ("IntersectionObserver" in window) {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        if (entries.some((entry) => entry.isIntersecting)) {
+          observer.disconnect();
+          startLoading();
+        }
+      },
+      { rootMargin: "300px 0px" }
+    );
+    observer.observe(section);
+  } else {
+    runWhenIdle(startLoading);
+  }
+}
+
+/**
+ * Renders the site-wide "Featured on LinkedIn" band into [data-linkedin-featured]
+ * (present on every page). Data lives in site.json so it's fetched once via
+ * renderNavFooter() and shared here — one JSON edit updates every page.
+ * Uses LinkedIn's official public-post embed iframe; only posts with
+ * active:true show, so a post can be swapped or paused via that flag alone.
+ * Loading is deferred and staggered — see initLinkedInLoading.
+ */
+export function renderLinkedInFeatured(linkedinFeatured) {
+  const section = document.querySelector("[data-linkedin-featured]");
+  if (!section || !linkedinFeatured) return;
+
+  setText(section.querySelector("[data-linkedin-eyebrow]"), linkedinFeatured.eyebrow);
+  setText(section.querySelector("[data-linkedin-heading]"), linkedinFeatured.heading);
+  setText(section.querySelector("[data-linkedin-subtitle]"), linkedinFeatured.subtitle);
+
+  const followLink = section.querySelector("[data-linkedin-follow]");
+  if (followLink) {
+    if (linkedinFeatured.profileUrl) followLink.href = linkedinFeatured.profileUrl;
+    setText(followLink.querySelector("[data-linkedin-follow-label]"), linkedinFeatured.followLabel);
+  }
+
+  const container = section.querySelector("[data-linkedin-posts]");
+  if (!container) return;
+
+  const active = (linkedinFeatured.posts || []).filter((post) => post.active);
+  if (!active.length) {
+    container.innerHTML = `<p class="text-sm text-[var(--color-text-muted)]">No featured posts right now — see the full profile on <a href="${linkedinFeatured.profileUrl}" target="_blank" rel="noopener noreferrer" class="underline hover:text-[var(--color-accent-end)]">LinkedIn</a>.</p>`;
+    return;
+  }
+
+  container.innerHTML = active
+    .map(
+      (post) => `
+        <div data-linkedin-slot class="relative h-[540px] overflow-hidden rounded-2xl border border-[var(--color-border-glass)] bg-[var(--color-surface)] shadow-[0_20px_60px_-30px_rgba(var(--color-accent-rgb),0.5)]">
+          <div data-linkedin-loader class="absolute inset-0 z-10 flex flex-col items-center justify-center gap-3 bg-[var(--color-surface)] px-6 transition-opacity duration-500">
+            <span aria-hidden="true" class="h-8 w-8 animate-spin rounded-full border-2 border-[var(--color-border-glass)] border-t-[var(--color-accent-end)] motion-reduce:animate-none"></span>
+            <p data-linkedin-loader-text aria-hidden="true" class="min-h-[1.25rem] text-center font-mono text-xs text-[var(--color-text-muted)]"></p>
+            <span class="sr-only" role="status">Loading LinkedIn post…</span>
+          </div>
+          <iframe
+            data-linkedin-src="https://www.linkedin.com/embed/feed/update/${post.urn}"
+            height="540"
+            width="100%"
+            frameborder="0"
+            allowfullscreen
+            title="Embedded LinkedIn post"
+            class="block h-[540px] w-full opacity-0 transition-opacity duration-500"
+          ></iframe>
+        </div>
+      `
+    )
+    .join("");
+
+  initLinkedInLoading(section);
+}
+
 /**
  * Covers the viewport with a gradient wipe before following an internal
  * link, so the full-page navigation between the 4 pages doesn't feel like

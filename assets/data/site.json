@@ -14,5 +14,16 @@
       { "platform": "GitHub", "label": "GitHub", "url": "https://github.com/jayminmaheta" },
       { "platform": "Email", "label": "Email", "url": "mailto:jaymin.maheta.2024@gmail.com" }
     ]
+  },
+  "linkedinFeatured": {
+    "eyebrow": "On LinkedIn",
+    "heading": "Featured Posts",
+    "subtitle": "Thoughts on UI, design systems, and mentorship — straight from LinkedIn. Follow along for more.",
+    "profileUrl": "https://www.linkedin.com/in/jaymin-maheta/",
+    "followLabel": "Follow on LinkedIn",
+    "posts": [
+      { "urn": "urn:li:activity:7379139927684333570", "active": true },
+      { "urn": "urn:li:activity:7260099529864073216", "active": true }
+    ]
   }
 }
