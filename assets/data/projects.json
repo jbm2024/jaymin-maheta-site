@@ -1,32 +1,75 @@
 {
+  "filters": ["All", "Angular", "React", "PrimeNG", "Tailwind CSS", "Figma", "Bootstrap"],
   "projects": [
     {
       "id": "artem-health-care",
       "title": "Artem Health Care",
+      "category": "Healthcare · Patient Management",
+      "duration": "8 months",
+      "role": "Lead UI Developer",
       "summary": "A patient management platform where speed and clarity are patient-safety features, not nice-to-haves.",
-      "problem": "Care teams were losing time navigating a legacy interface with inconsistent patterns, slow record lookups, and forms that weren't accessible to keyboard or screen-reader users.",
-      "role": "Led UI architecture and design system implementation, translating Figma designs into a reusable Angular + PrimeNG component library and auditing every core flow for WCAG compliance.",
+      "problem": "Care teams were losing time navigating a legacy interface with inconsistent patterns, slow record lookups, and forms that weren't accessible to keyboard or screen-reader users. Every extra second spent hunting for a patient record was a second not spent on care — and the inconsistent form patterns meant new staff faced a real learning curve just to use the software.",
+      "approach": [
+        "Audited every core flow — record lookup, intake forms, scheduling — against WCAG 2.1 AA, cataloguing every keyboard trap and unlabeled control.",
+        "Designed a token-based Angular + PrimeNG component library so buttons, form fields, and data tables shared one visual and behavioral contract.",
+        "Rebuilt record search with debounced queries and skeleton states so the interface felt responsive even while data loaded.",
+        "Ran the new patterns past clinical staff in short usability passes before rolling them out platform-wide."
+      ],
+      "role_detail": "Led UI architecture and design system implementation, translating Figma designs into a reusable Angular + PrimeNG component library and auditing every core flow for WCAG compliance.",
       "impact": "Reduced average time-to-record lookup and standardized over a dozen previously inconsistent form patterns into a single accessible pattern library used across the platform.",
+      "results": [
+        { "value": 12, "suffix": "+", "label": "Form patterns unified into one library" },
+        { "value": 100, "suffix": "%", "label": "Core flows audited for WCAG 2.1 AA" },
+        { "value": 1, "suffix": "", "label": "Shared component library adopted platform-wide" }
+      ],
       "tech": ["Angular", "PrimeNG", "SCSS"],
       "links": { "live": "", "repo": "" }
     },
     {
       "id": "compito",
       "title": "Compito",
+      "category": "Productivity · Task Management",
+      "duration": "6 months",
+      "role": "Front-End Lead",
       "summary": "A task and project management workspace rebuilt around focus — less chrome, more signal.",
-      "problem": "The existing board-based workflow buried important tasks under visual noise, and the component library had drifted out of sync with the Figma source of truth.",
-      "role": "Rebuilt the core board, card, and modal components in React with Tailwind CSS, and re-established a single shared component library synced with Figma via Zeplin handoff.",
+      "problem": "The existing board-based workflow buried important tasks under visual noise, and the component library had drifted out of sync with the Figma source of truth — every new feature meant re-deciding basic interaction patterns because there was no longer a single source of truth to build from.",
+      "approach": [
+        "Re-established a single shared component library synced with Figma via Zeplin handoff, so design and code stopped drifting apart.",
+        "Rebuilt the core board, card, and modal components in React with Tailwind CSS, stripping decorative chrome in favor of clear visual hierarchy.",
+        "Layered optimistic UI updates onto drag-and-drop actions so the board felt instant even before the network request resolved.",
+        "Introduced a lightweight design-token layer in Tailwind config so spacing and color decisions stayed consistent as new views were added."
+      ],
+      "role_detail": "Rebuilt the core board, card, and modal components in React with Tailwind CSS, and re-established a single shared component library synced with Figma via Zeplin handoff.",
       "impact": "Cut UI implementation time for new features by reusing a consistent component set, and improved perceived performance through optimistic UI updates on drag-and-drop actions.",
+      "results": [
+        { "value": 3, "suffix": "", "label": "Core components rebuilt as the shared foundation" },
+        { "value": 1, "suffix": "", "label": "Single source of truth restored between Figma and code" },
+        { "value": 0, "suffix": "ms", "label": "Perceived delay on drag-and-drop, via optimistic UI" }
+      ],
       "tech": ["React", "Tailwind CSS", "Figma"],
       "links": { "live": "", "repo": "" }
     },
     {
       "id": "valyxto",
       "title": "Valyxto",
+      "category": "Fintech · Data Dashboard",
+      "duration": "5 months",
+      "role": "UI Developer",
       "summary": "A fintech dashboard where dense data had to become scannable without losing precision.",
-      "problem": "Users needed to parse large tables of financial data quickly, but the existing layout treated every data point with equal visual weight, making priority information hard to find.",
-      "role": "Redesigned the information hierarchy using typography scale, color, and progressive disclosure, and implemented the resulting components in Angular with PrimeNG and Bootstrap utilities.",
+      "problem": "Users needed to parse large tables of financial data quickly, but the existing layout treated every data point with equal visual weight, making priority information hard to find — a dashboard that shows everything at once shows nothing clearly.",
+      "approach": [
+        "Reworked the information hierarchy using typography scale, color, and progressive disclosure so priority figures stood out without hiding supporting detail.",
+        "Implemented the resulting components in Angular with PrimeNG and Bootstrap utilities, keeping the table and chart primitives consistent across every report view.",
+        "Established a single data-table pattern — sorting, pagination, and density controls — reused across every report instead of rebuilt per screen.",
+        "Validated the new hierarchy against real report data, not lorem-ipsum placeholders, to make sure the design held up at production density."
+      ],
+      "role_detail": "Redesigned the information hierarchy using typography scale, color, and progressive disclosure, and implemented the resulting components in Angular with PrimeNG and Bootstrap utilities.",
       "impact": "Improved scan-ability of core dashboards through a clearer visual hierarchy and consistent data-table patterns reused across every report view.",
+      "results": [
+        { "value": 1, "suffix": "", "label": "Unified data-table pattern reused across all reports" },
+        { "value": 3, "suffix": "", "label": "Visual hierarchy tiers — priority, supporting, reference" },
+        { "value": 100, "suffix": "%", "label": "Report views migrated to the new pattern" }
+      ],
       "tech": ["Angular", "PrimeNG", "Bootstrap"],
       "links": { "live": "", "repo": "" }
     }

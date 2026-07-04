@@ -9,6 +9,7 @@ import {
   initMagneticButtons,
   initScrollProgress,
   initPageTransitions,
+  initStatCounters,
   fetchJSON,
   setText,
   isReducedMotion,
@@ -36,34 +37,7 @@ function renderStats(stats) {
     )
     .join("");
 
-  const valueEls = container.querySelectorAll("[data-stat-value]");
-  if (isReducedMotion()) {
-    valueEls.forEach((el) => {
-      el.textContent = `${el.dataset.statTarget}${el.dataset.statSuffix}`;
-    });
-    return;
-  }
-
-  valueEls.forEach((el) => {
-    const target = Number(el.dataset.statTarget);
-    const suffix = el.dataset.statSuffix;
-    const counter = { value: 0 };
-    ScrollTrigger.create({
-      trigger: el,
-      start: "top 85%",
-      once: true,
-      onEnter: () => {
-        gsap.to(counter, {
-          value: target,
-          duration: 1.6,
-          ease: "power2.out",
-          onUpdate: () => {
-            el.textContent = `${Math.round(counter.value)}${suffix}`;
-          },
-        });
-      },
-    });
-  });
+  initStatCounters();
 }
 
 function renderTechStack(techStack) {

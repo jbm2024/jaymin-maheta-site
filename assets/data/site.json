@@ -4,6 +4,7 @@
     { "label": "Home", "href": "index.html" },
     { "label": "About", "href": "about.html" },
     { "label": "Projects", "href": "projects.html" },
+    { "label": "Gallery", "href": "gallery.html" },
     { "label": "Contact", "href": "contact.html" }
   ],
   "footer": {

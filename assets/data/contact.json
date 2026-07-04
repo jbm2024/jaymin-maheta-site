@@ -3,8 +3,17 @@
   "phone": "+91 9106405036",
   "location": "India",
   "socials": [
-    { "platform": "LinkedIn", "url": "https://www.linkedin.com/in/jaymin-maheta" },
+    { "platform": "LinkedIn", "url": "https://www.linkedin.com/in/jaymin-maheta/" },
     { "platform": "GitHub", "url": "https://github.com/jayminmaheta" }
   ],
-  "formEndpoint": "https://formspree.io/f/YOUR_FORM_ID"
+  "formEndpoint": "https://formspree.io/f/YOUR_FORM_ID",
+  "linkedinFeatured": {
+    "heading": "Featured on LinkedIn",
+    "subtitle": "A couple of recent posts, pulled straight from LinkedIn.",
+    "profileUrl": "https://www.linkedin.com/in/jaymin-maheta/",
+    "posts": [
+      { "urn": "urn:li:activity:7379139927684333570", "active": true },
+      { "urn": "urn:li:activity:7260099529864073216", "active": true }
+    ]
+  }
 }

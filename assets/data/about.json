@@ -1,43 +1,125 @@
 {
   "bio": {
     "heading": "About Me",
+    "eyebrow": "Senior UI Developer · Angular & React",
     "paragraphs": [
-      "I'm Jaymin Maheta, a Senior UI Developer with 6+ years of experience turning complex product requirements into interfaces that feel effortless to use.",
-      "My work sits at the intersection of engineering and design — I've led design systems from Figma file to production component library, mentored teams of 200+ across delivery cycles, and shipped 10+ products across healthcare, productivity, and fintech.",
-      "I care most about the details most users never consciously notice: load-bearing accessibility, motion that respects intent, and code that's as maintainable as the interface is polished."
+      "I'm Jaymin Maheta, a Senior UI Developer with 6+ years of experience turning complex product requirements into interfaces that feel effortless to use. I work at the layer where design intent meets shipped code — the layer where good ideas either survive contact with real data, real browsers, and real users, or they don't.",
+      "My path started in the trenches of responsive marketing pages, where I learned that a layout is only as good as its worst viewport. From there I moved into building and owning shared component libraries — first in React, then in Angular with PrimeNG — because I kept noticing the same buttons, the same modals, the same form patterns being rebuilt slightly differently by every team that touched them. Consolidating that drift into a single, well-documented system became the thread that runs through most of my career since.",
+      "That thread has taken me across healthcare, productivity, and fintech products — three domains with very different stakes but the same underlying question: how do you make dense, high-consequence information legible at a glance? In healthcare that meant record lookups fast enough to matter during patient care. In fintech it meant financial tables that stayed precise without becoming visually overwhelming. In productivity tools it meant stripping away chrome until the task itself was the loudest thing on screen.",
+      "Along the way I've led design-system rollouts from Figma file to production component library, partnered directly with designers over Zeplin handoff to keep implementation and intent in sync, and mentored teams of 200+ across delivery cycles — reviewing pull requests, pairing through gnarly CSS bugs, and setting the accessibility bar a little higher each time.",
+      "I care most about the details most users never consciously notice: load-bearing accessibility that survives a screen reader and a keyboard-only pass, motion that respects intent instead of decorating it, and code that's as maintainable six months later as the interface is polished on day one."
     ]
   },
+  "stats": [
+    { "value": 6, "suffix": "+", "label": "Years of Experience" },
+    { "value": 10, "suffix": "+", "label": "Products Shipped" },
+    { "value": 200, "suffix": "+", "label": "Team Members Mentored" },
+    { "value": 3, "suffix": "", "label": "Industries — Healthcare, Fintech, Productivity" }
+  ],
+  "philosophy": [
+    {
+      "title": "Accessibility is load-bearing",
+      "description": "WCAG compliance isn't a pass I do at the end — semantic HTML, keyboard flows, and screen-reader labeling get designed in from the first component, because retrofitting accessibility into a shipped UI is always more expensive than building it in."
+    },
+    {
+      "title": "Systems over one-offs",
+      "description": "Every component I ship is a candidate for reuse. I'd rather spend an extra hour making a button variant-driven and token-based than watch three teams quietly reinvent it with slightly different padding six months from now."
+    },
+    {
+      "title": "Motion with intent",
+      "description": "Animation should clarify state changes and guide attention, not perform for its own sake — and it should get out of the way entirely the moment a user asks for reduced motion."
+    },
+    {
+      "title": "Design and code are one conversation",
+      "description": "The best interfaces come from tight feedback loops between Figma and the component library, not a one-way handoff. I'd rather flag a feasibility issue in the design review than silently work around it in code."
+    }
+  ],
   "skills": [
-    { "category": "Frameworks", "items": ["Angular", "React"] },
-    { "category": "UI Libraries", "items": ["PrimeNG", "PrimeReact"] },
-    { "category": "Styling", "items": ["SCSS", "Bootstrap", "Tailwind CSS"] },
-    { "category": "Design Tools", "items": ["Figma", "Zeplin"] },
-    { "category": "Tooling", "items": ["Bitbucket", "GitLab"] }
+    {
+      "category": "Frameworks",
+      "level": 92,
+      "blurb": "Daily-driver frameworks for production UI work.",
+      "items": ["Angular", "React"]
+    },
+    {
+      "category": "UI Libraries",
+      "level": 88,
+      "blurb": "Component libraries built and extended for enterprise-scale apps.",
+      "items": ["PrimeNG", "PrimeReact"]
+    },
+    {
+      "category": "Styling",
+      "level": 90,
+      "blurb": "From utility-first to hand-rolled design tokens.",
+      "items": ["SCSS", "Bootstrap", "Tailwind CSS"]
+    },
+    {
+      "category": "Design Tools",
+      "level": 80,
+      "blurb": "Where implementation starts — reading and reasoning about design files directly.",
+      "items": ["Figma", "Zeplin"]
+    },
+    {
+      "category": "Tooling",
+      "level": 75,
+      "blurb": "Version control and collaboration workflows for cross-functional teams.",
+      "items": ["Bitbucket", "GitLab"]
+    },
+    {
+      "category": "Practices",
+      "level": 85,
+      "blurb": "The non-visual half of good UI work.",
+      "items": ["Accessibility (WCAG)", "Design Systems", "Code Review", "Mentorship"]
+    }
   ],
   "experience": [
     {
       "role": "Sr. UI/UX Designer",
       "company": "Augmented Tech Labs",
       "period": "2023 — Present",
-      "description": "Leading design system implementation and UI architecture decisions across multiple product lines, mentoring junior developers on component-driven development and accessibility standards."
+      "description": "Leading design system implementation and UI architecture decisions across multiple product lines, mentoring junior developers on component-driven development and accessibility standards.",
+      "achievements": [
+        "Own architectural decisions for the shared component library used across every active product line, from token structure to versioning strategy.",
+        "Run accessibility reviews on every new UI surface before release, treating WCAG conformance as a merge requirement rather than a follow-up task.",
+        "Mentor a rotating group of junior and mid-level developers through pairing sessions, PR reviews, and componentization workshops."
+      ],
+      "stack": ["Angular", "PrimeNG", "SCSS", "Figma"]
     },
     {
       "role": "UI Developer",
       "company": "Previous Company (update me)",
       "period": "2022 — 2023",
-      "description": "Owned front-end delivery for core product surfaces, translating Figma designs into production Angular components with a focus on performance and cross-browser consistency."
+      "description": "Owned front-end delivery for core product surfaces, translating Figma designs into production Angular components with a focus on performance and cross-browser consistency.",
+      "achievements": [
+        "Translated high-fidelity Figma designs into production Angular components as the primary front-end owner for the product's core surfaces.",
+        "Audited cross-browser rendering issues systematically, closing out a long-standing backlog of visual regressions.",
+        "Introduced lazy-loading and change-detection optimizations to keep list-heavy views responsive as data volume grew."
+      ],
+      "stack": ["Angular", "SCSS", "Figma"]
     },
     {
       "role": "UI Developer",
       "company": "Previous Company (update me)",
       "period": "2020 — 2022",
-      "description": "Built and maintained a shared React component library adopted across three product teams, reducing duplicate UI work and standardizing design tokens."
+      "description": "Built and maintained a shared React component library adopted across three product teams, reducing duplicate UI work and standardizing design tokens.",
+      "achievements": [
+        "Designed and built a shared React component library from scratch, adopted by three separate product teams within the org.",
+        "Standardized design tokens (color, spacing, typography) across previously divergent product surfaces.",
+        "Wrote component documentation and usage guidelines that became the onboarding reference for new front-end hires."
+      ],
+      "stack": ["React", "Tailwind CSS", "Figma"]
     },
     {
       "role": "Jr. UI Developer",
       "company": "Previous Company (update me)",
       "period": "March 2019 — 2020",
-      "description": "Started my UI development career building responsive marketing and product pages, developing a strong foundation in semantic HTML, CSS architecture, and JavaScript fundamentals."
+      "description": "Started my UI development career building responsive marketing and product pages, developing a strong foundation in semantic HTML, CSS architecture, and JavaScript fundamentals.",
+      "achievements": [
+        "Built responsive marketing and product pages from Figma/Zeplin handoff, developing an early, rigorous eye for pixel-accurate implementation.",
+        "Established a personal foundation in semantic HTML and scalable CSS architecture that still shapes how I structure components today.",
+        "Picked up JavaScript fundamentals on the job, moving from static pages to interactive UI within the first year."
+      ],
+      "stack": ["HTML", "CSS", "JavaScript", "Bootstrap"]
     }
   ],
   "awards": [

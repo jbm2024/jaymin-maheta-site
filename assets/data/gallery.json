@@ -1,0 +1,80 @@
+{
+  "intro": {
+    "heading": "Gallery",
+    "subtitle": "A closer look at the process behind the projects — design system explorations, component work, and shots from the day-to-day. Click any image to view it larger."
+  },
+  "images": [
+    {
+      "id": "shot-01",
+      "src": "assets/images/gallery/shot-01.svg",
+      "width": 1600,
+      "height": 1000,
+      "alt": "Design system token exploration",
+      "caption": "Design System Tokens",
+      "active": true
+    },
+    {
+      "id": "shot-02",
+      "src": "assets/images/gallery/shot-02.svg",
+      "width": 1600,
+      "height": 1000,
+      "alt": "Shared component library preview",
+      "caption": "Component Library",
+      "active": true
+    },
+    {
+      "id": "shot-03",
+      "src": "assets/images/gallery/shot-03.svg",
+      "width": 1600,
+      "height": 1000,
+      "alt": "Fintech dashboard deep-dive",
+      "caption": "Dashboard Deep-Dive",
+      "active": true
+    },
+    {
+      "id": "shot-04",
+      "src": "assets/images/gallery/shot-04.svg",
+      "width": 1600,
+      "height": 1000,
+      "alt": "Mobile breakpoint responsive testing",
+      "caption": "Mobile Breakpoint",
+      "active": true
+    },
+    {
+      "id": "shot-05",
+      "src": "assets/images/gallery/shot-05.svg",
+      "width": 1600,
+      "height": 1000,
+      "alt": "Accessibility audit walkthrough",
+      "caption": "Accessibility Audit",
+      "active": true
+    },
+    {
+      "id": "shot-06",
+      "src": "assets/images/gallery/shot-06.svg",
+      "width": 1600,
+      "height": 1000,
+      "alt": "Motion and interaction prototype",
+      "caption": "Motion Prototype",
+      "active": true
+    },
+    {
+      "id": "shot-07",
+      "src": "assets/images/gallery/shot-07.svg",
+      "width": 1600,
+      "height": 1000,
+      "alt": "Design review session with the team",
+      "caption": "Design Review",
+      "active": false
+    },
+    {
+      "id": "shot-08",
+      "src": "assets/images/gallery/shot-08.svg",
+      "width": 1600,
+      "height": 1000,
+      "alt": "Living style guide reference",
+      "caption": "Style Guide",
+      "active": false
+    }
+  ]
+}

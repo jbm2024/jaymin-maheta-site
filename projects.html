@@ -65,7 +65,8 @@
     "imports": {
       "three": "https://esm.sh/three@0.160.0",
       "gsap": "https://esm.sh/gsap@3.12.5",
-      "gsap/ScrollTrigger": "https://esm.sh/gsap@3.12.5/ScrollTrigger"
+      "gsap/ScrollTrigger": "https://esm.sh/gsap@3.12.5/ScrollTrigger",
+      "gsap/Flip": "https://esm.sh/gsap@3.12.5/Flip"
     }
   }
   </script>
@@ -113,12 +114,17 @@
       </p>
     </section>
 
-    <section id="projects-list" class="mt-16 space-y-10">
+    <section id="projects-filters" class="mt-12">
+      <div data-filters-bar class="flex flex-wrap gap-2" role="group" aria-label="Filter projects by technology"></div>
+    </section>
+
+    <section id="projects-list" class="mt-10 space-y-10">
       <div data-projects-list class="space-y-10">
         <div class="h-64 animate-pulse motion-reduce:animate-none rounded-2xl bg-[var(--color-surface-glass)]"></div>
         <div class="h-64 animate-pulse motion-reduce:animate-none rounded-2xl bg-[var(--color-surface-glass)]"></div>
         <div class="h-64 animate-pulse motion-reduce:animate-none rounded-2xl bg-[var(--color-surface-glass)]"></div>
       </div>
+      <p data-no-results class="hidden py-12 text-center text-sm text-[var(--color-text-muted)]">No projects match that filter.</p>
     </section>
   </main>
 

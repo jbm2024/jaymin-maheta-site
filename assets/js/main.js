@@ -243,6 +243,80 @@ export function initScrollProgress(selector = "[data-scroll-progress]") {
 }
 
 /**
+ * Animates a single counter element from 0 to data-stat-target once it
+ * scrolls into view. Shared by home/about/projects stat blocks so each
+ * page doesn't reimplement the same ScrollTrigger + gsap.to plumbing.
+ * Under reduced motion, the target value is set immediately instead.
+ */
+export function initStatCounters(selector = "[data-stat-value]") {
+  const valueEls = document.querySelectorAll(selector);
+  if (!valueEls.length) return;
+
+  if (isReducedMotion()) {
+    valueEls.forEach((el) => {
+      el.textContent = `${el.dataset.statTarget}${el.dataset.statSuffix || ""}`;
+    });
+    return;
+  }
+
+  valueEls.forEach((el) => {
+    const target = Number(el.dataset.statTarget);
+    const suffix = el.dataset.statSuffix || "";
+    const counter = { value: 0 };
+    ScrollTrigger.create({
+      trigger: el,
+      start: "top 85%",
+      once: true,
+      onEnter: () => {
+        gsap.to(counter, {
+          value: target,
+          duration: 1.6,
+          ease: "power2.out",
+          onUpdate: () => {
+            el.textContent = `${Math.round(counter.value)}${suffix}`;
+          },
+        });
+      },
+    });
+  });
+}
+
+/**
+ * Wires up [data-accordion] panels: a [data-accordion-trigger] button
+ * toggles a [data-accordion-panel] open/closed with a GSAP height tween
+ * (auto-height via scrollHeight, since CSS can't transition to "auto").
+ * Reduced motion still gets the show/hide, just without the tween.
+ */
+export function initAccordions(selector = "[data-accordion]") {
+  document.querySelectorAll(selector).forEach((accordion) => {
+    const trigger = accordion.querySelector("[data-accordion-trigger]");
+    const panel = accordion.querySelector("[data-accordion-panel]");
+    if (!trigger || !panel) return;
+
+    gsap.set(panel, { height: 0, overflow: "hidden" });
+
+    trigger.addEventListener("click", () => {
+      const isOpen = trigger.getAttribute("aria-expanded") === "true";
+      trigger.setAttribute("aria-expanded", String(!isOpen));
+      accordion.setAttribute("data-open", String(!isOpen));
+
+      if (isReducedMotion()) {
+        gsap.set(panel, { height: isOpen ? 0 : "auto" });
+        return;
+      }
+
+      if (isOpen) {
+        gsap.to(panel, { height: 0, duration: 0.35, ease: "power2.inOut" });
+      } else {
+        gsap.set(panel, { height: "auto" });
+        const target = panel.offsetHeight;
+        gsap.fromTo(panel, { height: 0 }, { height: target, duration: 0.45, ease: "power2.inOut" });
+      }
+    });
+  });
+}
+
+/**
  * Covers the viewport with a gradient wipe before following an internal
  * link, so the full-page navigation between the 4 pages doesn't feel like
  * a hard reload. External links, same-page anchors, and mailto/tel links
