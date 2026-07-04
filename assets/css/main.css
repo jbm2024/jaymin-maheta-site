@@ -1,0 +1,54 @@
+/* ==========================================================================
+   Theme tokens — the ONLY thing this file owns. Everything else (layout,
+   components, states) is composed with Tailwind utility classes directly
+   in the HTML, referencing these variables via arbitrary-value syntax
+   e.g. bg-[var(--color-surface)]. Change a color here and it propagates
+   everywhere at once, including the Three.js scenes which read these
+   at runtime via getComputedStyle.
+   ========================================================================== */
+:root {
+  color-scheme: dark;
+
+  --color-bg: #07070c;
+  --color-surface: #0f0f1a;
+  --color-surface-glass: rgba(255, 255, 255, 0.06);
+  --color-border-glass: rgba(255, 255, 255, 0.12);
+  --color-text: #f4f4f8;
+  --color-text-muted: #9a9ab0;
+  --color-accent-start: #7c3aed;
+  --color-accent-end: #4f46e5;
+  --color-accent-rgb: 124, 58, 237;
+}
+
+:root[data-theme="light"] {
+  color-scheme: light;
+
+  --color-bg: #f7f7fb;
+  --color-surface: #ffffff;
+  --color-surface-glass: rgba(15, 15, 26, 0.04);
+  --color-border-glass: rgba(15, 15, 26, 0.08);
+  --color-text: #0f0f1a;
+  --color-text-muted: #56566b;
+  /* accent intentionally unchanged across themes for brand consistency */
+}
+
+/* ==========================================================================
+   The only two things Tailwind's utility classes cannot express at all:
+   pseudo-element styling. Everything else lives inline in the markup.
+   ========================================================================== */
+::selection {
+  background: rgba(var(--color-accent-rgb), 0.35);
+  color: var(--color-text);
+}
+
+::-webkit-scrollbar {
+  width: 10px;
+}
+::-webkit-scrollbar-track {
+  background: var(--color-bg);
+}
+::-webkit-scrollbar-thumb {
+  background: linear-gradient(var(--color-accent-start), var(--color-accent-end));
+  border-radius: 999px;
+  border: 2px solid var(--color-bg);
+}

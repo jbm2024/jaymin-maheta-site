@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth motion-reduce:scroll-auto">
+<head>
+  <script>
+    (function () {
+      try {
+        var stored = localStorage.getItem("jm-theme");
+        var theme = stored || (window.matchMedia("(prefers-color-scheme: light)").matches ? "light" : "dark");
+        document.documentElement.setAttribute("data-theme", theme);
+      } catch (e) {}
+    })();
+  </script>
+
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Contact — Jaymin Maheta</title>
+  <meta name="description" content="Get in touch with Jaymin Maheta, Senior UI Developer, for freelance work, full-time opportunities, or collaboration." />
+  <link rel="canonical" href="https://www.jayminmaheta.com/contact.html" />
+
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content="Contact — Jaymin Maheta" />
+  <meta property="og:description" content="Get in touch with Jaymin Maheta, Senior UI Developer." />
+  <meta property="og:url" content="https://www.jayminmaheta.com/contact.html" />
+  <meta property="og:image" content="https://www.jayminmaheta.com/assets/images/og-image.jpg" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Contact — Jaymin Maheta" />
+  <meta name="twitter:description" content="Get in touch with Jaymin Maheta, Senior UI Developer." />
+  <meta name="twitter:image" content="https://www.jayminmaheta.com/assets/images/og-image.jpg" />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="preconnect" href="https://esm.sh" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+
+  <link rel="icon" href="assets/icons/favicon.svg" type="image/svg+xml" />
+  <link rel="manifest" href="site.webmanifest" />
+  <meta name="theme-color" content="#07070c" />
+
+  <link rel="preload" href="assets/data/site.json" as="fetch" crossorigin="anonymous" />
+  <link rel="preload" href="assets/data/contact.json" as="fetch" crossorigin="anonymous" />
+
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            bg: "var(--color-bg)",
+            surface: "var(--color-surface)",
+            text: "var(--color-text)",
+            muted: "var(--color-text-muted)",
+          },
+          fontFamily: {
+            heading: ["Space Grotesk", "sans-serif"],
+            body: ["Inter", "sans-serif"],
+            mono: ["JetBrains Mono", "monospace"],
+          },
+        },
+      },
+    };
+  </script>
+
+  <script type="importmap">
+  {
+    "imports": {
+      "three": "https://esm.sh/three@0.160.0",
+      "gsap": "https://esm.sh/gsap@3.12.5",
+      "gsap/ScrollTrigger": "https://esm.sh/gsap@3.12.5/ScrollTrigger"
+    }
+  }
+  </script>
+
+  <link rel="stylesheet" href="assets/css/main.css" />
+</head>
+<body class="bg-[var(--color-bg)] text-[var(--color-text)] font-body antialiased transition-colors duration-200">
+  <a href="#main-content" class="fixed left-4 top-[-100%] focus:top-4 z-[100] rounded-2xl border border-[var(--color-border-glass)] bg-[var(--color-surface)] px-5 py-3 text-[var(--color-text)] transition-[top] duration-200">
+    Skip to content
+  </a>
+
+  <div data-page-transition aria-hidden="true" class="pointer-events-none fixed inset-0 z-[200] translate-y-full bg-gradient-to-r from-[var(--color-accent-start)] to-[var(--color-accent-end)]"></div>
+
+  <div data-scroll-progress aria-hidden="true" class="pointer-events-none fixed inset-x-0 top-0 z-[60] h-[3px] origin-left scale-x-0 bg-gradient-to-r from-[var(--color-accent-start)] to-[var(--color-accent-end)]"></div>
+
+  <canvas id="ambient-canvas" aria-hidden="true" class="fixed inset-0 z-0 h-full w-full pointer-events-none"></canvas>
+  <div id="ambient-fallback" aria-hidden="true" class="hidden fixed inset-0 z-0 bg-gradient-to-br from-[var(--color-bg)] via-[var(--color-surface)] to-[var(--color-bg)]"></div>
+
+  <header class="fixed inset-x-0 top-0 z-50 border-b border-[var(--color-border-glass)] bg-[var(--color-surface-glass)] backdrop-blur-md">
+    <nav class="mx-auto flex max-w-6xl items-center justify-between px-6 py-4 md:px-10">
+      <a href="index.html" aria-label="Jaymin Maheta — home" data-site-logo class="font-heading text-xl font-bold focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-accent-end)] rounded">JM</a>
+
+      <div data-site-nav data-nav-footer-loaded class="hidden items-center gap-8 font-body text-sm md:flex"></div>
+
+      <div class="flex items-center gap-2">
+        <button type="button" data-theme-toggle aria-label="Toggle color theme" class="flex h-10 w-10 items-center justify-center rounded-full border border-[var(--color-border-glass)] transition-colors hover:bg-[var(--color-surface-glass)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-accent-end)]">
+          <svg class="h-5 w-5 [html[data-theme=light]_&]:hidden" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M21.752 15.002A9.72 9.72 0 0 1 18 15.75c-5.385 0-9.75-4.365-9.75-9.75 0-1.33.266-2.597.748-3.752A9.753 9.753 0 0 0 3 11.25C3 16.635 7.365 21 12.75 21a9.753 9.753 0 0 0 9.002-5.998Z" /></svg>
+          <svg class="hidden h-5 w-5 [html[data-theme=light]_&]:block" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M12 3v2.25m6.364.386-1.591 1.591M21 12h-2.25m-.386 6.364-1.591-1.591M12 18.75V21m-4.773-4.227-1.591 1.591M5.25 12H3m4.227-4.773L5.636 5.636M15.75 12a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0Z" /></svg>
+        </button>
+        <button type="button" data-nav-toggle aria-label="Toggle navigation menu" aria-expanded="false" class="flex h-10 w-10 items-center justify-center rounded-full border border-[var(--color-border-glass)] md:hidden focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-accent-end)]">
+          <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5M3.75 17.25h16.5" /></svg>
+        </button>
+      </div>
+    </nav>
+    <div data-nav-menu data-open="false" class="overflow-hidden border-t border-[var(--color-border-glass)] px-6 max-h-0 data-[open=true]:max-h-96 transition-[max-height] duration-300 md:hidden">
+      <div data-site-nav-mobile></div>
+    </div>
+  </header>
+
+  <main id="main-content" class="relative z-10 mx-auto max-w-4xl px-6 pb-32 pt-40">
+    <section id="contact-intro">
+      <h1 class="font-heading text-4xl font-bold md:text-5xl">Let's Talk</h1>
+      <p class="mt-6 max-w-2xl text-base text-[var(--color-text-muted)] md:text-lg">
+        Open to freelance work, full-time roles, and interesting collaborations. Reach out directly or send a message below.
+      </p>
+    </section>
+
+    <div class="mt-16 grid grid-cols-1 gap-10 md:grid-cols-5">
+      <!-- Contact info -->
+      <aside data-reveal-stagger data-contact-info class="md:col-span-2 space-y-4">
+        <div class="h-40 animate-pulse motion-reduce:animate-none rounded-2xl bg-[var(--color-surface-glass)]"></div>
+      </aside>
+
+      <!-- Contact form -->
+      <section class="md:col-span-3">
+        <form data-contact-form data-reveal-stagger novalidate class="space-y-5 rounded-2xl border border-[var(--color-border-glass)] bg-[var(--color-surface-glass)] p-8 backdrop-blur-md">
+          <div data-reveal-item class="opacity-0 translate-y-6 motion-reduce:opacity-100 motion-reduce:translate-y-0">
+            <label for="name" class="block text-sm font-medium">Name</label>
+            <input
+              type="text" id="name" name="name" required autocomplete="name"
+              class="mt-2 w-full rounded-lg border border-[var(--color-border-glass)] bg-[var(--color-surface)] px-4 py-3 text-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-accent-end)]"
+            />
+            <p data-error-for="name" class="mt-1 hidden text-xs text-red-400" role="alert"></p>
+          </div>
+
+          <div data-reveal-item class="opacity-0 translate-y-6 motion-reduce:opacity-100 motion-reduce:translate-y-0">
+            <label for="email" class="block text-sm font-medium">Email</label>
+            <input
+              type="email" id="email" name="email" required autocomplete="email"
+              class="mt-2 w-full rounded-lg border border-[var(--color-border-glass)] bg-[var(--color-surface)] px-4 py-3 text-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-accent-end)]"
+            />
+            <p data-error-for="email" class="mt-1 hidden text-xs text-red-400" role="alert"></p>
+          </div>
+
+          <div data-reveal-item class="opacity-0 translate-y-6 motion-reduce:opacity-100 motion-reduce:translate-y-0">
+            <label for="message" class="block text-sm font-medium">Message</label>
+            <textarea
+              id="message" name="message" rows="5" required
+              class="mt-2 w-full rounded-lg border border-[var(--color-border-glass)] bg-[var(--color-surface)] px-4 py-3 text-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-accent-end)]"
+            ></textarea>
+            <p data-error-for="message" class="mt-1 hidden text-xs text-red-400" role="alert"></p>
+          </div>
+
+          <button
+            type="submit"
+            data-submit-button
+            data-reveal-item
+            data-magnetic
+            class="opacity-0 translate-y-6 motion-reduce:opacity-100 motion-reduce:translate-y-0 inline-flex items-center justify-center gap-2 rounded-full bg-gradient-to-r from-[var(--color-accent-start)] to-[var(--color-accent-end)] px-7 py-3.5 font-heading font-semibold text-white transition-shadow duration-300 hover:shadow-[0_12px_40px_-10px_rgba(var(--color-accent-rgb),0.6)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-accent-end)] disabled:opacity-60"
+          >
+            Send Message
+          </button>
+
+          <p data-form-status role="status" aria-live="polite" class="text-sm"></p>
+        </form>
+      </section>
+    </div>
+  </main>
+
+  <footer class="relative z-10 border-t border-[var(--color-border-glass)] px-6 py-10">
+    <div data-site-footer data-nav-footer-loaded class="mx-auto flex max-w-5xl flex-col items-center gap-4 sm:flex-row sm:justify-between"></div>
+  </footer>
+
+  <script type="module" src="assets/js/pages/contact.js"></script>
+</body>
+</html>

@@ -1,0 +1,42 @@
+{
+  "hero": {
+    "eyebrow": "Senior UI Developer",
+    "title": "Crafting interfaces people remember.",
+    "subtitle": "6+ years turning ambitious product ideas into fast, accessible, and beautifully engineered UI — across Angular, React, and modern design systems.",
+    "ctaPrimary": { "label": "View Projects", "href": "projects.html" },
+    "ctaSecondary": { "label": "Get in Touch", "href": "contact.html" }
+  },
+  "stats": [
+    { "value": 6, "suffix": "+", "label": "Years of Experience" },
+    { "value": 10, "suffix": "+", "label": "Projects Delivered" },
+    { "value": 200, "suffix": "+", "label": "Team Members Led" }
+  ],
+  "techStack": [
+    { "name": "Angular" },
+    { "name": "React" },
+    { "name": "Tailwind CSS" },
+    { "name": "Figma" },
+    { "name": "PrimeNG" },
+    { "name": "SCSS" }
+  ],
+  "featuredProjects": [
+    {
+      "id": "artem-health-care",
+      "title": "Artem Health Care",
+      "blurb": "A patient-first healthcare platform UI focused on clarity under pressure — fast record lookups, accessible forms, and a design system built to scale across care teams.",
+      "tech": ["Angular", "PrimeNG", "SCSS"]
+    },
+    {
+      "id": "compito",
+      "title": "Compito",
+      "blurb": "A project and task management workspace redesigned around focus — drag-and-drop boards, real-time status updates, and a component library shared across the product.",
+      "tech": ["React", "Tailwind CSS", "Figma"]
+    },
+    {
+      "id": "valyxto",
+      "title": "Valyxto",
+      "blurb": "A fintech-facing dashboard rebuilt for trust and speed — dense data made scannable through typography, motion, and a consistent visual hierarchy.",
+      "tech": ["Angular", "PrimeNG", "Bootstrap"]
+    }
+  ]
+}

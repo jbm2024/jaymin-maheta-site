@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth motion-reduce:scroll-auto">
+<head>
+  <script>
+    (function () {
+      try {
+        var stored = localStorage.getItem("jm-theme");
+        var theme = stored || (window.matchMedia("(prefers-color-scheme: light)").matches ? "light" : "dark");
+        document.documentElement.setAttribute("data-theme", theme);
+      } catch (e) {}
+    })();
+  </script>
+
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Jaymin Maheta — Senior UI Developer</title>
+  <meta name="description" content="Jaymin Maheta is a Senior UI Developer with 6+ years of experience building fast, accessible interfaces and design systems in Angular, React, and Tailwind CSS." />
+  <link rel="canonical" href="https://www.jayminmaheta.com/" />
+
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content="Jaymin Maheta — Senior UI Developer" />
+  <meta property="og:description" content="6+ years turning ambitious product ideas into fast, accessible, and beautifully engineered UI." />
+  <meta property="og:url" content="https://www.jayminmaheta.com/" />
+  <meta property="og:image" content="https://www.jayminmaheta.com/assets/images/og-image.jpg" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Jaymin Maheta — Senior UI Developer" />
+  <meta name="twitter:description" content="6+ years turning ambitious product ideas into fast, accessible, and beautifully engineered UI." />
+  <meta name="twitter:image" content="https://www.jayminmaheta.com/assets/images/og-image.jpg" />
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Person",
+    "name": "Jaymin Maheta",
+    "jobTitle": "Senior UI Developer",
+    "url": "https://www.jayminmaheta.com/",
+    "sameAs": [
+      "https://www.linkedin.com/in/jaymin-maheta",
+      "https://github.com/jayminmaheta"
+    ]
+  }
+  </script>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="preconnect" href="https://esm.sh" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+
+  <link rel="icon" href="assets/icons/favicon.svg" type="image/svg+xml" />
+  <link rel="manifest" href="site.webmanifest" />
+  <meta name="theme-color" content="#07070c" />
+
+  <link rel="preload" href="assets/data/site.json" as="fetch" crossorigin="anonymous" />
+  <link rel="preload" href="assets/data/home.json" as="fetch" crossorigin="anonymous" />
+
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            bg: "var(--color-bg)",
+            surface: "var(--color-surface)",
+            text: "var(--color-text)",
+            muted: "var(--color-text-muted)",
+          },
+          fontFamily: {
+            heading: ["Space Grotesk", "sans-serif"],
+            body: ["Inter", "sans-serif"],
+            mono: ["JetBrains Mono", "monospace"],
+          },
+        },
+      },
+    };
+  </script>
+
+  <script type="importmap">
+  {
+    "imports": {
+      "three": "https://esm.sh/three@0.160.0",
+      "gsap": "https://esm.sh/gsap@3.12.5",
+      "gsap/ScrollTrigger": "https://esm.sh/gsap@3.12.5/ScrollTrigger"
+    }
+  }
+  </script>
+
+  <link rel="stylesheet" href="assets/css/main.css" />
+</head>
+<body class="bg-[var(--color-bg)] text-[var(--color-text)] font-body antialiased transition-colors duration-200">
+  <a href="#main-content" class="fixed left-4 top-[-100%] focus:top-4 z-[100] rounded-2xl border border-[var(--color-border-glass)] bg-[var(--color-surface)] px-5 py-3 text-[var(--color-text)] transition-[top] duration-200">
+    Skip to content
+  </a>
+
+  <div data-page-transition aria-hidden="true" class="pointer-events-none fixed inset-0 z-[200] translate-y-full bg-gradient-to-r from-[var(--color-accent-start)] to-[var(--color-accent-end)]"></div>
+
+  <div data-scroll-progress aria-hidden="true" class="pointer-events-none fixed inset-x-0 top-0 z-[60] h-[3px] origin-left scale-x-0 bg-gradient-to-r from-[var(--color-accent-start)] to-[var(--color-accent-end)]"></div>
+
+  <canvas id="home-scene-canvas" aria-hidden="true" class="fixed inset-0 z-0 h-full w-full pointer-events-none"></canvas>
+  <div id="home-scene-fallback" aria-hidden="true" class="hidden fixed inset-0 z-0 bg-gradient-to-br from-[var(--color-bg)] via-[var(--color-surface)] to-[var(--color-bg)]"></div>
+
+  <header class="fixed inset-x-0 top-0 z-50 border-b border-[var(--color-border-glass)] bg-[var(--color-surface-glass)] backdrop-blur-md">
+    <nav class="mx-auto flex max-w-6xl items-center justify-between px-6 py-4 md:px-10">
+      <a href="index.html" aria-label="Jaymin Maheta — home" data-site-logo class="font-heading text-xl font-bold focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-accent-end)] rounded">JM</a>
+
+      <div data-site-nav data-nav-footer-loaded class="hidden items-center gap-8 font-body text-sm md:flex"></div>
+
+      <div class="flex items-center gap-2">
+        <button type="button" data-theme-toggle aria-label="Toggle color theme" class="flex h-10 w-10 items-center justify-center rounded-full border border-[var(--color-border-glass)] transition-colors hover:bg-[var(--color-surface-glass)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-accent-end)]">
+          <svg class="h-5 w-5 [html[data-theme=light]_&]:hidden" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M21.752 15.002A9.72 9.72 0 0 1 18 15.75c-5.385 0-9.75-4.365-9.75-9.75 0-1.33.266-2.597.748-3.752A9.753 9.753 0 0 0 3 11.25C3 16.635 7.365 21 12.75 21a9.753 9.753 0 0 0 9.002-5.998Z" /></svg>
+          <svg class="hidden h-5 w-5 [html[data-theme=light]_&]:block" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M12 3v2.25m6.364.386-1.591 1.591M21 12h-2.25m-.386 6.364-1.591-1.591M12 18.75V21m-4.773-4.227-1.591 1.591M5.25 12H3m4.227-4.773L5.636 5.636M15.75 12a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0Z" /></svg>
+        </button>
+        <button type="button" data-nav-toggle aria-label="Toggle navigation menu" aria-expanded="false" class="flex h-10 w-10 items-center justify-center rounded-full border border-[var(--color-border-glass)] md:hidden focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-accent-end)]">
+          <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5M3.75 17.25h16.5" /></svg>
+        </button>
+      </div>
+    </nav>
+    <div data-nav-menu data-open="false" class="overflow-hidden border-t border-[var(--color-border-glass)] px-6 max-h-0 data-[open=true]:max-h-96 transition-[max-height] duration-300 md:hidden">
+      <div data-site-nav-mobile></div>
+    </div>
+  </header>
+
+  <main id="main-content" class="relative z-10">
+    <!-- Beat 1: Hero -->
+    <section id="hero" data-scene-beat="1" class="flex min-h-screen flex-col items-center justify-center px-6 text-center">
+      <p data-hero-eyebrow class="mb-5 inline-block rounded-full border border-[var(--color-border-glass)] bg-[var(--color-surface-glass)] px-4 py-1 font-mono text-xs uppercase tracking-widest text-[var(--color-text-muted)]">
+        Senior UI Developer
+      </p>
+      <h1 data-hero-title class="max-w-3xl font-heading text-4xl font-bold leading-tight md:text-6xl">
+        Crafting interfaces people remember.
+      </h1>
+      <p data-hero-subtitle class="mt-6 max-w-xl text-base text-[var(--color-text-muted)] md:text-lg">
+        6+ years turning ambitious product ideas into fast, accessible, and beautifully engineered UI.
+      </p>
+      <div class="mt-10 flex flex-wrap items-center justify-center gap-4">
+        <a data-hero-cta-primary data-magnetic href="projects.html" class="inline-flex items-center justify-center gap-2 rounded-full bg-gradient-to-r from-[var(--color-accent-start)] to-[var(--color-accent-end)] px-7 py-3.5 font-heading font-semibold text-white transition-shadow duration-300 hover:shadow-[0_12px_40px_-10px_rgba(var(--color-accent-rgb),0.6)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-accent-end)]">
+          View Projects
+        </a>
+        <a data-hero-cta-secondary data-magnetic href="contact.html" class="inline-flex items-center justify-center gap-2 rounded-full border border-[var(--color-border-glass)] px-6 py-3 font-heading font-semibold transition-colors duration-200 hover:bg-[var(--color-surface-glass)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-accent-end)]">
+          Get in Touch
+        </a>
+      </div>
+    </section>
+
+    <!-- Beat 2: Stats -->
+    <section id="stats" data-scene-beat="2" class="mx-auto flex max-w-5xl flex-col items-center gap-10 px-6 py-32 md:flex-row md:justify-between">
+      <div data-reveal-stagger data-stats-container class="grid w-full grid-cols-1 gap-8 sm:grid-cols-3">
+        <div class="h-28 animate-pulse motion-reduce:animate-none rounded-2xl bg-[var(--color-surface-glass)]"></div>
+        <div class="h-28 animate-pulse motion-reduce:animate-none rounded-2xl bg-[var(--color-surface-glass)]"></div>
+        <div class="h-28 animate-pulse motion-reduce:animate-none rounded-2xl bg-[var(--color-surface-glass)]"></div>
+      </div>
+    </section>
+
+    <!-- Beat 3: Tech stack orbit -->
+    <section id="tech-stack" data-scene-beat="3" class="mx-auto max-w-5xl px-6 py-32 text-center">
+      <h2 data-reveal class="opacity-0 translate-y-6 motion-reduce:opacity-100 motion-reduce:translate-y-0 font-heading text-2xl font-bold md:text-3xl">
+        Tools I build with
+      </h2>
+      <div data-reveal-stagger data-tech-stack class="mt-10 flex flex-wrap items-center justify-center gap-3">
+        <div class="h-9 w-24 animate-pulse motion-reduce:animate-none rounded-full bg-[var(--color-surface-glass)]"></div>
+        <div class="h-9 w-24 animate-pulse motion-reduce:animate-none rounded-full bg-[var(--color-surface-glass)]"></div>
+        <div class="h-9 w-24 animate-pulse motion-reduce:animate-none rounded-full bg-[var(--color-surface-glass)]"></div>
+        <div class="h-9 w-24 animate-pulse motion-reduce:animate-none rounded-full bg-[var(--color-surface-glass)]"></div>
+      </div>
+    </section>
+
+    <!-- Beat 4: Featured projects -->
+    <section id="featured-projects" data-scene-beat="4" class="mx-auto max-w-5xl px-6 py-32">
+      <h2 data-reveal class="opacity-0 translate-y-6 motion-reduce:opacity-100 motion-reduce:translate-y-0 text-center font-heading text-2xl font-bold md:text-3xl">
+        Featured Work
+      </h2>
+      <div data-reveal-stagger data-featured-projects class="mt-12 grid grid-cols-1 gap-6 md:grid-cols-3">
+        <div class="h-56 animate-pulse motion-reduce:animate-none rounded-2xl bg-[var(--color-surface-glass)]"></div>
+        <div class="h-56 animate-pulse motion-reduce:animate-none rounded-2xl bg-[var(--color-surface-glass)]"></div>
+        <div class="h-56 animate-pulse motion-reduce:animate-none rounded-2xl bg-[var(--color-surface-glass)]"></div>
+      </div>
+    </section>
+
+    <!-- Beat 5: CTA + footer -->
+    <section id="cta" data-scene-beat="5" class="mx-auto flex max-w-3xl flex-col items-center px-6 py-32 text-center">
+      <h2 data-reveal class="opacity-0 translate-y-6 motion-reduce:opacity-100 motion-reduce:translate-y-0 font-heading text-3xl font-bold md:text-4xl">
+        Let's build something worth remembering.
+      </h2>
+      <a href="contact.html" data-magnetic class="mt-8 inline-flex items-center justify-center gap-2 rounded-full bg-gradient-to-r from-[var(--color-accent-start)] to-[var(--color-accent-end)] px-7 py-3.5 font-heading font-semibold text-white transition-shadow duration-300 hover:shadow-[0_12px_40px_-10px_rgba(var(--color-accent-rgb),0.6)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-accent-end)]">
+        Start a Conversation
+      </a>
+    </section>
+
+    <footer class="border-t border-[var(--color-border-glass)] px-6 py-10">
+      <div data-site-footer data-nav-footer-loaded class="mx-auto flex max-w-5xl flex-col items-center gap-4 sm:flex-row sm:justify-between"></div>
+    </footer>
+  </main>
+
+  <script type="module" src="assets/js/pages/home.js"></script>
+</body>
+</html>

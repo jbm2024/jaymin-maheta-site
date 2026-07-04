@@ -1,0 +1,10 @@
+{
+  "email": "jaymin.maheta.2024@gmail.com",
+  "phone": "+91 9106405036",
+  "location": "India",
+  "socials": [
+    { "platform": "LinkedIn", "url": "https://www.linkedin.com/in/jaymin-maheta" },
+    { "platform": "GitHub", "url": "https://github.com/jayminmaheta" }
+  ],
+  "formEndpoint": "https://formspree.io/f/YOUR_FORM_ID"
+}

@@ -1,0 +1,25 @@
+# OS / editor cruft
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+*.swp
+
+# Dependency / build artifacts (defensive — none exist yet, but if a
+# Tailwind CLI build or any npm tooling is added later, these shouldn't ship)
+node_modules/
+dist/
+*.log
+npm-debug.log*
+
+# Environment / secrets (defensive — this static site has no env files
+# today, but if Formspree/analytics config ever moves to one, keep it local)
+.env
+.env.*
+!.env.example
+
+# Claude Code tooling metadata — not part of the site itself
+.agents/
+skills-lock.json
+
+docs/*

@@ -1,0 +1,16 @@
+{
+  "name": "Jaymin Maheta — Senior UI Developer",
+  "short_name": "Jaymin Maheta",
+  "description": "Portfolio of Jaymin Maheta, Senior UI Developer specializing in Angular, React, and design systems.",
+  "start_url": "/index.html",
+  "display": "standalone",
+  "background_color": "#07070c",
+  "theme_color": "#07070c",
+  "icons": [
+    {
+      "src": "assets/icons/favicon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml"
+    }
+  ]
+}

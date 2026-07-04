@@ -1,0 +1,63 @@
+{
+  "bio": {
+    "heading": "About Me",
+    "paragraphs": [
+      "I'm Jaymin Maheta, a Senior UI Developer with 6+ years of experience turning complex product requirements into interfaces that feel effortless to use.",
+      "My work sits at the intersection of engineering and design — I've led design systems from Figma file to production component library, mentored teams of 200+ across delivery cycles, and shipped 10+ products across healthcare, productivity, and fintech.",
+      "I care most about the details most users never consciously notice: load-bearing accessibility, motion that respects intent, and code that's as maintainable as the interface is polished."
+    ]
+  },
+  "skills": [
+    { "category": "Frameworks", "items": ["Angular", "React"] },
+    { "category": "UI Libraries", "items": ["PrimeNG", "PrimeReact"] },
+    { "category": "Styling", "items": ["SCSS", "Bootstrap", "Tailwind CSS"] },
+    { "category": "Design Tools", "items": ["Figma", "Zeplin"] },
+    { "category": "Tooling", "items": ["Bitbucket", "GitLab"] }
+  ],
+  "experience": [
+    {
+      "role": "Sr. UI/UX Designer",
+      "company": "Augmented Tech Labs",
+      "period": "2023 — Present",
+      "description": "Leading design system implementation and UI architecture decisions across multiple product lines, mentoring junior developers on component-driven development and accessibility standards."
+    },
+    {
+      "role": "UI Developer",
+      "company": "Previous Company (update me)",
+      "period": "2022 — 2023",
+      "description": "Owned front-end delivery for core product surfaces, translating Figma designs into production Angular components with a focus on performance and cross-browser consistency."
+    },
+    {
+      "role": "UI Developer",
+      "company": "Previous Company (update me)",
+      "period": "2020 — 2022",
+      "description": "Built and maintained a shared React component library adopted across three product teams, reducing duplicate UI work and standardizing design tokens."
+    },
+    {
+      "role": "Jr. UI Developer",
+      "company": "Previous Company (update me)",
+      "period": "March 2019 — 2020",
+      "description": "Started my UI development career building responsive marketing and product pages, developing a strong foundation in semantic HTML, CSS architecture, and JavaScript fundamentals."
+    }
+  ],
+  "awards": [
+    {
+      "title": "Spotlight Award",
+      "issuer": "Company Recognition",
+      "year": "2023",
+      "description": "Recognized for leading a design system rollout that reduced UI development time across teams."
+    },
+    {
+      "title": "HDFC Gift Voucher",
+      "issuer": "Performance Recognition",
+      "year": "2022",
+      "description": "Awarded for outstanding contribution to a critical product launch."
+    },
+    {
+      "title": "Team Excellence Award",
+      "issuer": "Company Recognition",
+      "year": "2021",
+      "description": "Recognized for mentoring and leading UI delivery across a large cross-functional team."
+    }
+  ]
+}

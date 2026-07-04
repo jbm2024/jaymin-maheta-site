@@ -1,0 +1,34 @@
+{
+  "projects": [
+    {
+      "id": "artem-health-care",
+      "title": "Artem Health Care",
+      "summary": "A patient management platform where speed and clarity are patient-safety features, not nice-to-haves.",
+      "problem": "Care teams were losing time navigating a legacy interface with inconsistent patterns, slow record lookups, and forms that weren't accessible to keyboard or screen-reader users.",
+      "role": "Led UI architecture and design system implementation, translating Figma designs into a reusable Angular + PrimeNG component library and auditing every core flow for WCAG compliance.",
+      "impact": "Reduced average time-to-record lookup and standardized over a dozen previously inconsistent form patterns into a single accessible pattern library used across the platform.",
+      "tech": ["Angular", "PrimeNG", "SCSS"],
+      "links": { "live": "", "repo": "" }
+    },
+    {
+      "id": "compito",
+      "title": "Compito",
+      "summary": "A task and project management workspace rebuilt around focus — less chrome, more signal.",
+      "problem": "The existing board-based workflow buried important tasks under visual noise, and the component library had drifted out of sync with the Figma source of truth.",
+      "role": "Rebuilt the core board, card, and modal components in React with Tailwind CSS, and re-established a single shared component library synced with Figma via Zeplin handoff.",
+      "impact": "Cut UI implementation time for new features by reusing a consistent component set, and improved perceived performance through optimistic UI updates on drag-and-drop actions.",
+      "tech": ["React", "Tailwind CSS", "Figma"],
+      "links": { "live": "", "repo": "" }
+    },
+    {
+      "id": "valyxto",
+      "title": "Valyxto",
+      "summary": "A fintech dashboard where dense data had to become scannable without losing precision.",
+      "problem": "Users needed to parse large tables of financial data quickly, but the existing layout treated every data point with equal visual weight, making priority information hard to find.",
+      "role": "Redesigned the information hierarchy using typography scale, color, and progressive disclosure, and implemented the resulting components in Angular with PrimeNG and Bootstrap utilities.",
+      "impact": "Improved scan-ability of core dashboards through a clearer visual hierarchy and consistent data-table patterns reused across every report view.",
+      "tech": ["Angular", "PrimeNG", "Bootstrap"],
+      "links": { "live": "", "repo": "" }
+    }
+  ]
+}
