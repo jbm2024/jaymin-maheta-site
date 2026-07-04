@@ -1,35 +1,173 @@
 /* ==========================================================================
-   Theme tokens — the ONLY thing this file owns. Everything else (layout,
-   components, states) is composed with Tailwind utility classes directly
-   in the HTML, referencing these variables via arbitrary-value syntax
-   e.g. bg-[var(--color-surface)]. Change a color here and it propagates
-   everywhere at once, including the Three.js scenes which read these
-   at runtime via getComputedStyle.
+   Theme tokens — the ONLY thing this file owns besides a handful of
+   component classes for patterns repeated across every page (cards, chips,
+   buttons, spec-labels, the spec-rail). Layout (grid/flex/spacing/
+   breakpoints) stays as Tailwind utilities directly in the HTML. Change a
+   token here and it propagates everywhere at once, including the Three.js
+   scenes, which read --color-bg / --color-accent-end at runtime via
+   getComputedStyle.
+
+   Design direction: "blueprint / spec sheet" — a single considered cobalt
+   accent (no gradients), flat hairline-bordered panels (no glassmorphism),
+   IBM Plex Mono for display + data, IBM Plex Sans for body. The chrome
+   (spec-rail, ruler-tick scroll indicator, spec-labels) visibly demonstrates
+   the token-driven discipline the site's copy claims about its author.
    ========================================================================== */
 :root {
   color-scheme: dark;
 
-  --color-bg: #07070c;
-  --color-surface: #0f0f1a;
-  --color-surface-glass: rgba(255, 255, 255, 0.06);
-  --color-border-glass: rgba(255, 255, 255, 0.12);
-  --color-text: #f4f4f8;
-  --color-text-muted: #9a9ab0;
-  --color-accent-start: #7c3aed;
-  --color-accent-end: #4f46e5;
-  --color-accent-rgb: 124, 58, 237;
+  --color-bg: #14161c;
+  --color-surface: #1b1e27;
+  --color-surface-glass: #21242e;
+  --color-surface-2: #262a35;
+  --color-border-glass: rgba(242, 243, 246, 0.12);
+  --color-border-strong: rgba(242, 243, 246, 0.24);
+  --color-text: #f2f3f6;
+  --color-text-muted: #9aa0ac;
+
+  /* Single accent, no gradient pair — both stops equal so existing
+     bg-gradient-to-r from-accent-start to-accent-end utilities render flat. */
+  --color-accent-start: #2f5cff;
+  --color-accent-end: #2f5cff;
+  --color-accent-rgb: 47, 92, 255;
+  /* Lighter tint reserved for accent-colored TEXT/icons directly on --color-bg:
+     #2f5cff only hits 3.53:1 on dark bg (fine for borders/fills at 3:1, fails
+     WCAG AA 4.5:1 for small text). This tint hits 4.9:1. */
+  --color-accent-text: #6379ff;
+
+  --radius-card: 0.5rem;
+  --radius-lg: 0.625rem;
+  --radius-sm: 0.25rem;
 }
 
 :root[data-theme="light"] {
   color-scheme: light;
 
-  --color-bg: #f7f7fb;
+  --color-bg: #eef1f5;
   --color-surface: #ffffff;
-  --color-surface-glass: rgba(15, 15, 26, 0.04);
-  --color-border-glass: rgba(15, 15, 26, 0.08);
-  --color-text: #0f0f1a;
-  --color-text-muted: #56566b;
-  /* accent intentionally unchanged across themes for brand consistency */
+  --color-surface-glass: #ffffff;
+  --color-surface-2: #e3e7ee;
+  --color-border-glass: rgba(20, 22, 28, 0.12);
+  --color-border-strong: rgba(20, 22, 28, 0.24);
+  --color-text: #14161c;
+  --color-text-muted: #565d6b;
+
+  /* Slightly deepened for AA contrast against the light surface. */
+  --color-accent-start: #2447d6;
+  --color-accent-end: #2447d6;
+  --color-accent-rgb: 36, 71, 214;
+  /* Light theme's base accent already clears 4.5:1 as text, no lighter tint needed. */
+  --color-accent-text: #2447d6;
+}
+
+/* ==========================================================================
+   Component classes — for patterns repeated across pages. Everything else
+   lives inline in the markup as Tailwind utilities.
+   ========================================================================== */
+
+/* Tag/chip: tech pills, skill items, blog tags — a labeled data tag, not a
+   social-pill. Sits flush against the panel it lives on. */
+.tag {
+  display: inline-flex;
+  align-items: center;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--color-border-glass);
+  background: var(--color-surface-2);
+  padding: 0.25rem 0.625rem;
+  font-family: "IBM Plex Mono", monospace;
+  font-size: 0.75rem;
+  line-height: 1;
+  color: var(--color-text-muted);
+}
+
+/* Spec-label: replaces rounded pill "eyebrow" badges. A left tick mark plus
+   mono uppercase text — reads as a spec-sheet annotation, not a UI chip. */
+.spec-label {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-family: "IBM Plex Mono", monospace;
+  font-size: 0.75rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--color-text-muted);
+}
+.spec-label::before {
+  content: "";
+  display: inline-block;
+  width: 0.875rem;
+  height: 1px;
+  background: var(--color-accent-end);
+}
+
+/* Primary / secondary buttons: solid fill or outline, modest radius, no
+   pill shape, no gradient. Corner-bracket micro-interaction on hover reads
+   as a "measurement/selection" cue rather than a generic pill-lift. */
+.btn {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  border-radius: var(--radius-card);
+  padding: 0.875rem 1.75rem;
+  font-family: "IBM Plex Mono", monospace;
+  font-weight: 600;
+  font-size: 0.9375rem;
+  transition: transform 200ms ease, box-shadow 200ms ease, background-color 200ms ease, border-color 200ms ease;
+}
+.btn-primary {
+  background: var(--color-accent-end);
+  color: #ffffff;
+  border: 1px solid transparent;
+}
+.btn-primary:hover {
+  box-shadow: 0 12px 32px -12px rgba(var(--color-accent-rgb), 0.55);
+}
+.btn-secondary {
+  background: transparent;
+  color: var(--color-text);
+  border: 1px solid var(--color-border-strong);
+}
+.btn-secondary:hover {
+  border-color: var(--color-accent-end);
+}
+.btn::before,
+.btn::after {
+  content: "";
+  position: absolute;
+  width: 0.5rem;
+  height: 0.5rem;
+  border-color: currentColor;
+  opacity: 0;
+  transition: opacity 200ms ease, transform 200ms ease;
+}
+.btn::before {
+  top: 4px;
+  left: 4px;
+  border-top: 1.5px solid;
+  border-left: 1.5px solid;
+  transform: translate(4px, 4px);
+}
+.btn::after {
+  bottom: 4px;
+  right: 4px;
+  border-bottom: 1.5px solid;
+  border-right: 1.5px solid;
+  transform: translate(-4px, -4px);
+}
+.btn:hover::before,
+.btn:hover::after,
+.btn:focus-visible::before,
+.btn:focus-visible::after {
+  opacity: 0.6;
+  transform: translate(0, 0);
+}
+@media (prefers-reduced-motion: reduce) {
+  .btn::before,
+  .btn::after {
+    transition: none;
+  }
 }
 
 /* ==========================================================================
@@ -48,7 +186,72 @@
   background: var(--color-bg);
 }
 ::-webkit-scrollbar-thumb {
-  background: linear-gradient(var(--color-accent-start), var(--color-accent-end));
+  background: var(--color-accent-end);
   border-radius: 999px;
   border: 2px solid var(--color-bg);
+}
+
+/* Scroll progress: a ruler, not a smooth gradient fill — tick marks every
+   10% of scroll progress. JS still only ever sets scaleX on this element
+   (see initScrollProgress in main.js); the ruler look is pure CSS. */
+[data-scroll-progress] {
+  background-image: repeating-linear-gradient(
+    to right,
+    var(--color-accent-end) 0,
+    var(--color-accent-end) 1px,
+    transparent 1px,
+    transparent 10%
+  );
+  background-color: var(--color-accent-end);
+}
+
+/* Spec-rail: fixed left-margin ruler + current-section label, injected at
+   runtime by initSpecRail() in main.js. Desktop only — mobile has no room
+   and loses no content by omitting it. */
+[data-spec-rail] {
+  display: none;
+}
+@media (min-width: 1024px) {
+  [data-spec-rail] {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.75rem;
+    position: fixed;
+    left: 1.5rem;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 40;
+    pointer-events: none;
+  }
+  [data-spec-rail-track] {
+    position: relative;
+    width: 1px;
+    height: 12rem;
+    background: var(--color-border-strong);
+  }
+  [data-spec-rail-fill] {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 1px;
+    height: 0%;
+    background: var(--color-accent-end);
+    transition: height 300ms ease;
+  }
+  [data-spec-rail-label] {
+    writing-mode: vertical-rl;
+    transform: rotate(180deg);
+    font-family: "IBM Plex Mono", monospace;
+    font-size: 0.6875rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--color-text-muted);
+    white-space: nowrap;
+  }
+}
+@media (min-width: 1024px) and (prefers-reduced-motion: reduce) {
+  [data-spec-rail-fill] {
+    transition: none;
+  }
 }

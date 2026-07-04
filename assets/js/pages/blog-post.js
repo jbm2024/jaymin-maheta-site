@@ -10,9 +10,9 @@ import {
   initPageTransitions,
   renderLinkedInFeatured,
   renderTestimonials,
-  fetchJSON,
   setText,
 } from "../main.js";
+import { getBlogData } from "../data.js";
 
 const REVEAL_ITEM_CLASSES = "opacity-0 translate-y-6 motion-reduce:opacity-100 motion-reduce:translate-y-0";
 const CARD_FOCUS_RING =
@@ -53,7 +53,7 @@ function renderPost(post) {
   const tagsContainer = document.querySelector("[data-post-tags]");
   if (tagsContainer) {
     tagsContainer.innerHTML = post.tags
-      .map((t) => `<span class="rounded-full bg-[var(--color-surface-glass)] px-3 py-1 font-mono text-xs">${t}</span>`)
+      .map((t) => `<span class="tag">${t}</span>`)
       .join("");
   }
 
@@ -114,7 +114,7 @@ function renderMorePosts(posts, currentSlug) {
         <a
           href="blog-post.html?slug=${encodeURIComponent(post.slug)}"
           data-reveal-item
-          class="${REVEAL_ITEM_CLASSES} group flex gap-5 overflow-hidden rounded-2xl border border-[var(--color-border-glass)] bg-[var(--color-surface-glass)] p-4 backdrop-blur-md transition-all duration-300 hover:-translate-y-1 hover:border-[var(--color-accent-end)]/45 ${CARD_FOCUS_RING}"
+          class="${REVEAL_ITEM_CLASSES} group flex gap-5 overflow-hidden rounded-[var(--radius-card)] border border-[var(--color-border-glass)] bg-[var(--color-surface-glass)] p-4 transition-all duration-300 hover:-translate-y-1 hover:border-[var(--color-accent-end)]/45 ${CARD_FOCUS_RING}"
         >
           <figure class="aspect-[4/3] w-32 shrink-0 overflow-hidden rounded-xl">
             <img src="${post.coverImage}" alt="${post.title}" loading="lazy" class="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105" />
@@ -141,7 +141,7 @@ async function init() {
   initPageTransitions();
 
   const slug = new URLSearchParams(window.location.search).get("slug");
-  const [site, blogData] = await Promise.all([renderNavFooter(), fetchJSON("assets/data/blog.json")]);
+  const [site, blogData] = await Promise.all([renderNavFooter(), getBlogData()]);
 
   const post = blogData.posts.find((p) => p.slug === slug && p.visible);
 

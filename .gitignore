@@ -18,6 +18,9 @@ npm-debug.log*
 .env.*
 !.env.example
 
+# Supabase MCP config — contains a personal access token in plaintext
+.mcp.json
+
 # Claude Code tooling metadata — not part of the site itself
 .agents/
 skills-lock.json

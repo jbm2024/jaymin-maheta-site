@@ -1,5 +1,6 @@
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { getSiteData } from "./data.js";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -67,13 +68,14 @@ export async function fetchJSON(path) {
 }
 
 /**
- * Fetches data/site.json and renders shared nav + footer + logo marks.
- * Every page calls this on load. Returns the site data so page scripts
- * can reuse fields (e.g. socials) without a second fetch.
+ * Fetches site-wide content from Supabase (nav/footer/linkedinFeatured/
+ * testimonials) and renders nav + footer + logo marks. Every page calls
+ * this on load. Returns the site data so page scripts can reuse fields
+ * without a second fetch.
  */
 export async function renderNavFooter() {
   try {
-    const site = await fetchJSON("assets/data/site.json");
+    const site = await getSiteData();
 
     document.querySelectorAll("[data-site-logo]").forEach((el) => {
       el.textContent = site.logoInitials;
@@ -92,8 +94,8 @@ export async function renderNavFooter() {
           (item) =>
             `<a href="${item.href}" ${
               isCurrent(item.href)
-                ? `aria-current="page" class="text-[var(--color-accent-end)] ${focusRing}"`
-                : `class="transition-colors hover:text-[var(--color-accent-end)] ${focusRing}"`
+                ? `aria-current="page" class="text-[var(--color-accent-text)] ${focusRing}"`
+                : `class="transition-colors hover:text-[var(--color-accent-text)] ${focusRing}"`
             }>${item.label}</a>`
         )
         .join("");
@@ -106,8 +108,8 @@ export async function renderNavFooter() {
           (item) =>
             `<a href="${item.href}" ${
               isCurrent(item.href)
-                ? `aria-current="page" class="block py-3 text-lg text-[var(--color-accent-end)] ${focusRing}"`
-                : `class="block py-3 text-lg transition-colors hover:text-[var(--color-accent-end)] ${focusRing}"`
+                ? `aria-current="page" class="block py-3 text-lg text-[var(--color-accent-text)] ${focusRing}"`
+                : `class="block py-3 text-lg transition-colors hover:text-[var(--color-accent-text)] ${focusRing}"`
             }>${item.label}</a>`
         )
         .join("");
@@ -121,7 +123,7 @@ export async function renderNavFooter() {
           ${site.footer.socials
             .map(
               (s) =>
-                `<a href="${s.url}" target="_blank" rel="noopener noreferrer" aria-label="${s.platform}" class="text-sm transition-colors hover:text-[var(--color-accent-end)] ${focusRing}">${s.label}</a>`
+                `<a href="${s.url}" target="_blank" rel="noopener noreferrer" aria-label="${s.platform}" class="text-sm transition-colors hover:text-[var(--color-accent-text)] ${focusRing}">${s.label}</a>`
             )
             .join("")}
         </div>
@@ -354,7 +356,7 @@ export function renderLatestBlog(posts) {
         <a
           href="blog-post.html?slug=${encodeURIComponent(post.slug)}"
           data-reveal-item
-          class="${REVEAL_ITEM_CLASSES} group flex h-full flex-col overflow-hidden rounded-2xl border border-[var(--color-border-glass)] bg-[var(--color-surface-glass)] backdrop-blur-md transition-all duration-300 hover:-translate-y-1 hover:border-[var(--color-accent-end)]/45 hover:shadow-[0_20px_60px_-20px_rgba(var(--color-accent-rgb),0.35)] ${CARD_FOCUS_RING}"
+          class="${REVEAL_ITEM_CLASSES} group flex h-full flex-col overflow-hidden rounded-[var(--radius-card)] border border-[var(--color-border-glass)] bg-[var(--color-surface-glass)] transition-all duration-300 hover:-translate-y-1 hover:border-[var(--color-accent-end)]/45 hover:shadow-[0_20px_60px_-20px_rgba(var(--color-accent-rgb),0.35)] ${CARD_FOCUS_RING}"
         >
           <figure class="aspect-[16/9] overflow-hidden">
             <img
@@ -528,14 +530,14 @@ export function renderLinkedInFeatured(linkedinFeatured) {
 
   const active = (linkedinFeatured.posts || []).filter((post) => post.active);
   if (!active.length) {
-    container.innerHTML = `<p class="text-sm text-[var(--color-text-muted)]">No featured posts right now — see the full profile on <a href="${linkedinFeatured.profileUrl}" target="_blank" rel="noopener noreferrer" class="underline hover:text-[var(--color-accent-end)]">LinkedIn</a>.</p>`;
+    container.innerHTML = `<p class="text-sm text-[var(--color-text-muted)]">No featured posts right now — see the full profile on <a href="${linkedinFeatured.profileUrl}" target="_blank" rel="noopener noreferrer" class="underline hover:text-[var(--color-accent-text)]">LinkedIn</a>.</p>`;
     return;
   }
 
   container.innerHTML = active
     .map(
       (post) => `
-        <div data-linkedin-slot class="relative h-[540px] overflow-hidden rounded-2xl border border-[var(--color-border-glass)] bg-[var(--color-surface)] shadow-[0_20px_60px_-30px_rgba(var(--color-accent-rgb),0.5)]">
+        <div data-linkedin-slot class="relative h-[540px] overflow-hidden rounded-[var(--radius-card)] border border-[var(--color-border-glass)] bg-[var(--color-surface)] shadow-[0_20px_60px_-30px_rgba(var(--color-accent-rgb),0.5)]">
           <div data-linkedin-loader class="absolute inset-0 z-10 flex flex-col items-center justify-center gap-3 bg-[var(--color-surface)] px-6 transition-opacity duration-500">
             <span aria-hidden="true" class="h-8 w-8 animate-spin rounded-full border-2 border-[var(--color-border-glass)] border-t-[var(--color-accent-end)] motion-reduce:animate-none"></span>
             <p data-linkedin-loader-text aria-hidden="true" class="min-h-[1.25rem] text-center font-mono text-xs text-[var(--color-text-muted)]"></p>
@@ -592,9 +594,9 @@ export function renderTestimonials(testimonials) {
   container.innerHTML = visible
     .map(
       (t) => `
-        <div data-reveal-item class="${REVEAL_ITEM_CLASSES} flex h-full flex-col justify-between rounded-2xl border border-[var(--color-border-glass)] bg-[var(--color-surface-glass)] p-6 backdrop-blur-md">
+        <div data-reveal-item class="${REVEAL_ITEM_CLASSES} flex h-full flex-col justify-between rounded-[var(--radius-card)] border border-[var(--color-border-glass)] bg-[var(--color-surface-glass)] p-6">
           <div>
-            <div class="text-[var(--color-accent-end)]">${renderStars(t.rating)}</div>
+            <div class="text-[var(--color-accent-text)]">${renderStars(t.rating)}</div>
             <p class="mt-4 text-sm text-[var(--color-text-muted)]">&ldquo;${t.quote}&rdquo;</p>
           </div>
           <div class="mt-6 flex items-center gap-3">

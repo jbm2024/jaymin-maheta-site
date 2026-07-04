@@ -13,10 +13,10 @@ import {
   renderLinkedInFeatured,
   renderTestimonials,
   renderLatestBlog,
-  fetchJSON,
   setText,
   isReducedMotion,
 } from "../main.js";
+import { getGalleryData, getLatestBlogPosts } from "../data.js";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -48,7 +48,7 @@ function renderGallery(images) {
           data-pswp-width="${img.width}"
           data-pswp-height="${img.height}"
           data-reveal-item
-          class="${REVEAL_ITEM_CLASSES} group block overflow-hidden rounded-2xl border border-[var(--color-border-glass)] bg-[var(--color-surface-glass)] backdrop-blur-md focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-accent-end)]"
+          class="${REVEAL_ITEM_CLASSES} group block overflow-hidden rounded-[var(--radius-card)] border border-[var(--color-border-glass)] bg-[var(--color-surface-glass)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-accent-end)]"
           target="_blank"
           rel="noreferrer"
         >
@@ -105,18 +105,14 @@ async function init() {
   initMobileNav();
   initPageTransitions();
 
-  const [site, galleryData, blogData] = await Promise.all([
-    renderNavFooter(),
-    fetchJSON("assets/data/gallery.json"),
-    fetchJSON("assets/data/blog.json"),
-  ]);
+  const [site, galleryData, latestPosts] = await Promise.all([renderNavFooter(), getGalleryData(), getLatestBlogPosts()]);
 
   setText(document.querySelector("[data-gallery-heading]"), galleryData.intro.heading);
   setText(document.querySelector("[data-gallery-subtitle]"), galleryData.intro.subtitle);
   renderGallery(galleryData.images);
   renderTestimonials(site?.testimonials);
   renderLinkedInFeatured(site?.linkedinFeatured);
-  renderLatestBlog(blogData?.posts);
+  renderLatestBlog(latestPosts);
 
   revealOnScroll();
   initStaggerReveals();

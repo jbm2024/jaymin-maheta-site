@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <script>
+    (function () {
+      try {
+        var stored = localStorage.getItem("jm-theme");
+        var theme = stored || (window.matchMedia("(prefers-color-scheme: light)").matches ? "light" : "dark");
+        document.documentElement.setAttribute("data-theme", theme);
+      } catch (e) {}
+    })();
+  </script>
+
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Admin — Jaymin Maheta</title>
+  <meta name="robots" content="noindex, nofollow" />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="preconnect" href="https://esm.sh" crossorigin />
+  <link rel="preconnect" href="https://mkuoqkyvgexcxxylxvbc.supabase.co" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600;700&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap" rel="stylesheet" />
+
+  <link rel="icon" href="assets/icons/favicon.svg" type="image/svg+xml" />
+  <meta name="theme-color" content="#14161c" />
+
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            bg: "var(--color-bg)",
+            surface: "var(--color-surface)",
+            text: "var(--color-text)",
+            muted: "var(--color-text-muted)",
+          },
+          fontFamily: {
+            heading: ["IBM Plex Mono", "monospace"],
+            body: ["IBM Plex Sans", "sans-serif"],
+            mono: ["IBM Plex Mono", "monospace"],
+          },
+        },
+      },
+    };
+  </script>
+
+  <script type="importmap">
+  {
+    "imports": {
+      "@supabase/supabase-js": "https://esm.sh/@supabase/supabase-js@2.45.4"
+    }
+  }
+  </script>
+
+  <link rel="stylesheet" href="assets/css/main.css" />
+  <link rel="stylesheet" href="assets/css/admin.css" />
+</head>
+<body class="bg-[var(--color-bg)] text-[var(--color-text)] font-body antialiased">
+  <!-- Navbar -->
+  <header class="admin-navbar border-b border-[var(--color-border-glass)] px-6 py-4">
+    <div class="flex items-center gap-3">
+      <span class="font-heading text-xl font-bold">JM</span>
+      <span class="spec-label">admin</span>
+    </div>
+    <div class="flex items-center gap-3">
+      <a href="index.html" class="spec-label transition-colors hover:text-[var(--color-accent-text)]">&larr; Back to site</a>
+      <button type="button" data-theme-toggle aria-label="Toggle color theme" class="flex h-9 w-9 items-center justify-center rounded-full border border-[var(--color-border-glass)] transition-colors hover:bg-[var(--color-surface-glass)]">
+        <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M21.752 15.002A9.72 9.72 0 0 1 18 15.75c-5.385 0-9.75-4.365-9.75-9.75 0-1.33.266-2.597.748-3.752A9.753 9.753 0 0 0 3 11.25C3 16.635 7.365 21 12.75 21a9.753 9.753 0 0 0 9.002-5.998Z" /></svg>
+      </button>
+      <button type="button" data-logout-btn class="hidden btn btn-secondary !px-4 !py-2 text-xs">Log out</button>
+    </div>
+  </header>
+
+  <!-- Login gate -->
+  <section data-login-view class="mx-auto mt-16 max-w-sm px-6">
+    <h1 class="font-heading text-2xl font-bold">Admin sign in</h1>
+    <p class="mt-2 text-sm text-[var(--color-text-muted)]">Sign in with the admin account created in the Supabase dashboard.</p>
+    <form data-login-form class="mt-6 space-y-4">
+      <div>
+        <label for="login-email" class="block text-xs font-semibold uppercase tracking-wide text-[var(--color-text-muted)]">Email</label>
+        <input id="login-email" name="email" type="email" required autocomplete="username" class="admin-input mt-1" />
+      </div>
+      <div>
+        <label for="login-password" class="block text-xs font-semibold uppercase tracking-wide text-[var(--color-text-muted)]">Password</label>
+        <input id="login-password" name="password" type="password" required autocomplete="current-password" class="admin-input mt-1" />
+      </div>
+      <button type="submit" class="btn btn-primary w-full">Sign in</button>
+      <p data-login-status role="alert" class="min-h-[1.25rem] text-sm text-[var(--color-text-muted)]"></p>
+    </form>
+  </section>
+
+  <section data-unauthorized-view class="hidden mx-auto mt-16 max-w-sm px-6 text-center">
+    <h1 class="font-heading text-xl font-bold">Not an admin account</h1>
+    <p class="mt-2 text-sm text-[var(--color-text-muted)]">This account can sign in but isn't in the <code>admin_users</code> allowlist, so it can't manage content. Ask an existing admin to add it, or sign in with the admin account.</p>
+    <button type="button" data-unauthorized-logout class="btn btn-secondary mt-6">Sign out</button>
+  </section>
+
+  <!-- Dashboard (shown once signed in + confirmed admin): sidebar + main content -->
+  <div data-dashboard-view class="hidden admin-shell">
+    <aside class="admin-sidebar">
+      <nav aria-label="Content sections">
+        <button type="button" data-admin-tab="site" class="admin-sidebar-link" aria-selected="true">Site</button>
+        <button type="button" data-admin-tab="home" class="admin-sidebar-link">Home</button>
+        <button type="button" data-admin-tab="about" class="admin-sidebar-link">About</button>
+        <button type="button" data-admin-tab="projects" class="admin-sidebar-link">Projects</button>
+        <button type="button" data-admin-tab="blog" class="admin-sidebar-link">Blog</button>
+        <button type="button" data-admin-tab="gallery" class="admin-sidebar-link">Gallery</button>
+        <button type="button" data-admin-tab="contact" class="admin-sidebar-link">Contact</button>
+        <button type="button" data-admin-tab="testimonials" class="admin-sidebar-link">Testimonials</button>
+      </nav>
+    </aside>
+    <main data-admin-panel class="admin-main">
+      <p class="text-sm text-[var(--color-text-muted)]">Loading…</p>
+    </main>
+  </div>
+
+  <script type="module" src="assets/js/admin.js"></script>
+</body>
+</html>

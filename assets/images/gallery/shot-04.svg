@@ -1,13 +1,7 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="1600" height="1000" viewBox="0 0 1600 1000">
-  <defs>
-    <linearGradient id="g" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" stop-color="#0891b2"/>
-      <stop offset="100%" stop-color="#4f46e5"/>
-    </linearGradient>
-  </defs>
-  <rect width="1600" height="1000" fill="url(#g)"/>
-  <circle cx="220" cy="820" r="260" fill="rgba(255,255,255,0.06)"/>
-  <circle cx="1420" cy="140" r="180" fill="rgba(255,255,255,0.07)"/>
-  <text x="800" y="470" font-family="'JetBrains Mono', monospace" font-size="38" font-weight="600" fill="rgba(255,255,255,0.92)" text-anchor="middle">Mentoring Session</text>
-  <text x="800" y="525" font-family="'JetBrains Mono', monospace" font-size="20" fill="rgba(255,255,255,0.55)" text-anchor="middle">Placeholder — swap in assets/images/gallery/</text>
+  <rect width="1600" height="1000" fill="#14161c"/>
+  <circle cx="220" cy="820" r="260" fill="rgba(47,92,255,0.10)"/>
+  <circle cx="1420" cy="140" r="180" fill="rgba(47,92,255,0.08)"/>
+  <text x="800" y="470" font-family="'IBM Plex Mono', monospace" font-size="38" font-weight="600" fill="rgba(255,255,255,0.92)" text-anchor="middle">Mentoring Session</text>
+  <text x="800" y="525" font-family="'IBM Plex Mono', monospace" font-size="20" fill="rgba(255,255,255,0.55)" text-anchor="middle">Placeholder — swap in assets/images/gallery/</text>
 </svg>

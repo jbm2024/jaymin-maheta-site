@@ -10,10 +10,10 @@ import {
   initPageTransitions,
   renderLinkedInFeatured,
   renderTestimonials,
-  fetchJSON,
   setText,
   isReducedMotion,
 } from "../main.js";
+import { getBlogData } from "../data.js";
 
 const REVEAL_ITEM_CLASSES = "opacity-0 translate-y-6 motion-reduce:opacity-100 motion-reduce:translate-y-0";
 const CARD_FOCUS_RING =
@@ -47,7 +47,7 @@ function renderPosts(posts) {
         <a
           href="blog-post.html?slug=${encodeURIComponent(post.slug)}"
           data-reveal-item
-          class="${REVEAL_ITEM_CLASSES} group flex h-full flex-col overflow-hidden rounded-2xl border border-[var(--color-border-glass)] bg-[var(--color-surface-glass)] backdrop-blur-md transition-all duration-300 hover:-translate-y-1 hover:border-[var(--color-accent-end)]/45 hover:shadow-[0_20px_60px_-20px_rgba(var(--color-accent-rgb),0.35)] ${CARD_FOCUS_RING}"
+          class="${REVEAL_ITEM_CLASSES} group flex h-full flex-col overflow-hidden rounded-[var(--radius-card)] border border-[var(--color-border-glass)] bg-[var(--color-surface-glass)] transition-all duration-300 hover:-translate-y-1 hover:border-[var(--color-accent-end)]/45 hover:shadow-[0_20px_60px_-20px_rgba(var(--color-accent-rgb),0.35)] ${CARD_FOCUS_RING}"
         >
           <figure class="aspect-[16/9] overflow-hidden">
             <img
@@ -59,7 +59,7 @@ function renderPosts(posts) {
           </figure>
           <div class="flex flex-1 flex-col p-6">
             <div class="flex flex-wrap gap-2">
-              ${post.tags.map((t) => `<span class="rounded-full bg-[var(--color-surface)] px-3 py-1 font-mono text-xs">${t}</span>`).join("")}
+              ${post.tags.map((t) => `<span class="tag">${t}</span>`).join("")}
             </div>
             <h2 class="mt-4 font-heading text-lg font-bold">${post.title}</h2>
             <p class="mt-2 flex-1 text-sm text-[var(--color-text-muted)]">${post.excerpt}</p>
@@ -97,7 +97,7 @@ async function init() {
   initMobileNav();
   initPageTransitions();
 
-  const [site, blogData] = await Promise.all([renderNavFooter(), fetchJSON("assets/data/blog.json")]);
+  const [site, blogData] = await Promise.all([renderNavFooter(), getBlogData()]);
 
   setText(document.querySelector("[data-blog-eyebrow]"), blogData.intro.eyebrow);
   setText(document.querySelector("[data-blog-heading]"), blogData.intro.heading);

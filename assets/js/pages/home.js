@@ -13,10 +13,10 @@ import {
   renderLinkedInFeatured,
   renderTestimonials,
   renderLatestBlog,
-  fetchJSON,
   setText,
   isReducedMotion,
 } from "../main.js";
+import { getHomeData, getLatestBlogPosts } from "../data.js";
 
 const REVEAL_ITEM_CLASSES = "opacity-0 translate-y-6 motion-reduce:opacity-100 motion-reduce:translate-y-0";
 
@@ -32,7 +32,7 @@ function renderStats(stats) {
   container.innerHTML = stats
     .map(
       (stat) => `
-        <div data-reveal-item class="${REVEAL_ITEM_CLASSES} rounded-2xl border border-[var(--color-border-glass)] bg-[var(--color-surface-glass)] p-8 text-center backdrop-blur-md">
+        <div data-reveal-item class="${REVEAL_ITEM_CLASSES} rounded-[var(--radius-card)] border border-[var(--color-border-glass)] bg-[var(--color-surface-glass)] p-8 text-center">
           <p class="font-heading text-4xl font-bold bg-gradient-to-r from-[var(--color-accent-start)] to-[var(--color-accent-end)] bg-clip-text text-transparent" data-stat-value data-stat-target="${stat.value}" data-stat-suffix="${stat.suffix || ""}">0${stat.suffix || ""}</p>
           <p class="mt-2 text-sm text-[var(--color-text-muted)]">${stat.label}</p>
         </div>
@@ -50,7 +50,7 @@ function renderTechStack(techStack) {
   container.innerHTML = techStack
     .map(
       (tech) => `
-        <span data-reveal-item class="${REVEAL_ITEM_CLASSES} rounded-full border border-[var(--color-border-glass)] bg-[var(--color-surface-glass)] px-4 py-2 font-mono text-sm">
+        <span data-reveal-item class="${REVEAL_ITEM_CLASSES} tag">
           ${tech.name}
         </span>
       `
@@ -65,14 +65,14 @@ function renderFeaturedProjects(projects) {
   container.innerHTML = projects
     .map(
       (project) => `
-        <a href="projects.html#${project.id}" data-reveal-item class="${REVEAL_ITEM_CLASSES} [perspective:1200px] block h-full rounded-2xl border border-[var(--color-border-glass)] bg-[var(--color-surface-glass)] p-6 backdrop-blur-md transition-all duration-300 hover:-translate-y-1 hover:border-[var(--color-accent-end)]/45 hover:shadow-[0_20px_60px_-20px_rgba(var(--color-accent-rgb),0.35)] ${CARD_FOCUS_RING}">
+        <a href="projects.html#${project.id}" data-reveal-item class="${REVEAL_ITEM_CLASSES} [perspective:1200px] block h-full rounded-[var(--radius-card)] border border-[var(--color-border-glass)] bg-[var(--color-surface-glass)] p-6 transition-all duration-300 hover:-translate-y-1 hover:border-[var(--color-accent-end)]/45 hover:shadow-[0_20px_60px_-20px_rgba(var(--color-accent-rgb),0.35)] ${CARD_FOCUS_RING}">
           <h3 class="font-heading text-lg font-bold">${project.title}</h3>
           <p class="mt-3 text-sm text-[var(--color-text-muted)]">${project.blurb}</p>
           <div class="mt-4 flex flex-wrap gap-2">
             ${project.tech
               .map(
                 (t) =>
-                  `<span class="rounded-full bg-[var(--color-surface-glass)] px-3 py-1 font-mono text-xs text-[var(--color-text-muted)]">${t}</span>`
+                  `<span class="tag">${t}</span>`
               )
               .join("")}
           </div>
@@ -108,11 +108,7 @@ async function init() {
   initMobileNav();
   initPageTransitions();
 
-  const [site, homeData, blogData] = await Promise.all([
-    renderNavFooter(),
-    fetchJSON("assets/data/home.json"),
-    fetchJSON("assets/data/blog.json"),
-  ]);
+  const [site, homeData, latestPosts] = await Promise.all([renderNavFooter(), getHomeData(), getLatestBlogPosts()]);
 
   setText(document.querySelector("[data-hero-eyebrow]"), homeData.hero.eyebrow);
   setText(document.querySelector("[data-hero-title]"), homeData.hero.title);
@@ -134,7 +130,7 @@ async function init() {
   renderFeaturedProjects(homeData.featuredProjects);
   renderTestimonials(site?.testimonials);
   renderLinkedInFeatured(site?.linkedinFeatured);
-  renderLatestBlog(blogData?.posts);
+  renderLatestBlog(latestPosts);
 
   revealOnScroll();
   initStaggerReveals();
