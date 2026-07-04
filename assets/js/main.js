@@ -317,6 +317,63 @@ export function initAccordions(selector = "[data-accordion]") {
 }
 
 const REVEAL_ITEM_CLASSES = "opacity-0 translate-y-6 motion-reduce:opacity-100 motion-reduce:translate-y-0";
+const CARD_FOCUS_RING =
+  "focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-accent-end)]";
+
+function formatPostDate(iso) {
+  return new Date(iso).toLocaleDateString("en-US", { year: "numeric", month: "long", day: "numeric" });
+}
+
+/**
+ * Renders the site-wide "From the blog" section into [data-latest-blog]
+ * (present on every page except blog.html/blog-post.html, which already
+ * show the full post list). Data lives in blog.json; each page fetches it
+ * alongside its own page data and passes posts in here. Shows the 3 most
+ * recently dated visible posts.
+ */
+export function renderLatestBlog(posts) {
+  const section = document.querySelector("[data-latest-blog]");
+  if (!section || !posts) return;
+
+  const container = section.querySelector("[data-latest-blog-grid]");
+  if (!container) return;
+
+  const latest = posts
+    .filter((post) => post.visible)
+    .sort((a, b) => new Date(b.date) - new Date(a.date))
+    .slice(0, 3);
+
+  if (!latest.length) {
+    section.classList.add("hidden");
+    return;
+  }
+
+  container.innerHTML = latest
+    .map(
+      (post) => `
+        <a
+          href="blog-post.html?slug=${encodeURIComponent(post.slug)}"
+          data-reveal-item
+          class="${REVEAL_ITEM_CLASSES} group flex h-full flex-col overflow-hidden rounded-2xl border border-[var(--color-border-glass)] bg-[var(--color-surface-glass)] backdrop-blur-md transition-all duration-300 hover:-translate-y-1 hover:border-[var(--color-accent-end)]/45 hover:shadow-[0_20px_60px_-20px_rgba(var(--color-accent-rgb),0.35)] ${CARD_FOCUS_RING}"
+        >
+          <figure class="aspect-[16/9] overflow-hidden">
+            <img
+              src="${post.coverImage}"
+              alt="${post.title}"
+              loading="lazy"
+              class="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
+            />
+          </figure>
+          <div class="flex flex-1 flex-col p-6">
+            <h3 class="font-heading text-lg font-bold">${post.title}</h3>
+            <p class="mt-2 flex-1 text-sm text-[var(--color-text-muted)]">${post.excerpt}</p>
+            <p class="mt-4 font-mono text-xs text-[var(--color-text-muted)]">${formatPostDate(post.date)} · ${post.readTime}</p>
+          </div>
+        </a>
+      `
+    )
+    .join("");
+}
 
 const LINKEDIN_LOADER_PHRASES = [
   "Pulling in fresh thoughts…",

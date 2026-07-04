@@ -12,6 +12,7 @@ import {
   initStatCounters,
   renderLinkedInFeatured,
   renderTestimonials,
+  renderLatestBlog,
   fetchJSON,
   setText,
   isReducedMotion,
@@ -107,7 +108,11 @@ async function init() {
   initMobileNav();
   initPageTransitions();
 
-  const [site, homeData] = await Promise.all([renderNavFooter(), fetchJSON("assets/data/home.json")]);
+  const [site, homeData, blogData] = await Promise.all([
+    renderNavFooter(),
+    fetchJSON("assets/data/home.json"),
+    fetchJSON("assets/data/blog.json"),
+  ]);
 
   setText(document.querySelector("[data-hero-eyebrow]"), homeData.hero.eyebrow);
   setText(document.querySelector("[data-hero-title]"), homeData.hero.title);
@@ -129,6 +134,7 @@ async function init() {
   renderFeaturedProjects(homeData.featuredProjects);
   renderTestimonials(site?.testimonials);
   renderLinkedInFeatured(site?.linkedinFeatured);
+  renderLatestBlog(blogData?.posts);
 
   revealOnScroll();
   initStaggerReveals();

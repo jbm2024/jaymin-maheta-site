@@ -72,17 +72,19 @@ function renderPost(post) {
   const body = document.querySelector("[data-post-body]");
   if (body) body.innerHTML = post.content.map(renderBlock).join("");
 
+  const currentUrl = window.location.href;
+
   const shareLinkedIn = document.querySelector("[data-post-share-linkedin]");
-  if (shareLinkedIn) shareLinkedIn.href = `https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(canonicalUrl)}`;
+  if (shareLinkedIn) shareLinkedIn.href = `https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(currentUrl)}`;
 
   const shareTwitter = document.querySelector("[data-post-share-twitter]");
-  if (shareTwitter) shareTwitter.href = `https://twitter.com/intent/tweet?url=${encodeURIComponent(canonicalUrl)}&text=${encodeURIComponent(post.title)}`;
+  if (shareTwitter) shareTwitter.href = `https://twitter.com/intent/tweet?url=${encodeURIComponent(currentUrl)}&text=${encodeURIComponent(post.title)}`;
 
   const copyBtn = document.querySelector("[data-post-copy-link]");
   const copyLabel = document.querySelector("[data-post-copy-link-label]");
   copyBtn?.addEventListener("click", async () => {
     try {
-      await navigator.clipboard.writeText(canonicalUrl);
+      await navigator.clipboard.writeText(currentUrl);
       if (copyLabel) {
         copyLabel.textContent = "Copied!";
         setTimeout(() => {

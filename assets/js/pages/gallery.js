@@ -12,6 +12,7 @@ import {
   initPageTransitions,
   renderLinkedInFeatured,
   renderTestimonials,
+  renderLatestBlog,
   fetchJSON,
   setText,
   isReducedMotion,
@@ -104,13 +105,18 @@ async function init() {
   initMobileNav();
   initPageTransitions();
 
-  const [site, galleryData] = await Promise.all([renderNavFooter(), fetchJSON("assets/data/gallery.json")]);
+  const [site, galleryData, blogData] = await Promise.all([
+    renderNavFooter(),
+    fetchJSON("assets/data/gallery.json"),
+    fetchJSON("assets/data/blog.json"),
+  ]);
 
   setText(document.querySelector("[data-gallery-heading]"), galleryData.intro.heading);
   setText(document.querySelector("[data-gallery-subtitle]"), galleryData.intro.subtitle);
   renderGallery(galleryData.images);
   renderTestimonials(site?.testimonials);
   renderLinkedInFeatured(site?.linkedinFeatured);
+  renderLatestBlog(blogData?.posts);
 
   revealOnScroll();
   initStaggerReveals();

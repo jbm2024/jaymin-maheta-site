@@ -14,6 +14,7 @@ import {
   initAccordions,
   renderLinkedInFeatured,
   renderTestimonials,
+  renderLatestBlog,
   fetchJSON,
   isReducedMotion,
 } from "../main.js";
@@ -209,12 +210,17 @@ async function init() {
   initMobileNav();
   initPageTransitions();
 
-  const [site, projectsData] = await Promise.all([renderNavFooter(), fetchJSON("assets/data/projects.json")]);
+  const [site, projectsData, blogData] = await Promise.all([
+    renderNavFooter(),
+    fetchJSON("assets/data/projects.json"),
+    fetchJSON("assets/data/blog.json"),
+  ]);
 
   renderProjects(projectsData.projects);
   renderFilters(projectsData.filters);
   renderTestimonials(site?.testimonials);
   renderLinkedInFeatured(site?.linkedinFeatured);
+  renderLatestBlog(blogData?.posts);
 
   revealOnScroll();
   initStaggerReveals();

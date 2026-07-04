@@ -127,6 +127,25 @@
       <p data-gallery-empty class="hidden py-12 text-center text-sm text-[var(--color-text-muted)]">No images to show yet — check back soon.</p>
     </section>
 
+    <!-- Latest from the blog (shared across all pages, data from blog.json) -->
+    <section id="latest-blog" data-latest-blog class="mt-24">
+      <div class="flex flex-wrap items-end justify-between gap-6">
+        <div>
+          <p class="font-mono text-xs uppercase tracking-widest text-[var(--color-accent-end)]">Writing</p>
+          <h2 class="mt-2 font-heading text-2xl font-bold md:text-3xl">From the blog</h2>
+        </div>
+        <a href="blog.html" data-magnetic class="inline-flex shrink-0 items-center gap-2 rounded font-mono text-sm text-[var(--color-accent-end)] transition-colors hover:opacity-80 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-accent-end)]">
+          View all posts
+          <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M17 8l4 4m0 0-4 4m4-4H3" /></svg>
+        </a>
+      </div>
+      <div data-reveal-stagger data-latest-blog-grid class="mt-8 grid grid-cols-1 gap-8 md:grid-cols-3">
+        <div class="h-80 animate-pulse motion-reduce:animate-none rounded-2xl bg-[var(--color-surface-glass)]"></div>
+        <div class="h-80 animate-pulse motion-reduce:animate-none rounded-2xl bg-[var(--color-surface-glass)]"></div>
+        <div class="h-80 animate-pulse motion-reduce:animate-none rounded-2xl bg-[var(--color-surface-glass)]"></div>
+      </div>
+    </section>
+
     <!-- Testimonials (shared across all pages, data from site.json) -->
     <section id="testimonials" data-testimonials-section class="mt-24">
       <div class="text-center">

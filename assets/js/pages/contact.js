@@ -10,6 +10,7 @@ import {
   initPageTransitions,
   renderLinkedInFeatured,
   renderTestimonials,
+  renderLatestBlog,
   fetchJSON,
   setText,
   isReducedMotion,
@@ -77,11 +78,16 @@ async function init() {
   initMobileNav();
   initPageTransitions();
 
-  const [site, contactData] = await Promise.all([renderNavFooter(), fetchJSON("assets/data/contact.json")]);
+  const [site, contactData, blogData] = await Promise.all([
+    renderNavFooter(),
+    fetchJSON("assets/data/contact.json"),
+    fetchJSON("assets/data/blog.json"),
+  ]);
 
   renderContactInfo(contactData);
   renderTestimonials(site?.testimonials);
   renderLinkedInFeatured(site?.linkedinFeatured);
+  renderLatestBlog(blogData?.posts);
   initContactForm(contactData.formEndpoint);
 
   revealOnScroll();
