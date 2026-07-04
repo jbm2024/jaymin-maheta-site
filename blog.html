@@ -13,18 +13,18 @@
 
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>About — Jaymin Maheta</title>
-  <meta name="description" content="Learn about Jaymin Maheta's background, skills, experience, and awards as a Senior UI Developer specializing in Angular, React, and design systems." />
-  <link rel="canonical" href="https://www.jayminmaheta.com/about.html" />
+  <title>Blog — Jaymin Maheta</title>
+  <meta name="description" content="Notes from Jaymin Maheta on design systems, accessibility, and closing the gap between Figma and production code." />
+  <link rel="canonical" href="https://www.jayminmaheta.com/blog.html" />
 
-  <meta property="og:type" content="profile" />
-  <meta property="og:title" content="About — Jaymin Maheta" />
-  <meta property="og:description" content="Background, skills, experience, and awards of Senior UI Developer Jaymin Maheta." />
-  <meta property="og:url" content="https://www.jayminmaheta.com/about.html" />
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content="Blog — Jaymin Maheta" />
+  <meta property="og:description" content="Notes on design systems, accessibility, and the space where design and code have to agree with each other." />
+  <meta property="og:url" content="https://www.jayminmaheta.com/blog.html" />
   <meta property="og:image" content="https://www.jayminmaheta.com/assets/images/og-image.jpg" />
   <meta name="twitter:card" content="summary_large_image" />
-  <meta name="twitter:title" content="About — Jaymin Maheta" />
-  <meta name="twitter:description" content="Background, skills, experience, and awards of Senior UI Developer Jaymin Maheta." />
+  <meta name="twitter:title" content="Blog — Jaymin Maheta" />
+  <meta name="twitter:description" content="Notes on design systems, accessibility, and the space where design and code have to agree with each other." />
   <meta name="twitter:image" content="https://www.jayminmaheta.com/assets/images/og-image.jpg" />
 
   <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -37,7 +37,7 @@
   <meta name="theme-color" content="#07070c" />
 
   <link rel="preload" href="assets/data/site.json" as="fetch" crossorigin="anonymous" />
-  <link rel="preload" href="assets/data/about.json" as="fetch" crossorigin="anonymous" />
+  <link rel="preload" href="assets/data/blog.json" as="fetch" crossorigin="anonymous" />
 
   <script src="https://cdn.tailwindcss.com"></script>
   <script>
@@ -106,65 +106,19 @@
   </header>
 
   <main id="main-content" class="relative z-10 mx-auto max-w-6xl px-6 pb-32 pt-40">
-    <!-- Bio -->
-    <section id="bio">
-      <p data-bio-eyebrow class="font-mono text-xs uppercase tracking-widest text-[var(--color-accent-end)]">Senior UI Developer · Angular &amp; React</p>
-      <h1 data-bio-heading class="mt-3 font-heading text-4xl font-bold md:text-5xl">About Me</h1>
-      <div data-reveal data-bio-paragraphs class="opacity-0 translate-y-6 motion-reduce:opacity-100 motion-reduce:translate-y-0 mt-8 space-y-5 text-base leading-relaxed text-[var(--color-text-muted)] md:text-lg">
-        <p>I'm Jaymin Maheta, a Senior UI Developer with 6+ years of experience turning complex product requirements into interfaces that feel effortless to use.</p>
-        <p>My work sits at the intersection of engineering and design — I've led design systems from Figma file to production component library, mentored teams of 200+ across delivery cycles, and shipped 10+ products across healthcare, productivity, and fintech.</p>
-        <p>I care most about the details most users never consciously notice: load-bearing accessibility, motion that respects intent, and code that's as maintainable as the interface is polished.</p>
-      </div>
-
-      <div data-reveal-stagger data-stats-grid class="mt-12 grid grid-cols-2 gap-4 sm:grid-cols-4">
-        <div class="h-24 animate-pulse motion-reduce:animate-none rounded-2xl bg-[var(--color-surface-glass)]"></div>
-        <div class="h-24 animate-pulse motion-reduce:animate-none rounded-2xl bg-[var(--color-surface-glass)]"></div>
-        <div class="h-24 animate-pulse motion-reduce:animate-none rounded-2xl bg-[var(--color-surface-glass)]"></div>
-        <div class="h-24 animate-pulse motion-reduce:animate-none rounded-2xl bg-[var(--color-surface-glass)]"></div>
-      </div>
+    <section id="blog-intro">
+      <p data-blog-eyebrow class="font-mono text-xs uppercase tracking-widest text-[var(--color-accent-end)]">Writing</p>
+      <h1 data-blog-heading class="mt-3 font-heading text-4xl font-bold md:text-5xl">Blog</h1>
+      <p data-blog-subtitle class="mt-6 max-w-2xl text-base text-[var(--color-text-muted)] md:text-lg"></p>
     </section>
 
-    <!-- Philosophy -->
-    <section id="philosophy" class="mt-24">
-      <h2 data-reveal class="opacity-0 translate-y-6 motion-reduce:opacity-100 motion-reduce:translate-y-0 font-heading text-2xl font-bold md:text-3xl">How I Work</h2>
-      <div data-reveal-stagger data-philosophy-grid class="mt-8 grid grid-cols-1 gap-6 sm:grid-cols-2">
-        <div class="h-32 animate-pulse motion-reduce:animate-none rounded-2xl bg-[var(--color-surface-glass)]"></div>
-        <div class="h-32 animate-pulse motion-reduce:animate-none rounded-2xl bg-[var(--color-surface-glass)]"></div>
-        <div class="h-32 animate-pulse motion-reduce:animate-none rounded-2xl bg-[var(--color-surface-glass)]"></div>
-        <div class="h-32 animate-pulse motion-reduce:animate-none rounded-2xl bg-[var(--color-surface-glass)]"></div>
+    <section id="blog-list" class="mt-16">
+      <div data-reveal-stagger data-blog-list class="grid grid-cols-1 gap-8 md:grid-cols-3">
+        <div class="h-80 animate-pulse motion-reduce:animate-none rounded-2xl bg-[var(--color-surface-glass)]"></div>
+        <div class="h-80 animate-pulse motion-reduce:animate-none rounded-2xl bg-[var(--color-surface-glass)]"></div>
+        <div class="h-80 animate-pulse motion-reduce:animate-none rounded-2xl bg-[var(--color-surface-glass)]"></div>
       </div>
-    </section>
-
-    <!-- Skills -->
-    <section id="skills" class="mt-24">
-      <h2 data-reveal class="opacity-0 translate-y-6 motion-reduce:opacity-100 motion-reduce:translate-y-0 font-heading text-2xl font-bold md:text-3xl">Skills</h2>
-      <div data-reveal-stagger data-skills-grid class="mt-8 grid grid-cols-1 gap-6 sm:grid-cols-2">
-        <div class="h-28 animate-pulse motion-reduce:animate-none rounded-2xl bg-[var(--color-surface-glass)]"></div>
-        <div class="h-28 animate-pulse motion-reduce:animate-none rounded-2xl bg-[var(--color-surface-glass)]"></div>
-        <div class="h-28 animate-pulse motion-reduce:animate-none rounded-2xl bg-[var(--color-surface-glass)]"></div>
-        <div class="h-28 animate-pulse motion-reduce:animate-none rounded-2xl bg-[var(--color-surface-glass)]"></div>
-      </div>
-    </section>
-
-    <!-- Experience -->
-    <section id="experience" class="mt-24">
-      <h2 data-reveal class="opacity-0 translate-y-6 motion-reduce:opacity-100 motion-reduce:translate-y-0 font-heading text-2xl font-bold md:text-3xl">Experience</h2>
-      <p data-reveal class="opacity-0 translate-y-6 motion-reduce:opacity-100 motion-reduce:translate-y-0 mt-2 text-sm text-[var(--color-text-muted)]">Tap a role to expand key achievements.</p>
-      <div data-experience-timeline class="mt-8 space-y-6 border-l border-[var(--color-border-glass)] pl-6">
-        <div class="h-24 animate-pulse motion-reduce:animate-none rounded-2xl bg-[var(--color-surface-glass)]"></div>
-        <div class="h-24 animate-pulse motion-reduce:animate-none rounded-2xl bg-[var(--color-surface-glass)]"></div>
-        <div class="h-24 animate-pulse motion-reduce:animate-none rounded-2xl bg-[var(--color-surface-glass)]"></div>
-      </div>
-    </section>
-
-    <!-- Awards -->
-    <section id="awards" class="mt-24">
-      <h2 data-reveal class="opacity-0 translate-y-6 motion-reduce:opacity-100 motion-reduce:translate-y-0 font-heading text-2xl font-bold md:text-3xl">Awards</h2>
-      <div data-reveal-stagger data-awards-grid class="mt-8 grid grid-cols-1 gap-6 sm:grid-cols-3">
-        <div class="h-32 animate-pulse motion-reduce:animate-none rounded-2xl bg-[var(--color-surface-glass)]"></div>
-        <div class="h-32 animate-pulse motion-reduce:animate-none rounded-2xl bg-[var(--color-surface-glass)]"></div>
-        <div class="h-32 animate-pulse motion-reduce:animate-none rounded-2xl bg-[var(--color-surface-glass)]"></div>
-      </div>
+      <p data-blog-empty class="hidden py-12 text-center text-sm text-[var(--color-text-muted)]">No posts to show yet — check back soon.</p>
     </section>
 
     <!-- Testimonials (shared across all pages, data from site.json) -->
@@ -210,6 +164,6 @@
     <div data-site-footer data-nav-footer-loaded class="mx-auto flex max-w-6xl flex-col items-center gap-4 sm:flex-row sm:justify-between"></div>
   </footer>
 
-  <script type="module" src="assets/js/pages/about.js"></script>
+  <script type="module" src="assets/js/pages/blog.js"></script>
 </body>
 </html>

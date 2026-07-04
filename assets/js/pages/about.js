@@ -12,6 +12,7 @@ import {
   initStatCounters,
   initAccordions,
   renderLinkedInFeatured,
+  renderTestimonials,
   fetchJSON,
   setText,
   isReducedMotion,
@@ -248,6 +249,7 @@ async function init() {
   renderSkills(aboutData.skills);
   renderExperience(aboutData.experience);
   renderAwards(aboutData.awards);
+  renderTestimonials(site?.testimonials);
   renderLinkedInFeatured(site?.linkedinFeatured);
 
   revealOnScroll();

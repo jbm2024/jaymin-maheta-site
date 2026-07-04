@@ -11,6 +11,7 @@ import {
   initScrollProgress,
   initPageTransitions,
   renderLinkedInFeatured,
+  renderTestimonials,
   fetchJSON,
   setText,
   isReducedMotion,
@@ -108,6 +109,7 @@ async function init() {
   setText(document.querySelector("[data-gallery-heading]"), galleryData.intro.heading);
   setText(document.querySelector("[data-gallery-subtitle]"), galleryData.intro.subtitle);
   renderGallery(galleryData.images);
+  renderTestimonials(site?.testimonials);
   renderLinkedInFeatured(site?.linkedinFeatured);
 
   revealOnScroll();

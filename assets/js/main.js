@@ -501,6 +501,58 @@ export function renderLinkedInFeatured(linkedinFeatured) {
   initLinkedInLoading(section);
 }
 
+/** Renders a 5-star rating as filled/empty stars, e.g. rating 4 -> "★★★★☆". */
+function renderStars(rating) {
+  const full = Math.max(0, Math.min(5, Math.round(rating || 0)));
+  return `<span aria-hidden="true">${"★".repeat(full)}<span class="opacity-30">${"★".repeat(5 - full)}</span></span>`;
+}
+
+/**
+ * Renders the site-wide testimonials section into [data-testimonials-section]
+ * (present on every page). Data lives in site.json alongside linkedinFeatured,
+ * so it's fetched once via renderNavFooter() and shared here. Only entries
+ * with visible:true render — that flag is the single on/off switch per
+ * testimonial, so one can be staged or retired without deleting its data.
+ * If none are visible, the whole section hides rather than showing empty.
+ */
+export function renderTestimonials(testimonials) {
+  const section = document.querySelector("[data-testimonials-section]");
+  if (!section || !testimonials) return;
+
+  setText(section.querySelector("[data-testimonials-eyebrow]"), testimonials.intro?.eyebrow);
+  setText(section.querySelector("[data-testimonials-heading]"), testimonials.intro?.heading);
+  setText(section.querySelector("[data-testimonials-subtitle]"), testimonials.intro?.subtitle);
+
+  const container = section.querySelector("[data-testimonials-grid]");
+  if (!container) return;
+
+  const visible = (testimonials.items || []).filter((t) => t.visible);
+  if (!visible.length) {
+    section.classList.add("hidden");
+    return;
+  }
+
+  container.innerHTML = visible
+    .map(
+      (t) => `
+        <div data-reveal-item class="${REVEAL_ITEM_CLASSES} flex h-full flex-col justify-between rounded-2xl border border-[var(--color-border-glass)] bg-[var(--color-surface-glass)] p-6 backdrop-blur-md">
+          <div>
+            <div class="text-[var(--color-accent-end)]">${renderStars(t.rating)}</div>
+            <p class="mt-4 text-sm text-[var(--color-text-muted)]">&ldquo;${t.quote}&rdquo;</p>
+          </div>
+          <div class="mt-6 flex items-center gap-3">
+            <span aria-hidden="true" class="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-gradient-to-r from-[var(--color-accent-start)] to-[var(--color-accent-end)] font-heading text-sm font-semibold text-white">${t.initials}</span>
+            <div>
+              <p class="font-heading text-sm font-semibold">${t.name}</p>
+              <p class="text-xs text-[var(--color-text-muted)]">${t.role} · ${t.company}</p>
+            </div>
+          </div>
+        </div>
+      `
+    )
+    .join("");
+}
+
 /**
  * Covers the viewport with a gradient wipe before following an internal
  * link, so the full-page navigation between the 4 pages doesn't feel like

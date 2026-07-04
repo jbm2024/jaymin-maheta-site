@@ -9,6 +9,7 @@ import {
   initScrollProgress,
   initPageTransitions,
   renderLinkedInFeatured,
+  renderTestimonials,
   fetchJSON,
   setText,
   isReducedMotion,
@@ -79,6 +80,7 @@ async function init() {
   const [site, contactData] = await Promise.all([renderNavFooter(), fetchJSON("assets/data/contact.json")]);
 
   renderContactInfo(contactData);
+  renderTestimonials(site?.testimonials);
   renderLinkedInFeatured(site?.linkedinFeatured);
   initContactForm(contactData.formEndpoint);
 

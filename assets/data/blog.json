@@ -1,0 +1,102 @@
+{
+  "intro": {
+    "eyebrow": "Writing",
+    "heading": "Blog",
+    "subtitle": "Notes on design systems, accessibility, and the space where design and code have to agree with each other."
+  },
+  "posts": [
+    {
+      "id": "design-systems-survive-contact",
+      "slug": "design-systems-that-survive-contact-with-real-products",
+      "title": "Design Systems That Survive Contact With Real Products",
+      "excerpt": "Every design system looks perfect in Storybook. Here's what actually breaks once real data, real edge cases, and three product teams start using it — and how to design for that from day one.",
+      "coverImage": "assets/images/blog/cover-design-systems.svg",
+      "author": { "name": "Jaymin Maheta", "role": "Senior UI Developer", "initials": "JM" },
+      "date": "2026-05-12",
+      "readTime": "7 min read",
+      "tags": ["Design Systems", "Angular", "React"],
+      "visible": true,
+      "content": [
+        { "type": "paragraph", "text": "Every design system I've ever seen looks flawless in its first demo. Buttons align. Spacing is consistent. The color tokens have nice names like `accent-500` instead of `#4f46e5-ish-blue-that-jake-picked`. Then it ships into a real product, three teams start consuming it in parallel, and within a month someone has shipped a button with an inline `style` override because the system 'didn't support their case.' This is the gap between a design system and a design system that survives contact with real products — and closing it is most of the actual job." },
+        { "type": "heading", "text": "The demo is not the test" },
+        { "type": "paragraph", "text": "A component library earns its keep the first time it meets a use case nobody designed for: a button that needs to be a link, a modal that needs to sit inside another modal, a data table with 40,000 rows instead of the 12 rows in the mockup. If your system only handles the cases in the Figma file, it isn't a system yet — it's a set of matching screenshots. The real test is whether a developer under deadline pressure reaches for your component or reaches for a `<div>` and some inline styles. Every time they reach for the `<div>`, that's not a discipline problem, it's a signal that the system left a gap." },
+        { "type": "quote", "text": "A design system's job isn't to look consistent in Storybook. It's to be the path of least resistance for the developer who's shipping at 4:58pm on a Friday." },
+        { "type": "heading", "text": "What actually breaks first" },
+        { "type": "list", "items": [
+          "Token drift — a second team needs a color the palette doesn't have, and instead of raising it, they hex-code a one-off that quietly forks the visual language.",
+          "Prop explosion — a component accumulates `variant`, `variant2`, and `isSpecialCase` booleans because nobody revisited the API after the third new requirement.",
+          "Silent forking — a team copies the component into their own repo to 'just tweak one thing,' and now you have two components with the same name and different behavior.",
+          "Accessibility regressions — a visual tweak (removing an outline, changing a focus ring) ships without anyone re-checking the keyboard flow it was protecting."
+        ]},
+        { "type": "paragraph", "text": "None of these show up in a demo. They show up three sprints later, in a different team's codebase, and by the time you notice, the fix isn't a component update — it's a migration." },
+        { "type": "heading", "text": "What I actually do differently now" },
+        { "type": "paragraph", "text": "On the Angular + PrimeNG library I own at Augmented Tech Labs, and earlier on the React rebuild for Compito, the pattern that held up was treating every component as a contract, not a snapshot. Concretely: every variant is token-driven, not one-off CSS — if a new visual need shows up, it becomes a new token proposal, not a local override. Every component ships with its keyboard and screen-reader behavior documented as part of the API, not as a separate accessibility pass. And every 'just this once' request gets the same response: either it becomes a first-class variant everyone can use, or it doesn't ship in the shared library at all." },
+        { "type": "paragraph", "text": "That last rule is the one that actually holds the line. It's tempting to unblock one team with a quick exception, but every exception you grant is a future inconsistency you'll be debugging in six months, in a codebase you may not even be looking at anymore." },
+        { "type": "heading", "text": "The unglamorous part: versioning and communication" },
+        { "type": "paragraph", "text": "The other thing that rarely makes it into design-system talks is how much of this is a communication problem, not a code problem. A breaking change to a button's default padding is a one-line diff and a two-week Slack conversation. The teams that handle this well aren't the ones with the cleverest component API — they're the ones with a change log people actually read, a deprecation window people actually respect, and a design-system owner who treats 'no' as a complete, defensible answer when a request would fork the system." },
+        { "type": "paragraph", "text": "A design system that survives contact with real products isn't the one with the most components. It's the one where, a year in, three different teams still reach for the same button." }
+      ]
+    },
+    {
+      "id": "accessibility-load-bearing",
+      "slug": "accessibility-is-load-bearing",
+      "title": "Accessibility Is Load-Bearing: Lessons From Auditing Healthcare UI",
+      "excerpt": "WCAG compliance isn't a checklist you run at the end of a sprint. Notes from auditing a patient-management platform where a missed focus state wasn't a cosmetic bug — it was a workflow blocker for real clinical staff.",
+      "coverImage": "assets/images/blog/cover-accessibility.svg",
+      "author": { "name": "Jaymin Maheta", "role": "Senior UI Developer", "initials": "JM" },
+      "date": "2026-04-03",
+      "readTime": "6 min read",
+      "tags": ["Accessibility", "WCAG", "Healthcare UI"],
+      "visible": true,
+      "content": [
+        { "type": "paragraph", "text": "When I started the accessibility audit on Artem Health Care's patient-management platform, I expected the usual pile of missing `alt` text and low-contrast gray-on-gray text. What I found instead was more instructive: a keyboard trap in the patient intake form that silently forced a mouse click to escape a date picker. On a marketing site, that's an annoyance. On a platform used by clinical staff moving between a keyboard and a chart at the same time, it's a workflow blocker — a few extra seconds, every time, multiplied across every patient, every shift." },
+        { "type": "heading", "text": "Why 'load-bearing' is the right word" },
+        { "type": "paragraph", "text": "I keep coming back to this phrase because it captures something checklists don't: accessibility isn't a layer you add on top of a working interface. It's structural. Semantic HTML, focus order, and ARIA labeling aren't decoration for screen-reader users — they're the actual skeleton the interface depends on to be operable at all, for everyone, under time pressure, with an unreliable trackpad, or with a broken mouse on a Tuesday. Retrofitting that skeleton after the fact isn't a small patch; it's closer to renovating a house around a load-bearing wall you didn't know was load-bearing." },
+        { "type": "quote", "text": "The keyboard trap wasn't a screen-reader bug. It was a bug for anyone whose hands were already busy with a patient chart." },
+        { "type": "heading", "text": "What the audit actually covered" },
+        { "type": "list", "items": [
+          "Every core flow — record lookup, intake forms, scheduling — walked start to finish with keyboard only, no mouse.",
+          "Focus order verified against visual order, since a form that looks top-to-bottom but tabs left-to-right is invisible in a sighted click-through.",
+          "Every custom control (date pickers, multi-selects, modals) checked against its native HTML equivalent's expected keyboard behavior — Escape closes, Enter confirms, arrow keys navigate.",
+          "Color contrast checked against WCAG 2.1 AA at the actual production tokens, not the Figma file's idealized swatches, since some combinations only appear once real data fills a component.",
+          "Screen-reader pass with NVDA and VoiceOver on the highest-traffic flows, listening for whether labels described the control's purpose, not just its shape."
+        ]},
+        { "type": "heading", "text": "The fix that mattered most" },
+        { "type": "paragraph", "text": "The single highest-leverage change wasn't a one-off fix — it was building a small set of accessible primitives (button, form field, modal, data table) once, correctly, in the shared PrimeNG-based component library, and migrating every screen onto them instead of patching each screen's bespoke markup individually. Once the modal component trapped focus correctly and returned it to the triggering element on close, every modal in the product inherited that behavior for free. That's the actual argument for design systems that a lot of accessibility conversations miss: a system isn't just a consistency tool, it's a blast radius control for correctness." },
+        { "type": "heading", "text": "What I'd tell a team starting this today" },
+        { "type": "paragraph", "text": "Don't treat WCAG conformance as a milestone at the end of a release — treat it as a merge requirement, the same way you'd treat a failing test. The cost of accessibility work scales with how long it's been deferred: caught at component design time, it's a design decision. Caught at code review, it's a small diff. Caught in a pre-launch audit, it's a cross-team fire drill. Caught by a user who can't complete a task, it's the worst version of all three, and it happened to someone who needed the software to work." },
+        { "type": "paragraph", "text": "The interfaces that get this right don't feel different to sighted mouse users. That's the point — the work is invisible when it's done, and load-bearing when it's not." }
+      ]
+    },
+    {
+      "id": "figma-to-production-gap",
+      "slug": "closing-the-figma-to-production-gap",
+      "title": "From Figma to Production: Closing the Design-Dev Gap With Zeplin Handoff",
+      "excerpt": "'The build doesn't match the file' is usually a process failure, not a skill failure. How a tighter Figma-to-Zeplin-to-code loop turned design handoff from a one-way drop into an actual conversation.",
+      "coverImage": "assets/images/blog/cover-figma-handoff.svg",
+      "author": { "name": "Jaymin Maheta", "role": "Senior UI Developer", "initials": "JM" },
+      "date": "2026-02-18",
+      "readTime": "6 min read",
+      "tags": ["Figma", "Zeplin", "Workflow"],
+      "visible": true,
+      "content": [
+        { "type": "paragraph", "text": "Every front-end developer has heard some version of 'the build doesn't match the file' at least once in a design review, usually said in a tone that implies the developer wasn't paying attention. Most of the time, that's not what happened. What happened is that the file changed after handoff, or the file never specified the state the developer actually had to build, or the developer made a reasonable technical call the designer never saw. The gap isn't a skill problem on either side — it's a process problem, and it's closeable." },
+        { "type": "heading", "text": "Where the gap actually opens" },
+        { "type": "paragraph", "text": "On the Compito rebuild, the component library and the Figma file had drifted so far apart that every new feature meant re-deciding basic interaction patterns from scratch, because there was no longer a shared source of truth either side trusted. The Figma file showed happy-path states. The codebase had accumulated real states — loading, error, empty, overflow — that no one had gone back and added to the design file. Developers were making interaction decisions on the fly, and designers were reviewing shipped screens that already diverged from what they'd approved." },
+        { "type": "quote", "text": "A one-way handoff guarantees drift. The fix isn't a better handoff document — it's making handoff a conversation with a feedback loop." },
+        { "type": "heading", "text": "What changed" },
+        { "type": "list", "items": [
+          "Zeplin became the single inspection surface for spacing, type, and color tokens — no more eyeballing pixel values off a Figma canvas that had since been rearranged.",
+          "Every component's non-happy-path states (loading, error, empty, disabled) got added to the Figma file as first-class artboards, not left as an implicit 'use your judgement' gap.",
+          "Design review moved earlier — feasibility conversations happened before high-fidelity comps were finalized, so a flagged constraint changed the design instead of getting silently worked around in code.",
+          "The component library's Storybook and the Figma library were versioned together, so 'which version of the button are we talking about' stopped being an open question in every conversation."
+        ]},
+        { "type": "heading", "text": "The habit that mattered most: flagging instead of absorbing" },
+        { "type": "paragraph", "text": "The single biggest behavior change was mine, not the designers'. I stopped quietly absorbing feasibility problems — a spacing value that didn't fit the token scale, an interaction that didn't have a clean web equivalent — and started flagging them in the design review itself, before the file was finalized. It felt like friction at first. It was actually the removal of friction: every problem solved in review is a problem that never becomes a production discrepancy someone has to explain later." },
+        { "type": "paragraph", "text": "That single change did more for design-dev trust than any tooling decision. Once designers saw that flagged constraints actually changed the file — rather than silently vanishing into 'the developer will handle it' — they started treating implementation feedback as useful input instead of a complaint about their work." },
+        { "type": "heading", "text": "What this looks like day to day now" },
+        { "type": "paragraph", "text": "Handoff isn't a drop anymore. It's closer to a running conversation: Figma for intent and exploration, Zeplin for the exact values a component needs to match, and a shared component library that both sides treat as the actual source of truth once something ships. The file and the build still disagree sometimes — that's normal — but now it gets caught in a comment thread before launch, not in a bug report after it." }
+      ]
+    }
+  ]
+}

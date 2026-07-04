@@ -16,6 +16,26 @@
     <priority>0.8</priority>
   </url>
   <url>
+    <loc>https://www.jayminmaheta.com/blog.html</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://www.jayminmaheta.com/blog-post.html?slug=design-systems-that-survive-contact-with-real-products</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://www.jayminmaheta.com/blog-post.html?slug=accessibility-is-load-bearing</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://www.jayminmaheta.com/blog-post.html?slug=closing-the-figma-to-production-gap</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
     <loc>https://www.jayminmaheta.com/gallery.html</loc>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>

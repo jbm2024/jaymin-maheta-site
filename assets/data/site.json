@@ -4,6 +4,7 @@
     { "label": "Home", "href": "index.html" },
     { "label": "About", "href": "about.html" },
     { "label": "Projects", "href": "projects.html" },
+    { "label": "Blog", "href": "blog.html" },
     { "label": "Gallery", "href": "gallery.html" },
     { "label": "Contact", "href": "contact.html" }
   ],
@@ -24,6 +25,75 @@
     "posts": [
       { "urn": "urn:li:activity:7379139927684333570", "active": true },
       { "urn": "urn:li:activity:7260099529864073216", "active": true }
+    ]
+  },
+  "testimonials": {
+    "intro": {
+      "eyebrow": "Testimonials",
+      "heading": "What people say",
+      "subtitle": "Feedback from product managers, designers, and engineers I've shipped with directly."
+    },
+    "items": [
+      {
+        "id": "priya-nair",
+        "name": "Priya Nair",
+        "role": "Product Manager",
+        "company": "Artem Health Care",
+        "initials": "PN",
+        "quote": "Jaymin turned a vague accessibility mandate into an actual, working component library in weeks. Every form we shipped after that audit just worked for keyboard and screen-reader users — no follow-up tickets.",
+        "rating": 5,
+        "visible": true
+      },
+      {
+        "id": "daniel-cho",
+        "name": "Daniel Cho",
+        "role": "Engineering Manager",
+        "company": "Compito",
+        "initials": "DC",
+        "quote": "The board rebuild in React was the smoothest front-end migration I've been part of. Jaymin kept design and code in sync through Figma/Zeplin the whole way, so we never had that usual 'the build doesn't match the file' argument.",
+        "rating": 5,
+        "visible": true
+      },
+      {
+        "id": "meera-shah",
+        "name": "Meera Shah",
+        "role": "Lead Designer",
+        "company": "Valyxto",
+        "initials": "MS",
+        "quote": "Most developers treat a dense data table as a styling problem. Jaymin treated it as an information-hierarchy problem, and the dashboard reads completely differently now — same data, actually scannable.",
+        "rating": 5,
+        "visible": true
+      },
+      {
+        "id": "arjun-mehta",
+        "name": "Arjun Mehta",
+        "role": "Junior UI Developer (mentee)",
+        "company": "Augmented Tech Labs",
+        "initials": "AM",
+        "quote": "I learned more about CSS architecture and PR review from three months of pairing with Jaymin than from a year on my own. He explains the 'why' behind every review comment, not just the fix.",
+        "rating": 5,
+        "visible": true
+      },
+      {
+        "id": "sara-lindqvist",
+        "name": "Sara Lindqvist",
+        "role": "QA Lead",
+        "company": "Artem Health Care",
+        "initials": "SL",
+        "quote": "The token-based component library cut our regression surface dramatically — once a pattern was fixed once, it was fixed everywhere it was used, not just in the one screen someone happened to notice.",
+        "rating": 4,
+        "visible": true
+      },
+      {
+        "id": "old-client-2019",
+        "name": "Rohan Deshpande",
+        "role": "Freelance Client",
+        "company": "Marketing Microsite (2019)",
+        "initials": "RD",
+        "quote": "Quick turnaround on the landing page redesign, responsive across every device we tested.",
+        "rating": 4,
+        "visible": false
+      }
     ]
   }
 }

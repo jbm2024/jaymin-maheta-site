@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="900" viewBox="0 0 1600 900">
+  <defs>
+    <linearGradient id="g" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#7c3aed"/>
+      <stop offset="100%" stop-color="#4f46e5"/>
+    </linearGradient>
+  </defs>
+  <rect width="1600" height="900" fill="url(#g)"/>
+  <circle cx="1420" cy="760" r="230" fill="rgba(255,255,255,0.06)"/>
+  <circle cx="180" cy="150" r="160" fill="rgba(255,255,255,0.07)"/>
+  <g stroke="rgba(255,255,255,0.3)" stroke-width="3" fill="none">
+    <circle cx="800" cy="330" r="46"/>
+    <path d="M 800 376 L 800 420" />
+    <path d="M 770 400 L 830 400" />
+  </g>
+  <text x="800" y="480" font-family="'JetBrains Mono', monospace" font-size="34" font-weight="600" fill="rgba(255,255,255,0.92)" text-anchor="middle">Accessibility Is Load-Bearing</text>
+  <text x="800" y="522" font-family="'JetBrains Mono', monospace" font-size="20" fill="rgba(255,255,255,0.7)" text-anchor="middle">Lessons From Auditing Healthcare UI</text>
+  <text x="800" y="575" font-family="'JetBrains Mono', monospace" font-size="18" fill="rgba(255,255,255,0.55)" text-anchor="middle">Placeholder cover — assets/images/blog/</text>
+</svg>

@@ -11,6 +11,7 @@ import {
   initPageTransitions,
   initStatCounters,
   renderLinkedInFeatured,
+  renderTestimonials,
   fetchJSON,
   setText,
   isReducedMotion,
@@ -126,6 +127,7 @@ async function init() {
   renderStats(homeData.stats);
   renderTechStack(homeData.techStack);
   renderFeaturedProjects(homeData.featuredProjects);
+  renderTestimonials(site?.testimonials);
   renderLinkedInFeatured(site?.linkedinFeatured);
 
   revealOnScroll();

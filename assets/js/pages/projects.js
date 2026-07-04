@@ -13,6 +13,7 @@ import {
   initStatCounters,
   initAccordions,
   renderLinkedInFeatured,
+  renderTestimonials,
   fetchJSON,
   isReducedMotion,
 } from "../main.js";
@@ -212,6 +213,7 @@ async function init() {
 
   renderProjects(projectsData.projects);
   renderFilters(projectsData.filters);
+  renderTestimonials(site?.testimonials);
   renderLinkedInFeatured(site?.linkedinFeatured);
 
   revealOnScroll();
