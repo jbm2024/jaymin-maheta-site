@@ -2,14 +2,15 @@ import { supabase } from "./supabase-client.js";
 import { renderListCrud, renderSingletonForm, renderFixedRowsForm } from "./admin/generic-crud.js";
 import { renderProjectsEditor } from "./admin/projects-editor.js";
 import { renderBlogEditor } from "./admin/blog-editor.js";
+import { renderGalleryAlbumsEditor } from "./admin/gallery-albums-editor.js";
 
 // --- Theme toggle (standalone — admin.html doesn't load gsap/main.js) ---
 (function initTheme() {
   const root = document.documentElement;
   document.querySelectorAll("[data-theme-toggle]").forEach((btn) => {
     btn.addEventListener("click", () => {
-      const next = root.getAttribute("data-theme") === "light" ? "dark" : "light";
-      root.setAttribute("data-theme", next);
+      const next = root.getAttribute("data-bs-theme") === "light" ? "dark" : "light";
+      root.setAttribute("data-bs-theme", next);
       localStorage.setItem("jm-theme", next);
     });
   });
@@ -113,9 +114,9 @@ const TAB_SECTIONS = {
       { key: "sort_order", label: "Sort order", type: "number" },
     ]},
   ],
-  projects: [{ kind: "custom", render: renderProjectsEditor }],
+  projects: [{ kind: "custom", title: "Projects", render: renderProjectsEditor }],
   blog: [
-    { kind: "custom", render: renderBlogEditor },
+    { kind: "custom", title: "Blog Posts", render: renderBlogEditor },
     { kind: "list", table: "tags", title: "Tags", description: "The tag vocabulary posts can be assigned to above.", orderBy: "name", fields: [
       { key: "name", label: "Name", type: "text" },
       { key: "sort_order", label: "Sort order", type: "number" },
@@ -127,12 +128,14 @@ const TAB_SECTIONS = {
     ]},
   ],
   gallery: [
-    { kind: "list", table: "gallery_images", title: "Gallery Images", orderBy: "sort_order", fields: [
-      { key: "src", label: "Image", type: "image", uploadPath: "gallery" },
+    { kind: "custom", title: "Gallery Albums", render: renderGalleryAlbumsEditor },
+    { kind: "list", table: "gallery_images", title: "Gallery Images", description: "Every photo, loose or albumed. Use the Album dropdown to move one, or manage albums (and drag-and-drop uploads) in the Gallery Albums tab.", orderBy: "sort_order", fields: [
+      { key: "src", label: "Image", type: "image", uploadPath: "gallery", dimensionFields: { width: "width", height: "height" } },
+      { key: "album_id", label: "Album", type: "relation", table: "gallery_albums", optionLabel: "title", emptyLabel: "No album (shows individually)" },
       { key: "alt", label: "Alt text", type: "text" },
       { key: "caption", label: "Caption", type: "text" },
-      { key: "width", label: "Width (px)", type: "number", default: 1600 },
-      { key: "height", label: "Height (px)", type: "number", default: 1000 },
+      { key: "width", label: "Width (px, auto-detected on upload)", type: "number", default: 1600, readonly: true },
+      { key: "height", label: "Height (px, auto-detected on upload)", type: "number", default: 1000, readonly: true },
       { key: "active", label: "Active", type: "boolean" },
       { key: "sort_order", label: "Sort order", type: "number" },
     ]},
@@ -168,19 +171,46 @@ const TAB_SECTIONS = {
   ],
 };
 
+// Each admin tab (e.g. "site") can hold several sections (nav links, socials, …).
+// Only one section — one form + one listing — is shown at a time; a sub-nav
+// lets the user switch between the sections that belong to the current tab.
+const activeSectionIndex = {};
+
+async function renderSection(section, panelEl) {
+  const sectionEl = document.createElement("div");
+  panelEl.appendChild(sectionEl);
+
+  if (section.kind === "list") await renderListCrud(sectionEl, section);
+  else if (section.kind === "singleton") await renderSingletonForm(sectionEl, section);
+  else if (section.kind === "fixed") await renderFixedRowsForm(sectionEl, section);
+  else if (section.kind === "custom") await section.render(sectionEl);
+}
+
 async function renderTab(tabName, panelEl) {
   const sections = TAB_SECTIONS[tabName];
+  const activeIdx = activeSectionIndex[tabName] ?? 0;
   panelEl.innerHTML = "";
-  for (const section of sections) {
-    const sectionEl = document.createElement("div");
-    sectionEl.className = "mb-10";
-    panelEl.appendChild(sectionEl);
 
-    if (section.kind === "list") await renderListCrud(sectionEl, section);
-    else if (section.kind === "singleton") await renderSingletonForm(sectionEl, section);
-    else if (section.kind === "fixed") await renderFixedRowsForm(sectionEl, section);
-    else if (section.kind === "custom") await section.render(sectionEl);
+  if (sections.length > 1) {
+    const subnav = document.createElement("nav");
+    subnav.className = "nav nav-pills flex-wrap gap-2 mb-4 pb-3 border-bottom";
+    subnav.setAttribute("aria-label", `${tabName} pages`);
+    sections.forEach((section, i) => {
+      const btn = document.createElement("button");
+      btn.type = "button";
+      btn.className = `nav-link${i === activeIdx ? " active" : ""}`;
+      if (i === activeIdx) btn.setAttribute("aria-current", "page");
+      btn.textContent = section.title;
+      btn.addEventListener("click", () => {
+        activeSectionIndex[tabName] = i;
+        renderTab(tabName, panelEl);
+      });
+      subnav.appendChild(btn);
+    });
+    panelEl.appendChild(subnav);
   }
+
+  await renderSection(sections[activeIdx], panelEl);
 }
 
 function initTabs() {
@@ -189,7 +219,11 @@ function initTabs() {
 
   tabs.forEach((btn) => {
     btn.addEventListener("click", () => {
-      tabs.forEach((b) => b.setAttribute("aria-selected", String(b === btn)));
+      tabs.forEach((b) => {
+        b.classList.toggle("active", b === btn);
+        if (b === btn) b.setAttribute("aria-current", "page");
+        else b.removeAttribute("aria-current");
+      });
       renderTab(btn.dataset.adminTab, panel);
     });
   });
@@ -204,10 +238,10 @@ const unauthorizedView = document.querySelector("[data-unauthorized-view]");
 const logoutBtn = document.querySelector("[data-logout-btn]");
 
 function showView(view) {
-  loginView.classList.toggle("hidden", view !== "login");
-  dashboardView.classList.toggle("hidden", view !== "dashboard");
-  unauthorizedView.classList.toggle("hidden", view !== "unauthorized");
-  logoutBtn.classList.toggle("hidden", view === "login");
+  loginView.classList.toggle("d-none", view !== "login");
+  dashboardView.classList.toggle("d-none", view !== "dashboard");
+  unauthorizedView.classList.toggle("d-none", view !== "unauthorized");
+  logoutBtn.classList.toggle("d-none", view === "login");
 }
 
 async function checkAdminAndShow() {

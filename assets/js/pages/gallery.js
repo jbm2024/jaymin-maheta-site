@@ -22,25 +22,36 @@ gsap.registerPlugin(ScrollTrigger);
 
 const REVEAL_ITEM_CLASSES = "opacity-0 translate-y-6 motion-reduce:opacity-100 motion-reduce:translate-y-0";
 
-/**
- * Only images with active:true render — the JSON's "active" flag is the
- * single on/off switch for what's public, so images can be staged in
- * gallery.json ahead of time without appearing on the live site.
- */
-function renderGallery(images) {
+/** Renders the photo grid — either every "loose" (unalbumed) photo, or, once an album is selected, just that album's photos. */
+function renderPhotoGrid(images, album, hasAlbums) {
   const container = document.querySelector("[data-gallery-grid]");
   const empty = document.querySelector("[data-gallery-empty]");
+  const heading = document.querySelector("[data-gallery-grid-heading]");
+  const backBtn = document.querySelector("[data-gallery-back]");
   if (!container) return;
 
-  const active = images.filter((img) => img.active);
+  if (heading) heading.textContent = album ? album.title : "All Photos";
+  backBtn?.classList.toggle("hidden", !album);
 
-  if (!active.length) {
+  if (!images.length) {
     container.classList.add("hidden");
-    empty?.classList.remove("hidden");
+    if (empty) {
+      empty.textContent = album
+        ? "No photos in this album yet."
+        : hasAlbums
+          ? "No individual photos yet — browse the albums above."
+          : "No images to show yet — check back soon.";
+      empty.classList.remove("hidden");
+    }
     return;
   }
+  container.classList.remove("hidden");
+  empty?.classList.add("hidden");
 
-  container.innerHTML = active
+  // Masonry layout (CSS columns, not a uniform grid): each item is sized by
+  // its own aspect ratio via the plain <img>, so photos render at their real
+  // proportions instead of being cropped to fit a fixed box.
+  container.innerHTML = images
     .map(
       (img) => `
         <a
@@ -48,16 +59,17 @@ function renderGallery(images) {
           data-pswp-width="${img.width}"
           data-pswp-height="${img.height}"
           data-reveal-item
-          class="${REVEAL_ITEM_CLASSES} group block overflow-hidden rounded-[var(--radius-card)] border border-[var(--color-border-glass)] bg-[var(--color-surface-glass)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-accent-end)]"
+          class="${REVEAL_ITEM_CLASSES} group mb-4 block break-inside-avoid overflow-hidden rounded-[var(--radius-card)] border border-[var(--color-border-glass)] bg-[var(--color-surface-glass)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-accent-end)]"
           target="_blank"
           rel="noreferrer"
         >
-          <figure class="relative aspect-[16/10] overflow-hidden">
+          <figure class="relative">
             <img
               src="${img.src}"
               alt="${img.alt}"
               loading="lazy"
-              class="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
+              style="aspect-ratio: ${img.width} / ${img.height}"
+              class="block h-auto w-full object-contain transition-transform duration-500 group-hover:scale-105"
             />
             <figcaption class="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/60 to-transparent px-4 py-3 font-mono text-xs text-white/90">
               ${img.caption}
@@ -67,6 +79,56 @@ function renderGallery(images) {
       `
     )
     .join("");
+}
+
+/** Renders the "Albums" row — one tile per album (Google-Photos style: cover shot + title + photo count). Clicking a tile filters the grid below to that album via onSelect. */
+function renderAlbums(albums, onSelect) {
+  const section = document.querySelector("[data-gallery-albums-section]");
+  const container = document.querySelector("[data-gallery-albums]");
+  if (!section || !container) return;
+
+  if (!albums.length) {
+    section.classList.add("hidden");
+    return;
+  }
+  section.classList.remove("hidden");
+
+  container.innerHTML = albums
+    .map((album) => {
+      const coverPhoto = album.images[0];
+      const cover = album.coverImage || coverPhoto?.src || "";
+      // Only hint an aspect-ratio (to avoid a layout jump on load) when the
+      // cover falls back to a known gallery photo — a custom cover_image
+      // upload has no stored width/height, so its own intrinsic size is
+      // used instead (still uncropped, just without the pre-load hint).
+      const aspectStyle = !album.coverImage && coverPhoto ? ` style="aspect-ratio: ${coverPhoto.width} / ${coverPhoto.height}"` : "";
+      return `
+        <button
+          type="button"
+          data-album-id="${album.id}"
+          data-reveal-item
+          class="${REVEAL_ITEM_CLASSES} group mb-4 block w-full break-inside-avoid overflow-hidden rounded-[var(--radius-card)] border border-[var(--color-border-glass)] bg-[var(--color-surface-glass)] text-left focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-accent-end)]"
+        >
+          <figure class="relative">
+            <img
+              src="${cover}"
+              alt=""
+              loading="lazy"${aspectStyle}
+              class="block h-auto w-full object-contain transition-transform duration-500 group-hover:scale-105"
+            />
+            <figcaption class="absolute inset-x-0 bottom-0 flex items-center justify-between gap-2 bg-gradient-to-t from-black/70 to-transparent px-4 py-3 text-white">
+              <span class="font-mono text-xs font-medium">${album.title}</span>
+              <span class="shrink-0 rounded-full bg-black/40 px-2 py-0.5 font-mono text-[10px]">${album.images.length} photo${album.images.length === 1 ? "" : "s"}</span>
+            </figcaption>
+          </figure>
+        </button>
+      `;
+    })
+    .join("");
+
+  container.querySelectorAll("[data-album-id]").forEach((btn) => {
+    btn.addEventListener("click", () => onSelect(btn.dataset.albumId));
+  });
 }
 
 function initLightbox() {
@@ -109,7 +171,22 @@ async function init() {
 
   setText(document.querySelector("[data-gallery-heading]"), galleryData.intro.heading);
   setText(document.querySelector("[data-gallery-subtitle]"), galleryData.intro.subtitle);
-  renderGallery(galleryData.images);
+
+  const hasAlbums = galleryData.albums.length > 0;
+  const selectAlbum = (id) => {
+    const album = galleryData.albums.find((a) => a.id === id) || null;
+    renderPhotoGrid(album ? album.images : galleryData.images, album, hasAlbums);
+    // Newly-injected grid items start hidden (opacity-0) via REVEAL_ITEM_CLASSES —
+    // re-run the stagger reveal so they animate in instead of staying invisible.
+    initStaggerReveals("[data-gallery-grid]");
+    ScrollTrigger.refresh();
+    document.querySelector("[data-gallery-grid-heading]")?.scrollIntoView({ behavior: "smooth", block: "start" });
+  };
+
+  renderAlbums(galleryData.albums, selectAlbum);
+  renderPhotoGrid(galleryData.images, null, hasAlbums);
+  document.querySelector("[data-gallery-back]")?.addEventListener("click", () => selectAlbum(null));
+
   renderTestimonials(site?.testimonials);
   renderLinkedInFeatured(site?.linkedinFeatured);
   renderLatestBlog(latestPosts);

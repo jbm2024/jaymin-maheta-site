@@ -194,25 +194,46 @@ export async function getBlogData() {
   };
 }
 
-/** gallery.json equivalent. */
+/**
+ * gallery.json equivalent, extended with albums (Google-Photos-style
+ * groups). Images stay a flat list — `albumId` links each one back to its
+ * album, and `albums[].images` is the same rows pre-filtered per album so
+ * the gallery page can render a "loose photos" grid and per-album grids
+ * without re-querying.
+ */
 export async function getGalleryData() {
-  const [intro, images] = await Promise.all([
+  const [intro, albums, images] = await Promise.all([
     supabase.from("page_intros").select("*").eq("page", "gallery").single(),
+    supabase.from("gallery_albums").select("*").eq("active", true).order("sort_order"),
     supabase.from("gallery_images").select("*").eq("active", true).order("sort_order"),
   ]);
 
   const introRow = unwrap("page_intros(gallery)", intro);
+  const imageRows = unwrap("gallery_images", images).map((img) => ({
+    id: img.id,
+    src: img.src,
+    width: img.width,
+    height: img.height,
+    alt: img.alt,
+    caption: img.caption,
+    active: img.active,
+    albumId: img.album_id,
+  }));
+
+  const albumRows = unwrap("gallery_albums", albums)
+    .map((a) => ({
+      id: a.id,
+      title: a.title,
+      description: a.description,
+      coverImage: a.cover_image,
+      images: imageRows.filter((img) => img.albumId === a.id),
+    }))
+    .filter((a) => a.images.length > 0);
+
   return {
     intro: { heading: introRow.heading, subtitle: introRow.subtitle },
-    images: unwrap("gallery_images", images).map((img) => ({
-      id: img.id,
-      src: img.src,
-      width: img.width,
-      height: img.height,
-      alt: img.alt,
-      caption: img.caption,
-      active: img.active,
-    })),
+    albums: albumRows,
+    images: imageRows.filter((img) => !img.albumId),
   };
 }
 

@@ -115,14 +115,28 @@
       <p data-gallery-subtitle class="mt-6 max-w-2xl text-base text-[var(--color-text-muted)] md:text-lg"></p>
     </section>
 
+    <section id="gallery-albums" data-gallery-albums-section class="mt-16 hidden">
+      <p class="spec-label">Albums</p>
+      <div data-reveal-stagger data-gallery-albums class="mt-4 columns-1 gap-4 sm:columns-2 lg:columns-3"></div>
+    </section>
+
     <section id="gallery-grid" class="mt-16">
-      <div data-reveal-stagger data-gallery-grid class="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
-        <div class="aspect-[16/10] animate-pulse motion-reduce:animate-none rounded-[var(--radius-card)] bg-[var(--color-surface-glass)]"></div>
-        <div class="aspect-[16/10] animate-pulse motion-reduce:animate-none rounded-[var(--radius-card)] bg-[var(--color-surface-glass)]"></div>
-        <div class="aspect-[16/10] animate-pulse motion-reduce:animate-none rounded-[var(--radius-card)] bg-[var(--color-surface-glass)]"></div>
-        <div class="aspect-[16/10] animate-pulse motion-reduce:animate-none rounded-[var(--radius-card)] bg-[var(--color-surface-glass)]"></div>
-        <div class="aspect-[16/10] animate-pulse motion-reduce:animate-none rounded-[var(--radius-card)] bg-[var(--color-surface-glass)]"></div>
-        <div class="aspect-[16/10] animate-pulse motion-reduce:animate-none rounded-[var(--radius-card)] bg-[var(--color-surface-glass)]"></div>
+      <div class="flex flex-wrap items-center justify-between gap-3">
+        <div class="flex items-center gap-3">
+          <button type="button" data-gallery-back class="hidden inline-flex items-center gap-1 rounded font-mono text-sm text-[var(--color-accent-text)] transition-colors hover:opacity-80 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-accent-end)]">
+            <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M10 19l-7-7m0 0l7-7m-7 7h18" /></svg>
+            All Photos
+          </button>
+          <h2 data-gallery-grid-heading class="font-heading text-lg font-semibold text-[var(--color-text-muted)]">All Photos</h2>
+        </div>
+      </div>
+      <div data-reveal-stagger data-gallery-grid class="mt-4 columns-1 gap-4 sm:columns-2 lg:columns-3">
+        <div class="mb-4 aspect-[4/5] break-inside-avoid animate-pulse motion-reduce:animate-none rounded-[var(--radius-card)] bg-[var(--color-surface-glass)]"></div>
+        <div class="mb-4 aspect-[16/10] break-inside-avoid animate-pulse motion-reduce:animate-none rounded-[var(--radius-card)] bg-[var(--color-surface-glass)]"></div>
+        <div class="mb-4 aspect-square break-inside-avoid animate-pulse motion-reduce:animate-none rounded-[var(--radius-card)] bg-[var(--color-surface-glass)]"></div>
+        <div class="mb-4 aspect-[16/10] break-inside-avoid animate-pulse motion-reduce:animate-none rounded-[var(--radius-card)] bg-[var(--color-surface-glass)]"></div>
+        <div class="mb-4 aspect-[4/5] break-inside-avoid animate-pulse motion-reduce:animate-none rounded-[var(--radius-card)] bg-[var(--color-surface-glass)]"></div>
+        <div class="mb-4 aspect-[16/10] break-inside-avoid animate-pulse motion-reduce:animate-none rounded-[var(--radius-card)] bg-[var(--color-surface-glass)]"></div>
       </div>
       <p data-gallery-empty class="hidden py-12 text-center text-sm text-[var(--color-text-muted)]">No images to show yet — check back soon.</p>
     </section>

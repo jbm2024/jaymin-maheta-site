@@ -1,163 +1,211 @@
-/* Admin-only styles — kept out of main.css so the public site's stylesheet
-   never carries admin-panel weight. Reuses main.css's tokens (--color-*,
-   --radius-*) so the two surfaces still look like one product. */
+/* Admin panel — built on Bootstrap 5.3 (no Tailwind here). This file only:
+   (1) maps the site's brand tokens (IBM Plex fonts, cobalt accent, panel
+       surfaces) onto Bootstrap's own CSS variables for both
+       data-bs-theme="dark" and "light", so Bootstrap's built-in components
+       (forms, cards, tables, nav-pills, switches, btn-check chips) redraw
+       themselves in the site's palette with no extra overrides needed;
+   (2) the handful of small pieces Bootstrap has no component for (mono
+       micro-labels, the dashed "add mode" card border, the colored status
+       dot, empty-table state). */
 
-.admin-input,
-.admin-textarea,
-.admin-select {
-  width: 100%;
-  border-radius: var(--radius-sm);
-  border: 1px solid var(--color-border-glass);
-  background: var(--color-surface);
-  color: var(--color-text);
-  padding: 0.5rem 0.75rem;
-  font-family: "IBM Plex Sans", sans-serif;
-  font-size: 0.875rem;
-}
-.admin-textarea {
-  min-height: 5rem;
-  resize: vertical;
-}
-.admin-input:focus,
-.admin-textarea:focus,
-.admin-select:focus {
-  outline: 2px solid var(--color-accent-end);
-  outline-offset: 1px;
+:root {
+  --bs-font-sans-serif: "IBM Plex Sans", sans-serif;
+  --bs-font-monospace: "IBM Plex Mono", monospace;
+  --bs-body-font-family: var(--bs-font-sans-serif);
+  --bs-border-radius: 0.5rem;
+  --bs-border-radius-sm: 0.25rem;
+  --bs-border-radius-lg: 0.625rem;
+  --bs-border-radius-xl: 0.625rem;
 }
 
+[data-bs-theme="dark"] {
+  color-scheme: dark;
+  --bs-body-bg: #14161c;
+  --bs-body-color: #f2f3f6;
+  --bs-emphasis-color: #ffffff;
+  --bs-secondary-color: rgba(242, 243, 246, 0.7);
+  --bs-secondary-bg: #1b1e27;
+  --bs-tertiary-bg: #21242e;
+  --bs-border-color: rgba(242, 243, 246, 0.12);
+  --bs-border-color-translucent: rgba(242, 243, 246, 0.12);
+  --bs-primary: #2f5cff;
+  --bs-primary-rgb: 47, 92, 255;
+  --bs-link-color: #6379ff;
+  --bs-link-color-rgb: 99, 121, 255;
+  --bs-link-hover-color: #8195ff;
+  --bs-link-hover-color-rgb: 129, 149, 255;
+}
+
+[data-bs-theme="light"] {
+  color-scheme: light;
+  --bs-body-bg: #eef1f5;
+  --bs-body-color: #14161c;
+  --bs-emphasis-color: #000000;
+  --bs-secondary-color: rgba(20, 22, 28, 0.7);
+  --bs-secondary-bg: #ffffff;
+  --bs-tertiary-bg: #e3e7ee;
+  --bs-border-color: rgba(20, 22, 28, 0.12);
+  --bs-border-color-translucent: rgba(20, 22, 28, 0.12);
+  --bs-primary: #2447d6;
+  --bs-primary-rgb: 36, 71, 214;
+  --bs-link-color: #2447d6;
+  --bs-link-color-rgb: 36, 71, 214;
+  --bs-link-hover-color: #1c39ac;
+  --bs-link-hover-color-rgb: 28, 57, 172;
+}
+
+body {
+  min-height: 100vh;
+}
+h1, h2, h3, h4, h5, h6, .nav-link, .btn {
+  font-family: var(--bs-font-monospace);
+}
+.form-control, .form-select, .form-check-label {
+  font-family: var(--bs-font-sans-serif);
+}
+.form-control, .form-select {
+  background-color: var(--bs-tertiary-bg);
+}
+.form-control:focus, .form-select:focus {
+  border-color: var(--bs-primary);
+  box-shadow: 0 0 0 0.25rem rgba(var(--bs-primary-rgb), 0.25);
+}
+.card {
+  --bs-card-bg: var(--bs-secondary-bg);
+}
+
+/* Small uppercase mono label — used for the navbar "admin" tag, the "Back
+   to site" link, and every field label (paired with .form-label). */
+.admin-label-mono,
 .admin-field-label {
-  display: block;
-  margin-bottom: 0.25rem;
+  font-family: var(--bs-font-monospace);
   font-size: 0.75rem;
   font-weight: 600;
   text-transform: uppercase;
-  letter-spacing: 0.03em;
-  color: var(--color-text-muted);
+  letter-spacing: 0.05em;
+  color: var(--bs-secondary-color);
 }
 
-/* Navbar: full-width bar, logo/actions pinned to the ends. */
 .admin-navbar {
   display: flex;
   align-items: center;
   justify-content: space-between;
-}
-
-/*
- * Dashboard shell: sidebar + main content, stacked on mobile (sidebar
- * becomes a horizontal scrollable strip above content), side-by-side from
- * the md breakpoint up. `:not(.hidden)` is deliberate — admin.js toggles
- * visibility with Tailwind's `.hidden` (display:none), and since this
- * stylesheet loads after Tailwind CDN's injected styles, an unconditional
- * `display:flex` here would win the cascade and defeat `.hidden`.
- */
-.admin-shell:not(.hidden) {
-  display: flex;
-  flex-direction: column;
-  align-items: stretch;
-}
-@media (min-width: 768px) {
-  .admin-shell:not(.hidden) {
-    flex-direction: row;
-    align-items: flex-start;
-  }
-}
-
-.admin-sidebar {
-  flex-shrink: 0;
-  border-bottom: 1px solid var(--color-border-glass);
-  padding: 0.75rem 1rem;
-}
-.admin-sidebar nav {
-  display: flex;
-  flex-direction: row;
-  flex-wrap: wrap;
-  gap: 0.375rem;
-}
-@media (min-width: 768px) {
-  .admin-sidebar {
-    width: 14rem;
-    min-height: calc(100vh - 4.25rem);
-    border-bottom: none;
-    border-right: 1px solid var(--color-border-glass);
-    padding: 1.5rem 1rem;
-  }
-  .admin-sidebar nav {
-    flex-direction: column;
-    flex-wrap: nowrap;
-  }
-}
-
-.admin-main {
-  flex: 1;
-  min-width: 0;
-  padding: 1.5rem;
-}
-@media (min-width: 768px) {
-  .admin-main {
-    padding: 2rem 2.5rem;
-  }
-}
-
-.admin-sidebar-link {
-  border-radius: var(--radius-sm);
-  padding: 0.5rem 0.875rem;
-  font-family: "IBM Plex Mono", monospace;
-  font-size: 0.8125rem;
-  color: var(--color-text-muted);
-  border-left: 2px solid transparent;
-  text-align: left;
-}
-.admin-sidebar-link[aria-selected="true"] {
-  color: var(--color-text);
-  background: var(--color-surface);
-}
-@media (min-width: 768px) {
-  .admin-sidebar-link {
-    display: block;
-    width: 100%;
-  }
-  .admin-sidebar-link[aria-selected="true"] {
-    border-left-color: var(--color-accent-end);
-  }
-}
-.admin-sidebar-link:hover:not([aria-selected="true"]) {
-  color: var(--color-text);
-}
-
-.admin-row-card {
-  border-radius: var(--radius-card);
-  border: 1px solid var(--color-border-glass);
-  background: var(--color-surface-glass);
-  padding: 1rem;
+  background-color: var(--bs-secondary-bg);
 }
 
 .admin-icon-btn {
+  width: 2.25rem;
+  height: 2.25rem;
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  height: 2rem;
-  width: 2rem;
-  border-radius: var(--radius-sm);
-  border: 1px solid var(--color-border-glass);
-  color: var(--color-text-muted);
-}
-.admin-icon-btn:hover {
-  color: var(--color-text);
-  background: var(--color-surface-2);
+  padding: 0;
 }
 
-.admin-checkbox-chip {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.375rem;
-  border-radius: var(--radius-sm);
-  border: 1px solid var(--color-border-glass);
-  padding: 0.375rem 0.625rem;
-  font-family: "IBM Plex Mono", monospace;
-  font-size: 0.75rem;
-  cursor: pointer;
+.admin-auth-panel {
+  max-width: 26rem;
 }
-.admin-checkbox-chip:has(input:checked) {
-  border-color: var(--color-accent-end);
-  color: var(--color-accent-text);
+
+.admin-sidebar {
+  border-bottom: 1px solid var(--bs-border-color);
+}
+@media (min-width: 768px) {
+  .admin-sidebar {
+    border-bottom: none;
+    border-right: 1px solid var(--bs-border-color);
+    min-height: calc(100vh - 4.25rem);
+  }
+}
+
+/* Add/edit form card: dashed border in "add" mode, solid accent border +
+   tinted background once editing an existing row, so it's unmistakable
+   which mode the shared form is in. */
+.border-dashed {
+  border-style: dashed !important;
+}
+[data-form-card] {
+  transition: border-color 150ms ease, background-color 150ms ease;
+}
+[data-form-card].admin-form-editing {
+  border-style: solid !important;
+  border-color: var(--bs-primary) !important;
+  background: rgba(var(--bs-primary-rgb), 0.08);
+}
+
+/* Inline save/delete status feedback — a colored dot (via currentColor, so
+   it always matches whatever Bootstrap text-color class is applied
+   alongside it) plus text, distinguishable at a glance. */
+.admin-status {
+  display: flex;
+  align-items: center;
+  gap: 0.4375rem;
+  min-height: 1.25rem;
+  font-size: 0.75rem;
+}
+.admin-status:not(:empty)::before {
+  content: "";
+  flex-shrink: 0;
+  width: 0.4375rem;
+  height: 0.4375rem;
+  border-radius: 999px;
+  background: currentColor;
+}
+.admin-status.text-body-secondary:not(:empty)::before {
+  animation: admin-status-pulse 1s ease-in-out infinite;
+}
+@keyframes admin-status-pulse {
+  0%, 100% { opacity: 0.35; }
+  50% { opacity: 1; }
+}
+
+.admin-table-empty {
+  text-align: center;
+  color: var(--bs-secondary-color);
+  padding: 1.75rem 0.75rem !important;
+}
+
+/* Google-Photos-style "drop photos here" zone on the gallery album editor —
+   dashed by default, solid accent + tinted background while a drag is over
+   it (mirrors the add/edit form's dashed-vs-solid convention above). */
+.admin-dropzone {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.25rem;
+  text-align: center;
+  padding: 2.5rem 1.5rem;
+  border: 2px dashed var(--bs-border-color);
+  border-radius: var(--bs-border-radius);
+  cursor: pointer;
+  transition: border-color 150ms ease, background-color 150ms ease;
+}
+.admin-dropzone:hover {
+  border-color: var(--bs-secondary-color);
+}
+.admin-dropzone-active {
+  border-style: solid;
+  border-color: var(--bs-primary) !important;
+  background: rgba(var(--bs-primary-rgb), 0.08);
+}
+
+/* Same active-drop highlight, applied to an existing album card in the grid
+   so dropping photos directly onto it (without opening it first) reads as
+   a valid drop target too. */
+.admin-album-card {
+  transition: border-color 150ms ease, background-color 150ms ease;
+}
+.admin-album-card.admin-dropzone-active {
+  border-width: 2px;
+}
+
+/* "Add existing photos" picker thumbnail — a ring appears once its checkbox
+   is ticked, so a multi-select feels obviously multi-select. */
+.admin-picker-thumb {
+  border: 2px solid transparent;
+  border-radius: var(--bs-border-radius);
+  transition: border-color 150ms ease;
+}
+.admin-picker-thumb:has(input:checked) {
+  border-color: var(--bs-primary);
 }

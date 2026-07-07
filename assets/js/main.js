@@ -147,6 +147,13 @@ export async function renderNavFooter() {
  * (opacity-0 translate-y-6 motion-reduce:opacity-100 motion-reduce:translate-y-0)
  * directly in the markup, so under prefers-reduced-motion we simply skip
  * creating the tween — the motion-reduce: classes already show them.
+ *
+ * start is "top bottom" (fires the instant the element's top touches the
+ * viewport's bottom edge), not a deeper "top 85%" — for elements near the
+ * end of the page there isn't enough scrollable room below them to ever
+ * satisfy a deeper threshold, so the trigger's computed scroll position
+ * exceeds the page's actual max scroll and never fires. "top bottom" is
+ * the earliest possible trigger point, so it's always reachable.
  */
 export function revealOnScroll(selector = "[data-reveal]") {
   const items = document.querySelectorAll(selector);
@@ -160,7 +167,7 @@ export function revealOnScroll(selector = "[data-reveal]") {
       ease: "power3.out",
       scrollTrigger: {
         trigger: el,
-        start: "top 85%",
+        start: "top bottom",
         once: true,
       },
     });
@@ -190,11 +197,25 @@ export function initStaggerReveals(containerSelector = "[data-reveal-stagger]", 
       stagger: 0.08,
       scrollTrigger: {
         trigger: container,
-        start: "top 85%",
+        start: "top bottom",
         once: true,
       },
     });
   });
+}
+
+/**
+ * Every page module calls ScrollTrigger.refresh() once at the end of its
+ * init() to lock in final trigger positions after all the render*() calls
+ * and layout-affecting setup (accordions collapsing, etc.) above it. Calling
+ * it synchronously in that same tick reads stale geometry — the browser
+ * hasn't necessarily reflowed yet, so triggers for content further down the
+ * page get cached with positions from the taller, pre-collapse layout and
+ * then never fire because that scroll position no longer exists. Deferring
+ * one frame guarantees the browser has painted the final layout first.
+ */
+export function refreshScrollTriggers() {
+  requestAnimationFrame(() => ScrollTrigger.refresh());
 }
 
 /**
@@ -267,7 +288,7 @@ export function initStatCounters(selector = "[data-stat-value]") {
     const counter = { value: 0 };
     ScrollTrigger.create({
       trigger: el,
-      start: "top 85%",
+      start: "top bottom",
       once: true,
       onEnter: () => {
         gsap.to(counter, {

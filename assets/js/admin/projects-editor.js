@@ -1,4 +1,5 @@
 import { supabase } from "../supabase-client.js";
+import { setStatus } from "./generic-crud.js";
 
 function escapeHtml(str) {
   return String(str).replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
@@ -19,14 +20,13 @@ function linesToResults(text) {
     });
 }
 
+/** Bootstrap's native checkbox-toggle-button pattern: visually-hidden input + a <label> styled as a btn. */
 function techChipsHtml(allTech, selectedIds) {
   return allTech
     .map(
       (t) => `
-        <label class="admin-checkbox-chip">
-          <input type="checkbox" value="${t.id}" data-tech-checkbox ${selectedIds.has(t.id) ? "checked" : ""} />
-          ${t.name}
-        </label>`
+        <input type="checkbox" class="btn-check" value="${t.id}" data-tech-checkbox id="tech-chip-${t.id}" autocomplete="off" ${selectedIds.has(t.id) ? "checked" : ""} />
+        <label class="btn btn-outline-secondary btn-sm rounded-pill" for="tech-chip-${t.id}">${escapeHtml(t.name)}</label>`
     )
     .join("");
 }
@@ -50,34 +50,39 @@ function projectFormHtml(project, allTech, selectedTechIds) {
     sort_order: 0,
   };
   return `
-    <div class="grid grid-cols-1 gap-3 sm:grid-cols-2">
-      <div><label class="admin-field-label">Slug (URL id, unique)</label><input data-f="slug" class="admin-input" value="${escapeHtml(p.slug)}" /></div>
-      <div><label class="admin-field-label">Title</label><input data-f="title" class="admin-input" value="${escapeHtml(p.title)}" /></div>
-      <div><label class="admin-field-label">Category</label><input data-f="category" class="admin-input" value="${escapeHtml(p.category)}" /></div>
-      <div><label class="admin-field-label">Duration</label><input data-f="duration" class="admin-input" value="${escapeHtml(p.duration)}" /></div>
-      <div><label class="admin-field-label">Role</label><input data-f="role" class="admin-input" value="${escapeHtml(p.role)}" /></div>
-      <div><label class="admin-field-label">Sort order</label><input data-f="sort_order" type="number" class="admin-input" value="${p.sort_order ?? 0}" /></div>
+    <div class="row g-3">
+      <div class="col-12 col-sm-6"><label class="form-label admin-field-label">Slug (URL id, unique)</label><input data-f="slug" class="form-control" value="${escapeHtml(p.slug)}" /></div>
+      <div class="col-12 col-sm-6"><label class="form-label admin-field-label">Title</label><input data-f="title" class="form-control" value="${escapeHtml(p.title)}" /></div>
+      <div class="col-12 col-sm-6"><label class="form-label admin-field-label">Category</label><input data-f="category" class="form-control" value="${escapeHtml(p.category)}" /></div>
+      <div class="col-12 col-sm-6"><label class="form-label admin-field-label">Duration</label><input data-f="duration" class="form-control" value="${escapeHtml(p.duration)}" /></div>
+      <div class="col-12 col-sm-6"><label class="form-label admin-field-label">Role</label><input data-f="role" class="form-control" value="${escapeHtml(p.role)}" /></div>
+      <div class="col-12 col-sm-6"><label class="form-label admin-field-label">Sort order</label><input data-f="sort_order" type="number" class="form-control" value="${p.sort_order ?? 0}" /></div>
     </div>
-    <div class="mt-3"><label class="admin-field-label">Summary</label><textarea data-f="summary" class="admin-textarea">${escapeHtml(p.summary)}</textarea></div>
-    <div class="mt-3"><label class="admin-field-label">Problem</label><textarea data-f="problem" class="admin-textarea">${escapeHtml(p.problem)}</textarea></div>
-    <div class="mt-3"><label class="admin-field-label">Approach (one step per line)</label><textarea data-f="approach" data-type="lines" class="admin-textarea">${escapeHtml((p.approach || []).join("\n"))}</textarea></div>
-    <div class="mt-3"><label class="admin-field-label">Role detail</label><textarea data-f="role_detail" class="admin-textarea">${escapeHtml(p.role_detail)}</textarea></div>
-    <div class="mt-3"><label class="admin-field-label">Impact</label><textarea data-f="impact" class="admin-textarea">${escapeHtml(p.impact)}</textarea></div>
+    <div class="mt-3"><label class="form-label admin-field-label">Summary</label><textarea data-f="summary" class="form-control">${escapeHtml(p.summary)}</textarea></div>
+    <div class="mt-3"><label class="form-label admin-field-label">Problem</label><textarea data-f="problem" class="form-control">${escapeHtml(p.problem)}</textarea></div>
+    <div class="mt-3"><label class="form-label admin-field-label">Approach (one step per line)</label><textarea data-f="approach" data-type="lines" class="form-control">${escapeHtml((p.approach || []).join("\n"))}</textarea></div>
+    <div class="mt-3"><label class="form-label admin-field-label">Role detail</label><textarea data-f="role_detail" class="form-control">${escapeHtml(p.role_detail)}</textarea></div>
+    <div class="mt-3"><label class="form-label admin-field-label">Impact</label><textarea data-f="impact" class="form-control">${escapeHtml(p.impact)}</textarea></div>
     <div class="mt-3">
-      <label class="admin-field-label">Results — one per line, format: value|suffix|label</label>
-      <textarea data-f="results" data-type="results" class="admin-textarea" placeholder="12|+|Form patterns unified">${escapeHtml(resultsToLines(p.results))}</textarea>
+      <label class="form-label admin-field-label">Results — one per line, format: value|suffix|label</label>
+      <textarea data-f="results" data-type="results" class="form-control" placeholder="12|+|Form patterns unified">${escapeHtml(resultsToLines(p.results))}</textarea>
     </div>
-    <div class="mt-3 grid grid-cols-1 gap-3 sm:grid-cols-2">
-      <div><label class="admin-field-label">Live link</label><input data-f="links.live" class="admin-input" value="${escapeHtml(p.links?.live || "")}" /></div>
-      <div><label class="admin-field-label">Repo link</label><input data-f="links.repo" class="admin-input" value="${escapeHtml(p.links?.repo || "")}" /></div>
+    <div class="mt-3 row g-3">
+      <div class="col-12 col-sm-6"><label class="form-label admin-field-label">Live link</label><input data-f="links.live" class="form-control" value="${escapeHtml(p.links?.live || "")}" /></div>
+      <div class="col-12 col-sm-6"><label class="form-label admin-field-label">Repo link</label><input data-f="links.repo" class="form-control" value="${escapeHtml(p.links?.repo || "")}" /></div>
     </div>
-    <div class="mt-3 grid grid-cols-1 gap-3 sm:grid-cols-2">
-      <div><label class="admin-field-label">Home teaser blurb (shown only if featured)</label><textarea data-f="home_blurb" class="admin-textarea">${escapeHtml(p.home_blurb)}</textarea></div>
-      <div class="flex items-end pb-2"><label class="flex items-center gap-2 text-sm"><input data-f="featured" data-type="boolean" type="checkbox" ${p.featured ? "checked" : ""} /> Featured on home page</label></div>
+    <div class="mt-3 row g-3 align-items-end">
+      <div class="col-12 col-sm-6"><label class="form-label admin-field-label">Home teaser blurb (shown only if featured)</label><textarea data-f="home_blurb" class="form-control">${escapeHtml(p.home_blurb)}</textarea></div>
+      <div class="col-12 col-sm-6">
+        <div class="form-check form-switch">
+          <input data-f="featured" data-type="boolean" class="form-check-input" type="checkbox" role="switch" id="f-featured" ${p.featured ? "checked" : ""} />
+          <label class="form-check-label" for="f-featured">Featured on home page</label>
+        </div>
+      </div>
     </div>
     <div class="mt-3">
-      <label class="admin-field-label">Technologies</label>
-      <div class="flex flex-wrap gap-2">${techChipsHtml(allTech, selectedTechIds)}</div>
+      <label class="form-label admin-field-label">Technologies</label>
+      <div class="d-flex flex-wrap gap-2">${techChipsHtml(allTech, selectedTechIds)}</div>
     </div>
   `;
 }
@@ -107,8 +112,26 @@ async function saveProjectTech(projectId, techIds) {
   }
 }
 
+function projectRowHtml(p) {
+  return `
+    <tr data-row data-id="${p.id}">
+      <td>${escapeHtml(p.title || "—")}</td>
+      <td>${escapeHtml(p.category || "—")}</td>
+      <td>${p.featured ? "Yes" : "No"}</td>
+      <td>${p.sort_order ?? 0}</td>
+      <td>
+        <div class="d-flex align-items-center gap-1">
+          <button type="button" data-action="edit" class="btn btn-outline-secondary btn-sm">Edit</button>
+          <button type="button" data-action="delete" class="btn btn-outline-danger btn-sm">Delete</button>
+        </div>
+      </td>
+    </tr>`;
+}
+
+const EMPTY_PROJECTS_ROW = `<tr><td class="admin-table-empty" colspan="5">No projects yet — use the form above to add one.</td></tr>`;
+
 export async function renderProjectsEditor(container) {
-  container.innerHTML = `<p class="text-sm text-[var(--color-text-muted)]">Loading…</p>`;
+  container.innerHTML = `<p class="text-body-secondary">Loading…</p>`;
 
   const [{ data: projects, error: pErr }, { data: allTech, error: tErr }, { data: joins, error: jErr }] = await Promise.all([
     supabase.from("projects").select("*").order("sort_order"),
@@ -116,7 +139,7 @@ export async function renderProjectsEditor(container) {
     supabase.from("project_technologies").select("*"),
   ]);
   if (pErr || tErr || jErr) {
-    container.innerHTML = `<p class="text-sm text-red-400">Failed to load projects: ${(pErr || tErr || jErr).message}</p>`;
+    container.innerHTML = `<p class="text-danger">Failed to load projects: ${(pErr || tErr || jErr).message}</p>`;
     return;
   }
 
@@ -127,73 +150,110 @@ export async function renderProjectsEditor(container) {
   }
 
   container.innerHTML = `
-    <h2 class="font-heading text-lg font-bold">Projects</h2>
-    <p class="mt-1 text-sm text-[var(--color-text-muted)]">Case studies shown on the Projects page; check "Featured" to also surface one on the home page teaser grid.</p>
+    <h2 class="fw-bold fs-4">Projects</h2>
+    <p class="mt-1 text-body-secondary">Case studies shown on the Projects page; check "Featured" to also surface one on the home page teaser grid.</p>
 
-    <div class="mt-4 admin-row-card border-dashed">
-      <p class="admin-field-label">Add new project</p>
-      <div data-new-project-form>${projectFormHtml(null, allTech, new Set())}</div>
-      <button type="button" data-action="create" class="btn btn-primary mt-4 !px-4 !py-2 text-xs">Add project</button>
-      <p data-new-status class="mt-2 min-h-[1rem] text-xs text-[var(--color-text-muted)]"></p>
+    <div class="card border-dashed mt-4" data-form-card>
+      <div class="card-body">
+        <p class="admin-field-label mb-2" data-form-heading>Add new project</p>
+        <div data-project-form></div>
+        <div class="mt-3 d-flex gap-2">
+          <button type="button" data-action="save" class="btn btn-primary btn-sm">Add project</button>
+          <button type="button" data-action="cancel" class="btn btn-outline-secondary btn-sm d-none">Cancel</button>
+        </div>
+        <p data-form-status class="admin-status mt-2"></p>
+      </div>
     </div>
 
-    <p class="admin-field-label mt-8">Existing (${projects.length})</p>
-    <div data-projects-list class="mt-3 space-y-6"></div>
+    <p class="admin-field-label mt-4 mb-2">Existing (${projects.length})</p>
+    <div class="table-responsive">
+      <table class="table table-hover align-middle">
+        <thead><tr><th>Title</th><th>Category</th><th>Featured</th><th>Sort order</th><th>Actions</th></tr></thead>
+        <tbody data-rows>${projects.length ? projects.map(projectRowHtml).join("") : EMPTY_PROJECTS_ROW}</tbody>
+      </table>
+    </div>
   `;
 
-  const list = container.querySelector("[data-projects-list]");
-  list.innerHTML = projects
-    .map(
-      (p) => `
-        <div class="admin-row-card" data-project-form data-id="${p.id}">
-          ${projectFormHtml(p, allTech, techByProject.get(p.id) || new Set())}
-          <div class="mt-4 flex justify-end gap-2">
-            <button type="button" data-action="save" class="btn btn-secondary !px-4 !py-2 text-xs">Save</button>
-            <button type="button" data-action="delete" class="btn btn-secondary !px-4 !py-2 text-xs !border-red-500/50 hover:!border-red-500">Delete</button>
-          </div>
-          <p data-row-status class="mt-2 min-h-[1rem] text-xs text-[var(--color-text-muted)]"></p>
-        </div>
-      `
-    )
-    .join("");
+  const formCard = container.querySelector("[data-form-card]");
+  const formEl = container.querySelector("[data-project-form]");
+  const formHeading = container.querySelector("[data-form-heading]");
+  const saveBtn = container.querySelector('[data-action="save"]');
+  const cancelBtn = container.querySelector('[data-action="cancel"]');
+  const formStatus = container.querySelector("[data-form-status]");
+  let editingId = null;
 
-  list.querySelectorAll("[data-project-form]").forEach((form) => {
-    const id = form.dataset.id;
-    const statusEl = form.querySelector("[data-row-status]");
-    form.querySelector('[data-action="save"]').addEventListener("click", async () => {
-      const { values, techIds } = readProjectForm(form);
-      statusEl.textContent = "Saving…";
-      const { error } = await supabase.from("projects").update(values).eq("id", id);
-      if (error) {
-        statusEl.textContent = `Error: ${error.message}`;
-        return;
+  function paintForm(project) {
+    formEl.innerHTML = projectFormHtml(project, allTech, project ? techByProject.get(project.id) || new Set() : new Set());
+  }
+
+  function enterEdit(project) {
+    editingId = project.id;
+    formHeading.textContent = `Editing "${project.title}"`;
+    saveBtn.textContent = "Save";
+    cancelBtn.classList.remove("d-none");
+    formCard.classList.remove("border-dashed");
+    formCard.classList.add("admin-form-editing");
+    setStatus(formStatus, "");
+    paintForm(project);
+    formCard.scrollIntoView({ behavior: "smooth", block: "start" });
+  }
+
+  function exitEdit() {
+    editingId = null;
+    formHeading.textContent = "Add new project";
+    saveBtn.textContent = "Add project";
+    cancelBtn.classList.add("d-none");
+    formCard.classList.add("border-dashed");
+    formCard.classList.remove("admin-form-editing");
+    setStatus(formStatus, "");
+    paintForm(null);
+  }
+
+  paintForm(null);
+  cancelBtn.addEventListener("click", exitEdit);
+
+  saveBtn.addEventListener("click", async () => {
+    const { values, techIds } = readProjectForm(formEl);
+    saveBtn.disabled = true;
+    try {
+      if (editingId == null) {
+        setStatus(formStatus, "Creating…", "pending");
+        const { data: inserted, error } = await supabase.from("projects").insert(values).select().single();
+        if (error) {
+          setStatus(formStatus, `Error: ${error.message}`, "error");
+          return;
+        }
+        await saveProjectTech(inserted.id, techIds);
+      } else {
+        setStatus(formStatus, "Saving…", "pending");
+        const { error } = await supabase.from("projects").update(values).eq("id", editingId);
+        if (error) {
+          setStatus(formStatus, `Error: ${error.message}`, "error");
+          return;
+        }
+        await saveProjectTech(editingId, techIds);
       }
-      await saveProjectTech(id, techIds);
-      statusEl.textContent = "Saved.";
+      renderProjectsEditor(container);
+    } finally {
+      saveBtn.disabled = false;
+    }
+  });
+
+  container.querySelectorAll("[data-row]").forEach((tr) => {
+    const id = tr.dataset.id;
+
+    tr.querySelector('[data-action="edit"]').addEventListener("click", () => {
+      enterEdit(projects.find((p) => String(p.id) === String(id)));
     });
-    form.querySelector('[data-action="delete"]').addEventListener("click", async () => {
+
+    tr.querySelector('[data-action="delete"]').addEventListener("click", async () => {
       if (!confirm("Delete this project?")) return;
-      statusEl.textContent = "Deleting…";
       const { error } = await supabase.from("projects").delete().eq("id", id);
       if (error) {
-        statusEl.textContent = `Error: ${error.message}`;
+        alert(`Error: ${error.message}`);
         return;
       }
       renderProjectsEditor(container);
     });
-  });
-
-  const newForm = container.querySelector("[data-new-project-form]");
-  const newStatus = container.querySelector("[data-new-status]");
-  container.querySelector('[data-action="create"]').addEventListener("click", async () => {
-    const { values, techIds } = readProjectForm(newForm);
-    newStatus.textContent = "Creating…";
-    const { data: inserted, error } = await supabase.from("projects").insert(values).select().single();
-    if (error) {
-      newStatus.textContent = `Error: ${error.message}`;
-      return;
-    }
-    await saveProjectTech(inserted.id, techIds);
-    renderProjectsEditor(container);
   });
 }

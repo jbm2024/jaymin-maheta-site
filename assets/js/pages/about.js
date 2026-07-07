@@ -1,15 +1,11 @@
 import { gsap } from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
 import {
   initTheme,
   initMobileNav,
   renderNavFooter,
-  revealOnScroll,
-  initStaggerReveals,
   initMagneticButtons,
   initScrollProgress,
   initPageTransitions,
-  initStatCounters,
   initAccordions,
   renderLinkedInFeatured,
   renderTestimonials,
@@ -18,10 +14,6 @@ import {
   isReducedMotion,
 } from "../main.js";
 import { getAboutData, getLatestBlogPosts } from "../data.js";
-
-gsap.registerPlugin(ScrollTrigger);
-
-const REVEAL_ITEM_CLASSES = "opacity-0 translate-y-6 motion-reduce:opacity-100 motion-reduce:translate-y-0";
 
 function renderBio(bio) {
   setText(document.querySelector("[data-bio-eyebrow]"), bio.eyebrow);
@@ -38,15 +30,13 @@ function renderStats(stats) {
   container.innerHTML = stats
     .map(
       (stat) => `
-        <div data-reveal-item class="${REVEAL_ITEM_CLASSES} rounded-[var(--radius-card)] border border-[var(--color-border-glass)] bg-[var(--color-surface-glass)] p-5 text-center">
-          <p class="font-heading text-3xl font-bold bg-gradient-to-r from-[var(--color-accent-start)] to-[var(--color-accent-end)] bg-clip-text text-transparent" data-stat-value data-stat-target="${stat.value}" data-stat-suffix="${stat.suffix || ""}">0${stat.suffix || ""}</p>
+        <div class="rounded-[var(--radius-card)] border border-[var(--color-border-glass)] bg-[var(--color-surface-glass)] p-5 text-center">
+          <p class="font-heading text-3xl font-bold bg-gradient-to-r from-[var(--color-accent-start)] to-[var(--color-accent-end)] bg-clip-text text-transparent">${stat.value}${stat.suffix || ""}</p>
           <p class="mt-2 text-xs text-[var(--color-text-muted)]">${stat.label}</p>
         </div>
       `
     )
     .join("");
-
-  initStatCounters();
 }
 
 function renderPhilosophy(philosophy) {
@@ -56,7 +46,7 @@ function renderPhilosophy(philosophy) {
   container.innerHTML = philosophy
     .map(
       (item) => `
-        <div data-reveal-item data-tilt-card class="${REVEAL_ITEM_CLASSES} [perspective:1200px] rounded-[var(--radius-card)] border border-[var(--color-border-glass)] bg-[var(--color-surface-glass)] p-6 transition-shadow duration-300 will-change-transform hover:border-[var(--color-accent-end)]/45">
+        <div data-tilt-card class="[perspective:1200px] rounded-[var(--radius-card)] border border-[var(--color-border-glass)] bg-[var(--color-surface-glass)] p-6 transition-shadow duration-300 will-change-transform hover:border-[var(--color-accent-end)]/45">
           <h3 class="font-heading text-base font-bold">${item.title}</h3>
           <p class="mt-2 text-sm text-[var(--color-text-muted)]">${item.description}</p>
         </div>
@@ -71,13 +61,13 @@ function renderSkills(skills) {
   container.innerHTML = skills
     .map(
       (group) => `
-        <div data-reveal-item class="${REVEAL_ITEM_CLASSES} rounded-[var(--radius-card)] border border-[var(--color-border-glass)] bg-[var(--color-surface-glass)] p-6">
+        <div class="rounded-[var(--radius-card)] border border-[var(--color-border-glass)] bg-[var(--color-surface-glass)] p-6">
           <div class="flex items-baseline justify-between gap-2">
             <h3 class="font-heading text-sm font-semibold uppercase tracking-wide text-[var(--color-text-muted)]">${group.category}</h3>
             <span class="font-mono text-xs text-[var(--color-text-muted)]">${group.level}%</span>
           </div>
           <div class="mt-3 h-1.5 w-full overflow-hidden rounded-full bg-[var(--color-surface)]">
-            <div data-skill-bar data-skill-level="${group.level}" class="h-full w-0 rounded-full bg-gradient-to-r from-[var(--color-accent-start)] to-[var(--color-accent-end)]"></div>
+            <div class="h-full rounded-full bg-gradient-to-r from-[var(--color-accent-start)] to-[var(--color-accent-end)]" style="width:${group.level}%"></div>
           </div>
           <p class="mt-3 text-xs text-[var(--color-text-muted)]">${group.blurb}</p>
           <div class="mt-3 flex flex-wrap gap-2">
@@ -94,36 +84,13 @@ function renderSkills(skills) {
     .join("");
 }
 
-function animateSkillBars() {
-  const bars = document.querySelectorAll("[data-skill-bar]");
-  if (!bars.length) return;
-
-  bars.forEach((bar) => {
-    const level = Number(bar.dataset.skillLevel);
-    if (isReducedMotion()) {
-      bar.style.width = `${level}%`;
-      return;
-    }
-    gsap.to(bar, {
-      width: `${level}%`,
-      duration: 1.2,
-      ease: "power2.out",
-      scrollTrigger: {
-        trigger: bar,
-        start: "top 90%",
-        once: true,
-      },
-    });
-  });
-}
-
 function renderExperience(experience) {
   const container = document.querySelector("[data-experience-timeline]");
   if (!container) return;
   container.innerHTML = experience
     .map(
       (entry, i) => `
-        <div data-timeline-item data-accordion data-open="false" class="relative rounded-[var(--radius-card)] border border-[var(--color-border-glass)] bg-[var(--color-surface-glass)] before:absolute before:-left-[1.65rem] before:top-8 before:h-3 before:w-3 before:rounded-full before:bg-gradient-to-r before:from-[var(--color-accent-start)] before:to-[var(--color-accent-end)]">
+        <div data-accordion data-open="false" class="relative rounded-[var(--radius-card)] border border-[var(--color-border-glass)] bg-[var(--color-surface-glass)] before:absolute before:-left-[1.65rem] before:top-8 before:h-3 before:w-3 before:rounded-full before:bg-gradient-to-r before:from-[var(--color-accent-start)] before:to-[var(--color-accent-end)]">
           <button type="button" data-accordion-trigger aria-expanded="false" aria-controls="exp-panel-${i}" class="flex w-full flex-col gap-2 p-6 text-left focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-accent-end)]">
             <div class="flex flex-wrap items-baseline justify-between gap-2">
               <h3 class="font-heading text-lg font-bold">${entry.role} · ${entry.company}</h3>
@@ -149,42 +116,13 @@ function renderExperience(experience) {
     .join("");
 }
 
-/**
- * Timeline entries alternate slide direction (left/right) as each one
- * scrolls into view, rather than the generic uniform stagger used
- * elsewhere — a small signature touch for the one section that's
- * inherently sequential.
- */
-function animateTimeline() {
-  const items = document.querySelectorAll("[data-timeline-item]");
-  if (!items.length || isReducedMotion()) return;
-
-  items.forEach((el, i) => {
-    gsap.fromTo(
-      el,
-      { opacity: 0, x: i % 2 === 0 ? -40 : 40 },
-      {
-        opacity: 1,
-        x: 0,
-        duration: 0.7,
-        ease: "power3.out",
-        scrollTrigger: {
-          trigger: el,
-          start: "top 85%",
-          once: true,
-        },
-      }
-    );
-  });
-}
-
 function renderAwards(awards) {
   const container = document.querySelector("[data-awards-grid]");
   if (!container) return;
   container.innerHTML = awards
     .map(
       (award) => `
-        <div data-reveal-item class="${REVEAL_ITEM_CLASSES} rounded-[var(--radius-card)] border border-[var(--color-border-glass)] bg-[var(--color-surface-glass)] p-6">
+        <div class="rounded-[var(--radius-card)] border border-[var(--color-border-glass)] bg-[var(--color-surface-glass)] p-6">
           <h3 class="font-heading text-base font-bold">${award.title}</h3>
           <p class="mt-1 font-mono text-xs text-[var(--color-text-muted)]">${award.issuer} · ${award.year}</p>
           <p class="mt-3 text-sm text-[var(--color-text-muted)]">${award.description}</p>
@@ -192,6 +130,21 @@ function renderAwards(awards) {
       `
     )
     .join("");
+}
+
+/**
+ * Every section on this page used to fade/slide in via GSAP ScrollTrigger as
+ * it scrolled into view. For sections near the bottom of a long page (Awards,
+ * Experience, "From the blog") the trigger's computed scroll position could
+ * exceed the page's actual max scroll, so those sections would never fire —
+ * they'd stay invisible no matter how far you scrolled. Rather than keep
+ * patching that timing-sensitive machinery, this page just shows everything
+ * in its final state as soon as the data has rendered — no scroll dependency.
+ */
+function showAllContentImmediately() {
+  document.querySelectorAll("[data-reveal], [data-reveal-item]").forEach((el) => {
+    el.classList.remove("opacity-0", "translate-y-6");
+  });
 }
 
 function initTiltCards() {
@@ -254,15 +207,11 @@ async function init() {
   renderLinkedInFeatured(site?.linkedinFeatured);
   renderLatestBlog(latestPosts);
 
-  revealOnScroll();
-  initStaggerReveals();
-  animateTimeline();
-  animateSkillBars();
+  showAllContentImmediately();
   initAccordions();
   initTiltCards();
   initMagneticButtons();
   initScrollProgress();
-  ScrollTrigger.refresh();
   bootAmbientScene();
 }
 
